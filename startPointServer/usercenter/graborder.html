@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="../js/mui.min.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <script type="text/javascript" src="../js/request_url.js" ></script>
+    <script type="text/javascript" src="../js/common.js" ></script>
+</head>
+<body>
+	 <header class="mui-bar mui-bar-nav">
+		<h1 class="mui-title">抢单信息</h1>
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #C8C7CC;"></a>
+	</header>
+	<div class="mui-content">
+		<!--“order_type”:”0”, 0 立即叫车 1 预约 2半日租 3日租	"user_tel":"15809232308", 用户电话
+		"order_datetime":"2015-10-12", 用车时间
+		"start_address":"西大", 起点
+		"start_lon":"108.929993", 起点经度
+		"start_lat":"34.253924", 起点纬度
+		"end_address":"光华路", 目的地
+		"end_lon":"108.912871", 目的地经度
+		"end_lat":"34.240061" 目的地纬度-->
+         <ul class="mui-table-view mui-table-view-chevron">
+				<li class="mui-table-view-cell">
+					<p><span>订车方式：</span></p>
+					<p><span id="order_type">&nbsp;</span></p>
+				</li>
+				<li class="mui-table-view-cell">
+					<p><span>用户电话：</span></p>
+					<p><span id="user_tel">&nbsp;</span></p>
+				</li>
+				<li class="mui-table-view-cell">
+					<p><span>用车时间：</span>
+					<p><span id="use_time">&nbsp;</span></p>
+				</li>
+					<li class="mui-table-view-cell">
+					<p><span>起点：</span></p>
+					<p><span id="start_addr">&nbsp;</span></p>
+				</li>
+					<li class="mui-table-view-cell">
+					<p><span>目的地：</span></p>
+					<p><span id="end_addr">&nbsp;</span></p>
+				</li>
+		 </ul>
+		 <div  class="mui-content-padded">
+		 	  <button class="mui-btn mui-btn-block mui-btn-danger" style="padding:10px 0; font-size: 30px;" id="grab_btn">抢   单</button>
+		 </div>
+	</div>
+</body>
+ <script type="text/javascript" charset="utf-8">
+      	mui.init();
+      	
+      	/*初始化控件对象，获得id*/
+      	var grab_btn   = document.getElementById("grab_btn");
+      	var order_type = document.getElementById("order_type");
+      	var user_tel   = document.getElementById("user_tel");
+      	var use_time   = document.getElementById("use_time");
+      	var start_addr = document.getElementById("start_addr");
+      	var end_addr   = document.getElementById("end_addr");
+      	var coach_pk   = "";
+      	var order_pk   = "";
+      	mui.plusReady(function() {
+      		 var strParam = textdecode1(plus.webview.currentWebview().param);
+      		  //0 立即叫车 1 预约 2半日租 3日租
+      		 //strParam===1&1888888885&2015-11-21 10:33&西安市雁塔区西辛庄&西安市雁塔区沣惠南路-公交车站&7e913c13-1c77-470e-a6ef-8a6ea65bb2f0&null
+      		 console.log("strParam==="+strParam);
+      		 var strtmp = strParam.split('&');
+      		
+      		 if(0 == strtmp[0])
+      		 {
+      		 	 order_type.textContent = "立即叫车";
+      		 }
+      		 else if(1 == strtmp[0])
+      		 {
+      		 	 order_type.textContent = "预约";
+      		 }
+      		 if(2 == strtmp[0])
+      		 {
+      		 	 order_type.textContent = "半日租";
+      		 }
+      		 else
+      		 {
+      		 	order_type.textContent = "日租";
+      		 }
+      		 
+      		 if(strtmp[1] == "undefined")
+      		 {
+      		 	user_tel.textContent   = "";
+      		 }
+      		 else
+      		 {
+      		 	user_tel.textContent   = strtmp[1];
+      		 }
+      		 use_time.textContent   = strtmp[2];
+      		 start_addr.textContent = strtmp[3];
+      		 end_addr.textContent   = strtmp[4];
+      		 order_pk               = strtmp[5];
+      		 coach_pk               = strtmp[6];
+      		 //调用提交处理函数
+      		 post_graborder();
+      		 
+      	})
+      	
+      	//司机抢单，提交给后台
+      	function post_graborder()
+      	{       
+      		grab_btn.addEventListener("tap",function(){
+      			var url = request_url+"coach_and_order"; 
+      			mui.ajax(url,{
+				data:{     
+					       "coach_pk"    : coach_pk,
+						   "order_pk"    : order_pk
+				     },
+				dataType:'json',//服务器返回json格式数据
+				type:'post',//HTTP请求类型
+				timeout:5000,//超时时间设置为5秒；
+				success:function(response){
+					console.log(JSON.stringify(response));
+					if(parseInt(response.result)==100)
+					{						
+						mui.toast("提交数据成功!");
+						mui.back();
+					}
+					else if(parseInt(response.result)==-100)
+					{
+						mui.toast("您有未完成订单，暂不能抢单!");						
+					}
+					else if(parseInt(response.result)==-98)
+					{
+					 	mui.toast("抢单失败，车型不符!");		
+					 	mui.back();
+					}
+				},
+				error:function(xhr,type,errorThrown){
+					//异常处理；
+					console.log("\n失败$$$$$"+xhr.status+"$$$"+type+"$$$"+errorThrown);
+				}
+			});
+      		})
+      		
+      	}
+ </script>
+</html>

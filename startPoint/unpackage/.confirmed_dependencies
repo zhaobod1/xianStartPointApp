@@ -1,0 +1,77 @@
+{
+  "navigate.html": {
+    "resources": [
+      "img/icon_home_05.png",
+      "img/icon_home_06.png",
+      "js/request_url.js",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "img/icon_home_01.png",
+      "css/mui.min.css",
+      "img/icon_home_04.png",
+      "img/icon_home_02.png",
+      "img/icon_home_shunfeng.png",
+      "js/navigate.js",
+      "fonts/iconfont.woff",
+      "img/ad_1.jpg"
+    ],
+    "refer": [
+      "login/login.html",
+      "setting_menu.html",
+      "index.html"
+    ]
+  },
+  "setting_menu.html": {
+    "resources": [
+      "img/freeride.png",
+      "img/iconfont-yaoqinghaoyou.png",
+      "img/iconfont-cart.png",
+      "img/iconfont-duihuaxinxi.png",
+      "img/iconfont-tuichu.png",
+      "img/iconfont-chongzhi(1).png",
+      "img/iconfont-bangzhu.png",
+      "usercenter/recharge.html",
+      "js/navigate.js"
+    ],
+    "refer": [
+      "usercenter/recharge.html"
+    ]
+  },
+  "usercenter/recharge.html": {
+    "resources": [
+      "js/request_url.js",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "setting_menu.html"
+    ],
+    "refer": [
+      "setting_menu.html"
+    ]
+  },
+  "login/login.html": {
+    "resources": [
+      "js/request_url.js",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ]
+  },
+  "index.html": {
+    "resources": [
+      "img/index_left_fresh_manual.png",
+      "js/request_url.js",
+      "js/mui.min.js",
+      "css/common.css",
+      "img/iconfont-wujiaoxing.png",
+      "img/icon_lw_blue.png",
+      "css/iconfont.css",
+      "css/mui.min.css",
+      "img/markers.png",
+      "img/car.png",
+      "fonts/mui.ttf",
+      "fonts/iconfont.ttf",
+      "fonts/iconfont.woff"
+    ]
+  }
+}

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>起点专车</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="css/mui.min.css">
+		<script type="text/javascript" src="js/request_url.js"></script>
+		<script src="js/mui.min.js"></script>
+		<script src="js/navigate.js"></script>
+
+		<style>
+			.tr_line {
+				border-bottom: 1px solid #cccccc;
+			}
+			
+			.td_line {
+				border-right: 1px solid #cccccc;
+				height: auto;
+				padding: 15px 0;
+			}
+			
+			.f12 {
+				font-size: 12px;
+			}
+			
+			table tr td div p {
+				color: #000000;
+				line-height: normal;
+			}
+			
+			* {
+				font-size: 12px;
+			}
+			body{ position:relative ;}
+			.zzc{
+				opacity: 0.4;
+				background: #000;
+				width: 100%;
+				height: 100%;
+				z-index: 9999;
+				position: absolute;
+				text-align: center;
+				display: none;
+			}
+			.ad{
+				opacity: 1;
+				background: transparent;
+				width: 100%;
+				height: 100%;
+				z-index: 9999;
+				position: absolute;
+				text-align: center;
+				display: none;
+			}
+			.ad .mui-icon-close{							
+				opacity: 1;
+				z-index: 9999;							
+				font-size: 44px;							
+				color: #fff;
+			}
+			.ad img{						
+				opacity: 1;
+				z-index: 9999;	
+				max-width: 90%;	
+				max-height: 60%;
+				margin-top: 20%;																	
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="zzc" class="zzc"></div>
+		<div id="ad" class="ad"> 			
+			<img id="ad_img" src="img/ad_1.jpg"><br>	
+			<span class="mui-icon mui-icon-close" id="mui-close"></span>
+		</div>
+
+		<header class="mui-bar mui-bar-nav" style="background: transparent;">
+			<a class="mui-icon mui-icon-bars mui-pull-left" id="navigate_personcenter"></a>
+			<a id="navigate_share" class="mui-icon iconfont icon-fenxiang mui-pull-right" style="color: #999;"></a>
+			<h1 class="mui-title">起点专车</h1>
+		</header>
+		<nav class="mui-bar mui-bar-tab" id="nav">
+			<a class="mui-tab-item mui-active" id="tab_nearby"> <span class="mui-icon mui-icon-map"></span> <span class="mui-tab-label">附近</span> </a>
+			<a class="mui-tab-item " id="tab_call"> <span class="mui-icon mui-icon-phone"></span> <span class="mui-tab-label">客服</span> </a>
+			<a class="mui-tab-item " id="tab_person"> <span class="mui-icon mui-icon-person"></span> <span class="mui-tab-label">我的</span> </a>
+		</nav>
+
+		<!--增加底部导航按钮 -->
+		<div class="mui-content">
+			<div id="slider" class="mui-slider">
+				<div class="mui-slider-group mui-slider-loop" id="banner">
+					
+				</div>
+			</div>
+			<table border="0" width="100%" height="100%" style="margin-top:15px;text-align: center;vertical-align: middle;">
+				<tr class="tr_line">
+					<td id="tb_nearby" class="td_line">
+						<img src="img/icon_home_01.png" width="100px" />
+						<p><span>专车一路出行</span></p>
+					</td>
+					<td id="tb_selfdriver">
+						<img src="img/icon_home_02.png" width="100px" />
+						<p><span>取还方便轻松畅游</span></p>
+					</td>
+				</tr>
+				<tr class="tr_line">
+
+					<td id="tb_freeride" class="td_line">
+						<div class=" mui-col-xs-4 mui-pull-left"><img src="img/icon_home_shunfeng.png" width="50px" /></div>
+						<div class=" mui-col-xs-8 mui-pull-right">
+							<p class="mui-text-left">顺风车</p>
+							<p class="f12 mui-text-left">拼车顺路节能环保</p>
+						</div>
+					</td>
+					<td id="tb_longdriver" class="td_line">
+						<div class=" mui-col-xs-4 mui-pull-left"><img src="img/icon_home_05.png" width="50px" /></div>
+						<div class="mui-col-xs-8 mui-pull-right">
+							<p class="mui-text-left">出租车</p>
+							<p class="f12 mui-text-left">细致服务优惠多多</p>
+						</div>
+					</td>
+				</tr>
+				<tr class="tr_line" style="border-bottom: none;">
+
+					<td id="tb_subarea" class="td_line">
+						<div class=" mui-col-xs-4 mui-pull-left"><img src="img/icon_home_04.png" width="50px" /></div>
+						<div class="mui-col-xs-8 mui-pull-right">
+							<p class="mui-text-left">门店</p>
+							<p class="f12 mui-text-left">周边门店尽在掌握</p>
+						</div>
+					</td>
+					<td id="tb_navigate" class="td_line">
+						<div class=" mui-col-xs-4 mui-pull-left"><img src="img/icon_home_06.png" width="50px" /></div>
+						<div class="mui-col-xs-8 mui-pull-right">
+							<p class="mui-text-left">我在哪</p>
+							<p class="f12 mui-text-left">要去哪儿导航一下</p>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+			
+			var tab_call = document.getElementById("tab_call");
+			mui.plusReady(function() {		
+				//检查更新	
+				plus.runtime.getProperty( plus.runtime.appid, function ( wgtinfo ) {			
+					mui.ajax(request_url + "get_update", {	
+						data: {
+							"_type":1,
+							"version": wgtinfo.version
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 5000, //超时时间设置为5秒； 
+						success: function(rsp) {								
+							if(parseInt(rsp.result)==100) 
+							{
+								 var btnArray = ['更新', '取消'];
+								mui.confirm('系统有更新，立即更新？', '系统提示', btnArray, function(e) {
+									if (e.index == 0) {
+										plus.runtime.openURL(request_img_url+"down.aspx");									
+									} 
+								});
+							}						
+						}
+					});				
+				}); 
+				mui.ajax(request_url + "get_ad", {	
+						data: {
+							"_type":"0000500002",							
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 5000, //超时时间设置为5秒； 
+						success: function(rsp) {
+							console.log(rsp.Table[0].info_content);
+							var str_ad="<div class=\"mui-slider-item mui-slider-item-duplicate\"><a href=\"#\"><img src=\""+ request_img_url + rsp.Table[rsp.Table.length-1].info_content +"\"></a></div>";
+							for (var i = 0; i < rsp.Table.length; i++) { //0 立即叫车 1 预约 2半日租 3日租								
+								var ad_img = request_img_url + rsp.Table[i].info_content;
+								str_ad=str_ad+"<div class=\"mui-slider-item\"><a href=\"#\"><img src=\""+ ad_img +"\"></a></div>";
+								
+							} 
+							str_ad=str_ad+"<div class=\"mui-slider-item mui-slider-item-duplicate\"><a href=\"#\"><img src=\""+ request_img_url + rsp.Table[0].info_content +"\"></a></div>";
+							str_ad=str_ad+"<div></div>";
+							//str_ad=str_ad+"<div class=\"mui-slider-indicator\"><div class=\"mui-indicator mui-active\"></div><div class=\"mui-indicator\"></div></div>";
+							document.getElementById("banner").innerHTML=str_ad;
+							navigatorShowSlide(); 
+						}
+				});	
+				mui.ajax(request_url + "get_ad_one", {	
+						data: {
+							"_type":"0000500003",							
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 5000, //超时时间设置为5秒； 
+						success: function(rsp) {	
+							if(rsp.result!="")
+							{
+								document.getElementById("ad_img").setAttribute("src",request_img_url+rsp.result);
+								document.getElementById("ad").style.display="block";
+								document.getElementById("zzc").style.display="block"; 
+							}
+						}
+				});	
+				get_pop_link();
+				tab_call.addEventListener("tap", function() {
+						plus.device.dial("400-029-3520", false);
+					})
+					/*增加首页默认滑动事件*/
+				function navigatorShowSlide() {
+					var gallery = mui(".mui-slider");
+					gallery.slider({
+						interval: 3000
+					});
+				};
+				//首页返回键处理
+				//处理逻辑：1秒内，连续两次按返回键，则退出应用；
+				var first = null;
+				mui.back = function() {
+					//首次按键，提示‘再按一次退出应用’
+					if (!first) {
+						first = new Date().getTime();
+						mui.toast('再按一次退出应用');
+						setTimeout(function() {
+							first = null;
+						}, 1000);
+					} else {
+						if (new Date().getTime() - first < 1000) {
+							plus.runtime.quit();
+						}
+					}
+				};
+				//获取推广链接
+				function get_pop_link() {
+					var url = request_url + "get_pop_link";
+					var user_pk = plus.storage.getItem('user_pk');
+					console.log("user_pk===" + user_pk);
+					mui.ajax(url, {
+						data: {
+							"user_pk": user_pk
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 5000, //超时时间设置为10秒；
+						success: function(response) {
+							sharehref = "http://www.qidiancar.com" + response.result;
+							console.log(sharehref);
+						},
+						error: function(xhr, type, errorThrown) {
+							//异常处理；
+							console.log("\n失败$$$$$" + xhr.status + "$$$" + type + "$$$" + errorThrown);
+						}
+					});
+				}
+				plus.push.setAutoNotification(false);
+				var info = plus.push.getClientInfo();
+				plus.storage.setItem("clientid", info.clientid);
+				plus.storage.setItem("appid", info.appid);
+				plus.storage.setItem("appkey", info.appkey);
+				plus.storage.setItem("token", info.token);
+				plus.push.addEventListener("click", function(msg) {
+					// 判断是从本地创建还是离线推送的消息
+					switch (msg.payload) {
+						case "LocalMSG":
+							outSet("点击本地创建消息启动：");
+							break;
+						default:
+							outSet("点击离线推送消息启动：");
+							break;
+					}
+					// 处理其它数据
+					logoutPushMsg(msg);
+				}, false);
+				// 监听在线消息事件
+				plus.push.addEventListener("receive", function(msg) {
+					if (msg.aps) { // Apple APNS message
+						//					mui.toast("接收到在线APNS消息：");
+					} else {
+						//					mui.toast("接收到在线透传消息：");
+					}
+					logoutPushMsg(msg);
+				}, false);
+				/**
+				 * 日志输入推送消息内容
+				 */
+				function logoutPushMsg(msg) {
+					if (msg.payload) {
+						islogin = plus.storage.getItem('islogin');
+						/*判空操作*/
+						if (islogin == null) {
+							plus.storage.setItem('islogin', 0);
+						}
+						if ((islogin != 1) || (islogin != "1")) {
+						} else {
+							 mui.openWindow({
+								id: "qiangdan",
+								url: "qiangdan.html",
+								extras: {
+									param: msg.payload
+								}
+							});
+						}	
+					} else {
+						console.log("payload: undefined");
+					}
+					if (msg.aps) {
+						console.log("aps: " + JSON.stringify(msg.aps));
+					}
+				}
+			});
+			var navigate_share = document.getElementById("navigate_share");
+			navigate_share.addEventListener("tap", function() {
+				shareShow();
+			});
+			document.getElementById("mui-close").addEventListener("tap", function() {
+				document.getElementById("ad").style.display="none"; 
+				document.getElementById("zzc").style.display="none";
+			});
+		</script>
+	</body>
+
+</html>

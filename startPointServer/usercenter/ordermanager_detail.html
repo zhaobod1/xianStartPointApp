@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="../js/mui.min.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+    <script type="text/javascript" src="../js/request_url.js" ></script>
+    <script type="text/javascript" src="../js/common.js" ></script>
+    <style type="text/css">
+    	*{
+    		font-size: 12px;
+    	}
+    </style>
+</head>
+<body>
+	 <header class="mui-bar mui-bar-nav">
+		<h1 class="mui-title">订单详情页</h1>
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #C8C7CC;"></a>
+	</header>
+	<div class="mui-content">
+		 <div style="padding-bottom: 10px;">
+		   <div class="mui-content-padded"><span>客户信息</span> </div>
+		 <ul class="mui-table-view mui-table-view-chevron">
+			    <li class="mui-table-view-cell">
+					<p><span>客户姓名：</span>
+						<span id="user_name">&nbsp;</span>
+					</p>
+					
+				</li>
+				<li class="mui-table-view-cell">
+					<p><span>客户电话：</span>
+						<span id="user_tel">&nbsp;</span>
+					</p>
+				
+				</li>
+				<li class="mui-table-view-cell">
+					<p><span>订单类型：</span>
+						<span id="order_type">&nbsp;</span>
+					</p>
+				</li>
+					<li class="mui-table-view-cell">
+					<p><span>乘车日期：</span>
+						<span id="car_time">&nbsp;</span>
+					</p>
+				</li>
+				<li class="mui-table-view-cell">
+					<p><span>上车地址:</span></p>
+					<p><span id="start_addr">&nbsp;</span></p>
+				</li>
+				<li class="mui-table-view-cell">
+					<p><span>下车地址：</span></p>
+					<p><span id="end_addr">&nbsp;</span></p>
+				</li>
+				<li class="mui-table-view-cell">
+					<p><span>里程:</span>
+						<span id="order_away">&nbsp;</span>
+					</p>
+				</li>
+				<li class="mui-table-view-cell">
+					<p><span>时长：</span>
+						<span id="order_time">&nbsp;</span>
+					</p>
+				</li>
+				<li class="mui-table-view-cell">
+					<p><span>实际金额:</span>
+						<span id="actual_cost">&nbsp;</span>
+					</p>
+					
+				</li>
+				<li class="mui-table-view-cell">
+					<p><span>订单状态：</span>
+						<span id="order_state">&nbsp;</span>
+					</p>
+				</li>
+		 </ul>
+		 </div>
+        <div>
+        	 <ul class="mui-table-view mui-table-view-chevron">
+        	    <li class="mui-table-view-cell">
+					<p><span>输入订单金额：</span></p>
+					<p style="width: 100%;">
+						<input id="order_fee"  type="text" style="width: 60%;"/>
+						<button class="mui-btn mui-btn-danger" style="padding:9px 25px" id="btn_modifycost">确定</button>
+					</p>
+				</li>
+		     </ul>
+        </div>
+	</div>
+</body>
+ <script type="text/javascript" charset="utf-8">
+ 
+       var order_pk = "";
+      	mui.init();
+      	
+      	/*初始化控件对象，获得id*/
+      	//用户信息
+       var user_name = document.getElementById("user_name");
+       var user_tel  = document.getElementById("user_tel");
+       var order_type= document.getElementById("order_type");
+       var car_time  = document.getElementById("car_time");
+       var start_addr=document.getElementById("start_addr");
+       var end_addr  =document.getElementById("end_addr");
+       var order_away= document.getElementById("order_away");
+       var order_time= document.getElementById("order_time");
+       var actual_cost= document.getElementById("actual_cost");
+       var order_state= document.getElementById("order_state");
+
+      	mui.plusReady(function() {
+      		 //调用提交处理函数
+      		 get_orderdetail();
+      		 
+      		 //修改订单金额
+      		 modify_ordercost()
+      		 
+      	});
+      	
+      	//获取订单详情
+      	function get_orderdetail()
+      	{       
+      		    order_pk = plus.webview.currentWebview().param;
+      		    console.log("order_pk==="+order_pk);
+      			var url = request_url+"get_order_info"; 
+      			mui.ajax(url,{
+				data:{     
+						   "order_pk"    : order_pk
+				     },
+				dataType:'json',//服务器返回json格式数据
+				type:'post',//HTTP请求类型
+				timeout:5000,//超时时间设置为5秒；
+				success:function(response){
+					console.log(JSON.stringify(response));
+					user_name.textContent = textdecode1(response.Table[0].user_name);
+					
+					if(response.Table[0].user_tel == "undefined")
+					{
+						user_tel.textContent = "";
+					}
+					else
+					{
+						user_tel.textContent = response.Table[0].user_tel;
+					}
+					
+					//order_type":"0", 订单类型 0立即叫车 1预约 2半日租 3日租
+					
+					if("0" == response.Table[0].order_type)
+					{
+						order_type.textContent = "立即叫车";
+					}
+					else if("1" == response.Table[0].order_type)
+					{
+						order_type.textContent = "预约";
+					}
+					else if("2" == response.Table[0].order_type)
+					{
+						order_type.textContent = "半日租";
+					}
+					else
+					{
+						order_type.textContent = "日租";
+					}
+					car_time.textContent = textdecode1(response.Table[0].order_datetime);
+					start_addr.textContent = response.Table[0].start_address;
+					end_addr.textContent  = response.Table[0].end_address;      
+					order_away.textContent = response.Table[0].order_away;
+					order_time.textContent = response.Table[0].order_time;
+					actual_cost.textContent = response.Table[0].order_fee;
+					document.getElementById("order_fee").placeholder=response.Table[0].order_fee;
+					//"order_state":"0", 订单状态：0抢单中 1抢单待确认 2进行中 3待评价 4已结束 5已取消
+					if("0" == response.Table.order_state)
+					{
+						order_state.textContent = "抢单中";
+					}
+					else if(  "1" == response.Table[0].order_state 
+					       || "2" == response.Table[0].order_state)
+					{
+						order_state.textContent = "进行中 ";
+					}
+					else if("3" == response.Table[0].order_state)
+					{
+						order_state.textContent = "已完成";
+					}
+				    else if("4" == response.Table[0].order_state)
+					{
+						order_state.textContent = "已结束";
+					}
+					else
+					{
+						order_state.textContent = "已取消";
+					}
+				},
+				error:function(xhr,type,errorThrown){
+					//异常处理；
+					console.log("\n失败$$$$$"+xhr.status+"$$$"+type+"$$$"+errorThrown);
+				}
+			});
+      	}
+      	
+      	//修改订单金额
+      	function modify_ordercost()
+      	{
+      		var btn_modifycost = document.getElementById("btn_modifycost");
+      		var order_fee      = document.getElementById("order_fee");
+            var coach_pk       = plus.storage.getItem("logincoach_pk");
+      		btn_modifycost.addEventListener("tap",function(){
+      			console.log("order_pk.value==="+order_pk);
+      			console.log("order_fee.value==="+order_fee.value);
+      			var url = request_url+"change_order_fee"; 
+      			mui.ajax(url,{
+				data:{     
+					       "coach_pk"    :coach_pk,
+					       "order_pk"    : order_pk,
+						   "order_fee"   : order_fee.value
+				     },
+				dataType:'json',//服务器返回json格式数据
+				type:'post',//HTTP请求类型
+				timeout:5000,//超时时间设置为5秒；
+				success:function(response){
+					console.log(JSON.stringify(response));
+					if(response.result == "1")
+					{
+						mui.toast("修改金额成功!");
+						mui.openWindow({
+			    			  url:"ordermanager.html",			    			  
+			  		    });
+					}
+					else
+					{
+						mui.toast("修改金额失败!");
+					}
+					
+				},
+				error:function(xhr,type,errorThrown){
+					//异常处理；
+					console.log("\n失败$$$$$"+xhr.status+"$$$"+type+"$$$"+errorThrown);
+				}
+			});
+      		})
+      	}
+ </script>
+</html>

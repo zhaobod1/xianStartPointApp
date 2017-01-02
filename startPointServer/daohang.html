@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="MobileOptimized" content="320" />
+		<title></title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/iconfont.css">
+		<link rel="stylesheet" href="css/common.css">
+		<script src="js/mui.min.js"></script>
+		<script src="js/common.js"></script>
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ylg8yBCSUPFnuu82sDnIbZ5H"></script>
+		<!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=726ZqpsoTe2765d1KaY5kqkd"></script>-->
+		<script type="text/javascript" src="js/request_url.js"></script>
+
+		<style>
+			html,
+			body {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.mui-bar-tab .mui-tab-item {
+				color: #555555;
+				vertical-align: bottom;
+				padding-bottom: 10px;
+				height: 50px;
+			}
+			
+			.mui-bar-tab .mui-tab-item.mui-active {
+				color: #555555;
+			}
+			
+			#map {	
+				height:100%;			
+				text-align: center;
+				position: absolute;
+				top: 0px;
+				bottom: 0px;
+				width: 100%;
+			}
+			
+			.mui-bar-tab .mui-tab-item .mui-icon ~ .mui-tab-label {
+				font-size: 14px;
+			}
+			
+			#map_result_div {
+				position: absolute;
+				width: 100%;
+				text-align: center;
+				top: 35%;
+				vertical-align: middle;
+			}
+			
+			#map_result {
+				width: auto;
+				display: inline-block;
+				height: 11%;
+				max-width: 90%;
+				line-height: 25px;
+				text-align: center;
+				margin: 0 auto;
+				top: 35%;
+				left: 10%;
+				border: 1px solid #ccc;
+				padding: 8px;
+				background: #FFFFFF;
+				vertical-align: middle;
+				border-radius: 5px;
+				color: #666;
+				font-size: 12px;
+			}
+			
+			#map_result_img {
+				width: 80%;
+				height: 8%;
+				text-align: center;
+				top: 45%;
+				left: 10%;
+				padding: 8px;
+				vertical-align: middle;
+				border-radius: 5px;
+				color: #666;
+				font-size: 12px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-icon mui-icon-left-nav mui-pull-left" id="mui-action-back"></a>
+			<h1 class="mui-title" id="dh_title">			  
+			</h1>
+			<a id="icon-phone" style=" float: right;"><span class="mui-icon mui-icon-phone"></span></a>
+		</header>
+		<div class="mui-content">
+			<div id="map">地图加载中...</div>
+		</div>
+		<script type="text/javascript">
+			var First = true;
+			var marker;
+			var mPoint;
+			var end_lon = "";
+			var end_lat = "";
+			var ePoint; //结束经纬度 ,请从抢单页面传递
+			var eAddress = ""; //目的地，请从抢单页面传递
+			var cus_phone = ""; //客户电话，请从抢单页面传递
+			var bounds = new Array();
+			var linesPoints = new Array();
+			var transit;
+			mui.init();
+			mui.plusReady(function() {
+				end_lat = plus.webview.currentWebview().end_lon;
+				end_lon = plus.webview.currentWebview().end_lat;
+				eAddress = plus.webview.currentWebview().end_address;
+				cus_phone = plus.webview.currentWebview().coach_phone;
+
+//				end_lon = "34.197255";
+//				end_lat = "108.914436";		
+//				eAddress = "11111"; //目的地，请从抢单页面传递
+//				cus_phone = "13556895689"; //客户电话，请从抢单页面传递
+				//mui.toast(end_lon +","+end_lat); 
+				console.log("end_lon=="+end_lon);
+				console.log("end_lat=="+end_lat);
+				console.log("eAddress=="+eAddress);
+				console.log("cus_phone=="+cus_phone);
+				map = new BMap.Map("map"); // 创建地图实例				
+				map.addControl(new BMap.NavigationControl());
+				document.getElementById("dh_title").innerText = eAddress;
+				getPosBaidu();
+				var mui_back = document.getElementById("mui-action-back");
+				mui_back.addEventListener("tap", function() {
+					mui.openWindow({
+						id: "index",
+						url: "index.html"
+					});
+				});
+				var icon_phone = document.getElementById("icon-phone");
+				icon_phone.addEventListener("tap", function() {
+					plus.device.dial(cus_phone, false);
+				});
+			});
+
+			function daohang() {
+				ePoint = new BMap.Point(end_lat,end_lon);
+				GetLength();
+			}
+
+			function GetLength() {
+					var driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true}});				
+				driving.search(mPoint, ePoint);
+//				transit = new BMap.DrivingRoute(map, {
+//					renderOptions: {
+//						map: map
+//					},
+//					onSearchComplete: searchComplete,
+//					onPolylinesSet: function() {}
+//				});
+//				transit.search(mPoint, ePoint);
+			}
+			// 通过百度定位模块获取位置信息
+			function getPosBaidu() {
+				plus.geolocation.getCurrentPosition(geoInf, function(e) {
+					console.log("info----" + e.message);
+				}, {
+					provider: 'baidu'
+				});
+				setTimeout("getPosBaidu()", 1000);
+			}
+			/*初始化地图时时定位信息*/
+			function geoInf(position) {
+				var codns = position.coords; //获取地理坐标信息；
+				var lat = codns.latitude; //获取到当前位置的纬度；			
+				var longt = codns.longitude; //获取到当前位置的经度
+				var coach_pk = plus.storage.getItem("logincoach_pk");			
+				var url = request_url + "set_coach_place";					
+				mui.ajax(url, {
+					data: {
+						"coach_pk": coach_pk,
+						"coach_lon": longt,
+						"coach_lat": lat
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 5000, //超时时间设置为5秒；
+					success: function(response) {
+						
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log("\n失败$$$$$" + xhr.status + "$$$" + type + "$$$" + errorThrown);
+					}
+				});
+				
+				if (First == false) {
+					mPoint = new BMap.Point(longt, lat);
+					marker.setPosition(mPoint);
+					map.centerAndZoom(mPoint, map.getZoom());
+					return false;
+				}
+				mPoint = new BMap.Point(longt, lat);
+				map.centerAndZoom(mPoint, 15);
+				First = false;
+				var myIcon = new BMap.Icon("img/markers.png", new BMap.Size(30, 41));
+				marker = new BMap.Marker(mPoint, {
+					icon: myIcon
+				});
+				map.addOverlay(marker); //增加点		
+				daohang();
+			}
+			var searchComplete = function(results) {
+				if (transit.getStatus() != BMAP_STATUS_SUCCESS) {
+					return;
+				}
+				var plan = results.getPlan(0);
+				//document.getElementById("dh_title").innerText="距离"+plan.getDistance(true);          
+			}
+		</script>
+
+</html>

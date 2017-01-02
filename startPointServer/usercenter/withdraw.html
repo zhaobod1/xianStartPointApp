@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/request_url.js"></script>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		
+		<style type="text/css">
+			* {
+				font-size: 12px;
+			}
+			input{
+				font-size: 12px;
+			}
+			textarea{
+				font-size: 12px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">申请提现</h1>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			
+		</header>
+
+		<div class="mui-content">
+			<div class="mui-content-padded">
+				<p>
+					<label>支付宝账户/银行卡号：</label>
+					<input id="account_number" type="text" placeholder="请输入提现支付宝账户或银行卡号" />
+				</p>
+				<p>
+					<label>账户名/开户名：</label>
+					<input id="account_name" type="text" placeholder="支付宝账户名或银行开户名"  value="" />
+				</p>
+				<p>
+					<label>提现金额：</label>
+					<input id="withdraw_sum" type="text" placeholder="0.00"  value="" />
+				</p>
+			</div>
+			<div class="mui-content-padded">
+				<p>
+					<span>手机验证码:</span>
+					<div >
+					<input id="input_ckcode" style="width: 60%;" type="text" placeholder="请输入手机验证码"  value="" />
+					<input id="get_ckcode" type="button" value="获取验证码" style="height: 40px;" />
+					</div>
+				</p>
+			</div>
+			<div class="mui-content-padded">
+			<button class="mui-btn mui-btn-block mui-btn-danger" style="height: 50px; margin-top:50px;" id="set_withdraw">申请提现</button>
+			</div>
+		</div>
+	</body>
+
+	<script type="text/javascript" charset="utf-8">
+		var return_result = "";
+		(function($) {
+			mui.init();
+			var btndisable = false;
+			//获取验证码按钮倒计时禁灰
+			var countdown = 60;
+			var get_ckcode = document.getElementById("get_ckcode");
+
+			function settime(valText) {
+				if (countdown == 0) {
+					btndisable = false;
+					valText.textContent = "获取验证码";
+					get_ckcode.value = valText.textContent;
+					get_ckcode.disabled = btndisable;
+					countdown = 60;
+				} else {
+					btndisable = true;
+					valText.textContent = "重新发送(" + countdown + ")";
+					get_ckcode.value = valText.textContent;
+					get_ckcode.disabled = btndisable;
+					countdown--;
+					setTimeout(function() {
+						settime(valText)
+					}, 1000)
+				}
+			}
+			/* 获取验证码单击事件 */
+			get_ckcode.addEventListener("tap", function() {
+				if (btndisable == false) {
+								
+					//获取验证码
+					get_smscode();
+					//设置按钮禁灰定时器禁止联系获取
+					settime(this);					
+				}
+			});
+			var set_withdraw = document.getElementById("set_withdraw");
+			var account_number = document.getElementById("account_number");
+			var account_name = document.getElementById("account_name");
+			var withdraw_sum = document.getElementById("withdraw_sum");
+			var input_ckcode = document.getElementById("input_ckcode");
+			set_withdraw.addEventListener("tap", function() {
+				if(account_number.value=="")
+				{
+					mui.toast("请输入提现支付宝账户或银行卡号!");
+					return false;
+				}
+				if(account_name.value=="")
+				{
+					mui.toast("请输入支付宝账户名或银行开户名!");
+					return false;
+				}
+				if(withdraw_sum.value=="")
+				{
+					mui.toast("请输入提现金额!");
+					return false;
+				}
+				if(input_ckcode.value=="")
+				{
+					mui.toast("请输入手机验证码!");
+					return false;
+				}
+				
+				
+				var url_server = request_url + "set_withdraw";
+				mui.ajax(url_server, {
+					data: {
+						"user_pk": plus.storage.getItem("logincoach_pk"),
+						"account_phone":plus.storage.getItem("coach_phone"),
+						"account_number": account_number.value,
+						"account_name": account_name.value,
+						"withdraw_sum": withdraw_sum.value,
+						"verification":input_ckcode.value
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 5000, //超时时间设置为10秒；
+					success: function(response) {		
+						if(response.result=="-97"){
+							mui.toast("提现申请提交成功!");
+							return false; 
+						}
+						if(response.result=="-96"){
+							mui.toast("请正确填写提现金额!");
+							return false; 
+						}
+						if(response.result=="-95"){
+							mui.toast("提现金额不能大于账户余额!");
+							return false; 
+						}
+						mui.toast("提现申请提交成功!");						
+						mui.back();						
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log("\n失败$$$$$" + xhr.status + "$$$" + type + "$$$" + errorThrown);
+					}
+				});
+			})
+		})(mui);
+		
+		//获取验证码
+		var randomValue = "";
+
+		function get_smscode() {
+			var url = request_url + "send_code";		
+			mui.ajax(url, {
+				data: {
+					"phone": plus.storage.getItem('coach_phone'),
+					"template": "0000700003"					
+				},
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				timeout: 5000, //超时时间设置为10秒；
+				success: function(response) {					
+					console.log(JSON.stringify(response));
+					return_result = response;
+				},
+				error: function(xhr, type, errorThrown) {
+					//异常处理；
+					console.log("\n失败$$$$$" + xhr.status + "$$$" + type + "$$$" + errorThrown);
+				}
+			});
+		}
+			
+	</script>
+
+</html>

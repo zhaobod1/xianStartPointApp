@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/style.css" rel="stylesheet" />
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript" src="../js/request_url.js" ></script>
+		<style>
+
+			.order_list_view{
+				margin: 8px ;
+				
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #C8C7CC;"></a>
+			<h1 class="mui-title">订单列表</h1>
+		</header>
+		<div class="mui-content" id="orderlist_content_div">
+
+
+		</div>
+		
+	</body>
+    <script type="text/javascript" charset="utf-8"> 
+    
+        var order_pk = "";
+        var coach_pk = "";
+        var strBtn   = "";
+        var str_userTel = "";
+        var order_datetime = "";
+        var start_address = "";
+        var end_address = "";
+        var strTemp     = "";
+        
+        var order_content_div =document.getElementById("orderlist_content_div");
+    	mui.init();
+   	
+    mui.plusReady(function() {
+    	
+    	coach_pk = plus.storage.getItem('logincoach_pk');
+    	
+    	get_clientorder_list();
+    	
+    })
+    
+	 /*获取客户端提交的订单列表*/
+     function  get_clientorder_list()
+     {  
+ 
+     	 var url = request_url+"get_order_list";  
+     	 order_content_div.innerHTML="";
+     	 var coach_pk = plus.storage.getItem("logincoach_pk");
+			mui.ajax(url, { 
+				data: {
+					"coach_pk": coach_pk
+				},
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				timeout: 5000, //超时时间设置为5秒；
+				success: function(rsp) {
+					console.log("rsp==================="+rsp.Table)
+					for (var i=0; i<rsp.Table.length;i++) {
+				var order_type = rsp.Table[i].order_type;
+				//判断订车类型
+				 if(0 == order_type)
+	        	 {
+	        	 	strBtn="立即叫车";
+	        	 }
+	        	 else if(1 == order_type)
+	        	 {
+	        	 	strBtn="预约";
+	        	 }
+	        	 else if(2 == order_type)
+	        	 {
+	        	 	strBtn="半日租";
+	        	 }
+	        	 else
+	        	 {
+	        	 	strBtn="日租";
+	        	 }
+	        	 
+	        	 
+		         if(rsp.Table[i].user_tel == "undefined")
+	      		 {
+	      		 	str_userTel    = "";
+	      		 }
+	      		 else
+	      		 {
+	      		 	str_userTel    = rsp.Table[i].user_tel;
+	      		 }
+	        	 order_datetime = rsp.Table[i].order_datetime;
+	        	 start_address  = rsp.Table[i].start_address;
+	        	 end_address    = rsp.Table[i].end_address;
+	        	 if(start_address != "" && end_address != "")
+	        	 { 
+	        	 	order_pk = rsp.Table[i].order_pk;
+	        	 	strTemp =  '<div  name="orderlist_detail_div"  onclick="enter_graborder(this)"  id='+(order_type+"&"+str_userTel+"&"+order_datetime+"&"+start_address+"&"+end_address+"&"+order_pk)+'  class="mui-table-view-cell mui-card order_list_view" >'
+							   +'<p><span class="mui-badge mui-badge-success">'+strBtn +'</span>' +order_datetime+'</p>'
+							   +'<p style="padding: 10px 0;"><a style="color: #000000;"><span>'+"联系方式:"+str_userTel+'</span></a></p>'
+							   +'<p style="padding: 10px 0;"><a style="color: #000000;"><span>'+start_address+"->"+end_address+'</span></a></p>'
+					           +'<div style="text-align: right; border-top: 1px solid #CCCCCC; padding: 5px 0;">'
+							   +'<button  class="mui-btn mui-btn-primary">抢单</button>'				   
+							   +'</div>'
+					           +'</div>'
+			 order_content_div.innerHTML +=strTemp; 
+	        	 }
+	        	 
+			} 
+				},
+				error: function(xhr, type, errorThrown) {
+					//异常处理；
+					console.log("\n失败$$$$$" + xhr.status + "$$$" + type + "$$$" + errorThrown);
+				}
+			});
+ 
+		setTimeout("get_clientorder_list()",5000);
+     }
+     
+     function enter_graborder(obj)
+     {
+     	var objDiv = document.getElementsByName("orderlist_detail_div");
+     	for(var i =0; i<objDiv.length;i++)
+     	{
+     		if(objDiv[i] == obj)
+     		{
+     			var order_pktype= obj.id;  
+     			//coach_pk
+     			strParam = order_pktype+"&"+coach_pk;
+     			console.log("strParam==="+strParam);
+     			 mui.openWindow({
+     				  	  id:"graborder.html",
+						  url:"graborder.html",
+						extras:{
+		       	    		param:strParam
+		       	    	}
+     				  })
+     		}
+     	}
+     }
+    </script>
+</html>

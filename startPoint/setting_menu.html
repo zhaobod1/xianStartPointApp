@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<script src="js/mui.min.js"></script>
+		<script src="js/navigate.js"></script>
+		<script type="text/javascript" src="js/request_url.js"></script>
+		<style type="text/css">
+			.title{
+			  	margin: 35px 15px 10px; 
+			  }
+
+			  .mui-table-view{
+			  	margin-bottom: 20px;
+			  }
+			  .mui-table-view .mui-media-object
+			  {
+					height: 25px;
+				    line-height: 25px; 
+				    font-size: 12px;
+			  }
+			  .mui-table-view-cell
+			  {
+			    color: #000000;
+			  } 
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a id="close-btn" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #C8C7CC;"></a>
+			<h1 class="mui-title">用户中心</h1>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view mui-table-view-chevron" style="margin-top:0px">
+				<li class="mui-table-view-cell mui-media">
+					<a class="mui-navigate-right" open-type="common">
+						<img id="setpic_img" class="mui-media-object mui-pull-left" src="img/freeride.png" style="height: 50px;line-height: 50px;max-width: 50px;">
+						<div id="user_info" class="mui-media-body" >
+							<p style="color: #000000;"> <span id="user_info"></span></p>
+						</div>
+					</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view mui-table-view-chevron">
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right" open-type="common" href="usercenter/messagesetting.html">
+						<img class="mui-media-object mui-pull-left" src="img/iconfont-duihuaxinxi.png">
+						<span class="mui-media-object">通知中心</span>
+					</a>
+				</li>
+				<!--<li class="mui-table-view-cell">
+					<a class="mui-navigate-right" open-type="common" href="usercenter/currenttaxi.html">
+						<img class="mui-media-object mui-pull-left" src="img/iconfont-friend.png">
+						<span class="mui-media-object">当前司机</span>
+					</a>
+				</li>-->
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right " open-type="common" href="usercenter/ordermanager.html">
+						<img class="mui-media-object mui-pull-left" src="img/iconfont-cart.png">
+						<span class="mui-media-object">订单管理</span>
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right" open-type="common" id="navigate_share" >
+						<img class="mui-media-object mui-pull-left" src="img/iconfont-yaoqinghaoyou.png">
+						<span class="mui-media-object">推荐好友</span>
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right" open-type="common" href="usercenter/recharge.html">
+						<img class="mui-media-object mui-pull-left" src="img/iconfont-chongzhi(1).png">
+						<span class="mui-media-object">充值业务</span>
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right" open-type="common" href="usercenter/helpcenter.html">
+						<img class="mui-media-object mui-pull-left" src="img/iconfont-bangzhu.png">
+						<span class="mui-media-object">帮助中心</span>
+					</a>
+				</li>
+				<li id="exit_li">
+					<div align="center" style="height: 50px;line-height: 50px;">
+						<img class="mui-media-object mui-pull-caption" src="img/iconfont-tuichu.png">
+						<span class="mui-media-object">退出按钮</span>
+					</div>
+				</li>
+			</ul>
+
+		</div>
+
+	</body>
+	<script>
+		mui.init();
+		mui.plusReady(function() {
+			get_pop_link();
+			var user_info = document.getElementById("user_info");
+			var student_real_name = plus.storage.getItem('student_real_name');
+			var student_phone = plus.storage.getItem('student_phone');
+			console.log(student_real_name + "===" + student_phone);
+			if (student_real_name != null) {
+				user_info.innerHTML = student_real_name + "<br\> " + student_phone;
+			} else {
+				user_info.textContent = student_phone;
+			}
+			//设置图像 
+			var user_pic = plus.storage.getItem('user_pic');
+			if (user_pic != null) {
+				var setpic_img = document.getElementById("setpic_img");
+				setpic_img.src = user_pic;
+			}
+			document.getElementById("user_info").addEventListener("click",function(){
+	 			mui.openWindow({
+		    	 	id:"modifyname",
+		    	 	url:"usercenter/modify_username.html"
+		    	 })
+			});
+			//获取推广链接
+				function get_pop_link() {
+					var url = request_url + "get_pop_link";
+					var user_pk = plus.storage.getItem('user_pk');
+					console.log("user_pk===" + user_pk);
+					mui.ajax(url, { 
+						data: {
+							"user_pk": user_pk
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 5000, //超时时间设置为10秒；
+						success: function(response) {
+							sharehref = "http://www.qidiancar.com" + response.result;
+							console.log(sharehref);
+						},
+						error: function(xhr, type, errorThrown) {
+							//异常处理；
+							console.log("\n失败$$$$$" + xhr.status + "$$$" + type + "$$$" + errorThrown);
+						}
+					});
+				}
+		});
+		var navigate_share = document.getElementById("navigate_share");
+			navigate_share.addEventListener("tap", function() {
+				 shareShow();
+			}); 
+		/*退出按钮事件*/
+		var exit_li = document.getElementById("exit_li");
+		exit_li.addEventListener("tap", function() {
+			plus.storage.setItem("islogin", "0");
+			mui.back();
+		});
+		
+		document.getElementById("setpic_img").addEventListener("click",function(){
+			var a = [{
+				title: "拍照"
+			}, {
+				title: "从手机相册选择"
+			}];
+			plus.nativeUI.actionSheet({
+				title: "修改头像",
+				cancel: "取消",
+				buttons: a
+			}, function(b) {
+				switch (b.index) {
+					case 0:
+						break;
+					case 1:
+						getImage();
+						break;
+					case 2:
+						galleryImg();
+						break;
+					default:
+						break
+				}
+			})
+		});
+		function getImage() {
+			var c = plus.camera.getCamera();
+			c.captureImage(function(e) {
+				plus.io.resolveLocalFileSystemURL(e, function(entry) {
+					var path = entry.toLocalURL() + "?version=" + new Date().getTime();
+					console.log(path);
+					plus.storage.setItem("user_pic",path);
+					document.getElementById("setpic_img").src = path;
+					//目前仅有一张图片，暂时如此处理，后续需要通过标准组件实现
+					document.querySelector("#__mui-imageview__group .mui-slider-item img").src = path + "?version=" + new Date().getTime();;;
+				}, function(e) {
+					console.log("读取拍照文件错误：" + e.message);
+				});
+			}, function(path) {
+				console.log("error" + path);
+			}, {
+				filename: "_doc/head.jpg"
+			})
+		}
+		function galleryImg() {
+			plus.gallery.pick(function(a) {
+				plus.io.resolveLocalFileSystemURL(a, function(entry) {
+					plus.io.resolveLocalFileSystemURL("_doc/", function(root) {
+						root.getFile("head.jpg", {}, function(file) {
+							//文件已存在
+							file.remove(function() {
+								console.log("file remove success");
+								entry.copyTo(root, 'head.jpg', function(e) {
+										var path = e.fullPath + "?version=" + new Date().getTime();
+										plus.storage.setItem("user_pic",path);
+										document.getElementById("setpic_img").src = path;
+										//变更大图预览的src
+										//目前仅有一张图片，暂时如此处理，后续需要通过标准组件实现
+										document.querySelector("#__mui-imageview__group .mui-slider-item img").src = path + "?version=" + new Date().getTime();;
+									},
+									function(e) {
+										console.log('copy image fail:' + e.message);
+									});
+							}, function() {
+								console.log("delete image fail:" + e.message);
+							});
+						}, function() {
+							//文件不存在
+							entry.copyTo(root, 'head.jpg', function(e) {
+									var path = e.fullPath + "?version=" + new Date().getTime();
+									plus.storage.setItem("user_pic",path);
+									document.getElementById("setpic_img").src = path;
+									//变更大图预览的src
+									//目前仅有一张图片，暂时如此处理，后续需要通过标准组件实现
+									document.querySelector("#__mui-imageview__group .mui-slider-item img").src = path;
+								},
+								function(e) {
+									console.log('copy image fail:' + e.message);
+								});
+						});
+					}, function(e) {
+						console.log("get _www folder fail");
+					})
+				}, function(e) {
+					console.log("读取拍照文件错误：" + e.message);
+				});
+			}, function(a) {}, {
+				filter: "image"
+			})
+		};
+
+	</script>
+
+</html>

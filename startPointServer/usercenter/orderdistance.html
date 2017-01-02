@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../js/mui.min.js"></script>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<script type="text/javascript" src="../js/request_url.js"></script>
+		<style type="text/css">
+			* {
+				font-size: 12px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #C8C7CC;"></a>
+			<h1 class="mui-title">抢单范围</h1>
+		</header>
+		<div class="mui-content">
+			<p style="padding: 10px;">
+				<label>设置抢单范围</label>
+				<input type="text" style="width:80%;" id="meter_input" /><label>公里</label>
+				<button class="mui-btn mui-btn-block mui-btn-danger" id="set_distance">保存</button>
+			</p>
+
+		</div>
+	</body>
+	<script type="text/javascript" charset="utf-8">
+		mui.init();
+		var set_distance = document.getElementById("set_distance");
+		var meter_input = document.getElementById("meter_input");
+		mui.plusReady(function() {
+			var meter_distance = plus.storage.getItem('coach_order_range');
+			if (meter_distance != null) {
+				meter_input.value = meter_distance;
+			}
+			set_meter_data();
+		});
+
+		function set_meter_data() {
+			var url = request_url + "set_coach_range";
+			var coach_pk = plus.storage.getItem('logincoach_pk');
+			set_distance.addEventListener("tap", function() {
+				mui.ajax(url, {
+					data: {
+						"coach_pk": coach_pk,
+						"coach_range": meter_input.value
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 5000, //超时时间设置为10秒；
+					success: function(response) {
+						console.log(JSON.stringify(response));
+						if (response.result == "1") {
+							mui.toast("设置成功!");
+							plus.storage.setItem('coach_order_range', meter_input.value);
+						} else {
+							mui.toast("设置失败!");
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log("\n失败$$$$$" + xhr.status + "$$$" + type + "$$$" + errorThrown);
+					}
+				});
+			})
+		}
+	</script>
+
+</html>
