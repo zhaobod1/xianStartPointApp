@@ -280,11 +280,11 @@
 					}
 				},
 				"android": {
-					"hdpi": "/www/work/2016年客户/专车系统APP/引导页/480X762.png",
-					"ldpi": "/www/work/2016年客户/专车系统APP/引导页/320X442.png",
-					"mdpi": "/www/work/2016年客户/专车系统APP/引导页/240X282.png",
-					"xhdpi": "/www/work/2016年客户/专车系统APP/引导页/720X1242.png",
-					"xxhdpi": "/www/work/2016年客户/专车系统APP/引导页/1080X1882.png"
+					"hdpi": "/www/work/2016年客户/西安专车系统APP/引导页/480X762.png",
+					"ldpi": "/www/work/2016年客户/西安专车系统APP/引导页/320X442.png",
+					"mdpi": "/www/work/2016年客户/西安专车系统APP/引导页/240X282.png",
+					"xhdpi": "/www/work/2016年客户/西安专车系统APP/引导页/720X1242.png",
+					"xxhdpi": "/www/work/2016年客户/西安专车系统APP/引导页/1080X1882.png"
 				}
 			},"debug":true
 		}
