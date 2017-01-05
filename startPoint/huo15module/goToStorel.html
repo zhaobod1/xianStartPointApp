@@ -1,0 +1,214 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>门店导航</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<!--<link href="../css/styles.css" rel="stylesheet" />-->
+
+		<link rel="stylesheet" href="../css/common.css">
+		<link rel="stylesheet" href="../css/iconfont.css">
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/mui.picker.css" />
+		<link rel="stylesheet" href="../css/mui.poppicker.css" />
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=W0vqXdB4XiZhaLcwrLKuGKBkmNUBOKS4"></script>
+		<script src="js/util/jquery-2.1.0.js" type="text/javascript" charset="utf-8"></script>
+		<style>
+			html,
+			body {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.mui-bar-tab .mui-tab-item {
+				color: #555555;
+				vertical-align: bottom;
+				padding-bottom: 10px;
+			}
+			
+			.mui-bar-tab .mui-tab-item.mui-active {
+				color: #555555;
+			}
+			
+			#map {
+				text-align: center;
+				position: absolute;
+				top: 0px;
+				bottom: 55px;
+				width: 100%;
+			}
+			
+			.mui-bar-tab .mui-tab-item .mui-icon~ .mui-tab-label {
+				font-size: 15px;
+			}
+			
+			#map_result_div {
+				position: absolute;
+				width: 100%;
+				text-align: center;
+				top: 35%;
+				vertical-align: middle;
+			}
+			
+			#map_result {
+				width: auto;
+				display: inline-block;
+				height: 11%;
+				max-width: 80%;
+				line-height: 25px;
+				text-align: center;
+				margin: 0 auto;
+				top: 35%;
+				left: 10%;
+				border: 1px solid #ccc;
+				padding: 5px;
+				background: #FFFFFF;
+				vertical-align: middle;
+				border-radius: 5px;
+				color: #666;
+				font-size: 12px;
+			}
+			
+			#map_result_img {
+				width: 80%;
+				height: 8%;
+				text-align: center;
+				top: 45%;
+				left: 10%;
+				padding: 8px;
+				vertical-align: middle;
+				border-radius: 5px;
+				color: #666;
+				font-size: 12px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/mui.picker.js"></script>
+		<script src="../js/mui.poppicker.js"></script>
+
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">亿达门店导航</h1>
+		</header>
+		<div class="mui-content">
+			<nav class="mui-bar-tab bar_transparent">
+				<a class="mui-tab-item" id="queryPath">
+					<span class="mui-icon mui-icon-map"></span>
+					<span class="mui-tab-label">查看路线</span>
+				</a>
+				<a class="mui-tab-item" id="goStore">
+					<span class="mui-icon mui-icon-paperplane"></span>
+					<span class="mui-tab-label">去门店</span>
+				</a>
+			</nav>
+			<div id="map">地图加载中...</div>
+			<div align="center" id="map_result_div">
+				<div id="map_result">正在获取地址...</div>
+			</div>
+		</div>
+		<div id="map_result_img" style="position: absolute;bottom: 50px;">
+			<img src="../img/markers.png" style="width: 20px;height: 30px;" />
+		</div>
+		<div id="back_current_position" style="position: absolute;bottom: 50px;">
+			<img src="../img/iconfont-wujiaoxing.png" width="50px" />
+		</div>
+
+		<div class="huo15-poppicker-btn">
+			<button type="button" id="huo15-pop" class="mui-btn mui-btn-yellow mui-btn-block">——驾驶最少时间——</button>
+		</div>
+
+		<script type="text/javascript">
+			mui.init();
+			var storePoint = new BMap.Point(116.562434, 33.256116);
+			var currPoint = null; //当前位置
+			var storeMarker = null; //门店标记对象
+			var driving_policy = {
+				value: 'BMAP_DRIVING_POLICY_LEAST_TIME',
+				text: '驾驶最少时间'
+			}; //驾车方式
+			//设备加载成功
+			mui.plusReady(function() {
+
+				$("#huo15-pop").click(function() {
+					//选择路线方式
+					var picker = new mui.PopPicker();
+					picker.setData([{
+						value: 'BMAP_DRIVING_POLICY_LEAST_TIME',
+						text: '驾驶最少时间'
+					}, {
+						value: 'BMAP_DRIVING_POLICY_LEAST_DISTANCE',
+						text: '驾驶最短距离'
+					}, {
+						value: 'BMAP_DRIVING_POLICY_AVOID_HIGHWAYS',
+						text: '驾驶避开高速'
+					}]);
+					picker.show(function(SelectedItem) {
+						//						console.log(SelectedItem[0].text); //智子
+						//						console.log(SelectedItem[0].value); //zz 
+						driving_policy = SelectedItem[0];
+						$("#huo15-pop").text(driving_policy.text);
+					});
+				});
+
+				/*调用初始化定位信息*/
+				var point2 = new BMap.Point(116.562434, 33.256116); // 创建点坐标
+				map = new BMap.Map("map"); // 创建地图实例
+				map.centerAndZoom(point2, 15); // 初始化地图，设置中心点坐标和地图级别
+				map.addControl(new BMap.NavigationControl());
+				var goStore = document.getElementById("goStore");
+				goStore.addEventListener("tap", function() {
+					// 设置目标位置坐标点和其实位置坐标点
+					var dst = new plus.maps.Point(116.562434, 33.256116); // 门店位置
+//					var src = new plus.maps.Point(116.335, 39.966); // 大钟寺
+					var src = currPoint;
+					src = new plus.maps.Point(src.lng,src.lat)
+					// 调用系统地图显示 
+					plus.maps.openSysMap(dst, "亿达门店", src);
+				});
+				
+				var queryPath = document.getElementById("queryPath");
+				queryPath.addEventListener("tap", function() {
+					map.clearOverlays();
+					searchPath(currPoint, storePoint, driving_policy);
+				});
+				
+
+
+				function searchPath(start, end, route) {
+					console.log(start);
+					var driving = new BMap.DrivingRoute(map, {
+						renderOptions: {
+							map: map,
+							autoViewport: true
+						},
+						policy: route.value
+					});
+					driving.search(start, end);
+					document.getElementById("map_result_div").style.display = "none";
+				}
+
+				getPosBaidu();
+				//开始移动地图
+				map.addEventListener("dragstart", function(e) {
+					var center = map.getCenter();
+					//					addMarker(center);
+					//					preMarker.setPosition(map.getCenter());
+					document.getElementById("map_result_div").style.display = "none";
+				});
+				//移动地图结束
+				map.addEventListener("dragend", function(e) {
+					getPosition();
+					document.getElementById("map_result_div").style.display = "";
+				});
+
+			});
+		</script>
+		<script src="js/util/bMap.js" type="text/javascript" charset="utf-8"></script>
+
+	</body>
+
+</html>

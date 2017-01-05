@@ -229,7 +229,7 @@ function shareAction(id,ex) {
 		});
 	}
 }
-var sharehref="http://www.qidiancar.com/down.aspx";
+var sharehref="http://xian.huo15.com/down.aspx";
 var sharecontent="我正在使用起亿达点专车客户端,使用租车服务特别方便，赶紧跟我一起来体验！";
 var sharehrefTitle="起点亿达出行客户端";
 var sharehrefDes="我正在使用亿达出行客户端,使用租车服务特别方便，赶紧跟我一起来体验！";

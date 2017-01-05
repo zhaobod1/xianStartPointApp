@@ -36,8 +36,12 @@
 			* {
 				font-size: 12px;
 			}
-			body{ position:relative ;}
-			.zzc{
+			
+			body {
+				position: relative;
+			}
+			
+			.zzc {
 				opacity: 0.4;
 				background: #000;
 				width: 100%;
@@ -47,7 +51,8 @@
 				text-align: center;
 				display: none;
 			}
-			.ad{
+			
+			.ad {
 				opacity: 1;
 				background: transparent;
 				width: 100%;
@@ -57,26 +62,28 @@
 				text-align: center;
 				display: none;
 			}
-			.ad .mui-icon-close{							
+			
+			.ad .mui-icon-close {
 				opacity: 1;
-				z-index: 9999;							
-				font-size: 44px;							
+				z-index: 9999;
+				font-size: 44px;
 				color: #fff;
 			}
-			.ad img{						
+			
+			.ad img {
 				opacity: 1;
-				z-index: 9999;	
-				max-width: 90%;	
+				z-index: 9999;
+				max-width: 90%;
 				max-height: 60%;
-				margin-top: 20%;																	
+				margin-top: 20%;
 			}
 		</style>
 	</head>
 
 	<body>
 		<div id="zzc" class="zzc"></div>
-		<div id="ad" class="ad"> 			
-			<img id="ad_img" src="img/ad_1.jpg"><br>	
+		<div id="ad" class="ad">
+			<img id="ad_img" src="img/ad_1.jpg"><br>
 			<span class="mui-icon mui-icon-close" id="mui-close"></span>
 		</div>
 
@@ -95,14 +102,14 @@
 		<div class="mui-content">
 			<div id="slider" class="mui-slider">
 				<div class="mui-slider-group mui-slider-loop" id="banner">
-					
+
 				</div>
 			</div>
 			<table border="0" width="100%" height="100%" style="margin-top:15px;text-align: center;vertical-align: middle;">
 				<tr class="tr_line">
 					<td id="tb_nearby" class="td_line">
 						<img src="img/icon_home_01.png" width="100px" />
-						<p><span>专车一路出行</span></p>
+						<p><span>快车一路出行</span></p>
 					</td>
 					<td id="tb_selfdriver">
 						<img src="img/icon_home_02.png" width="100px" />
@@ -121,7 +128,7 @@
 					<td id="tb_longdriver" class="td_line">
 						<div class=" mui-col-xs-4 mui-pull-left"><img src="img/icon_home_05.png" width="50px" /></div>
 						<div class="mui-col-xs-8 mui-pull-right">
-							<p class="mui-text-left">出租车</p>
+							<p class="mui-text-left">预包车</p>
 							<p class="f12 mui-text-left">细致服务优惠多多</p>
 						</div>
 					</td>
@@ -147,70 +154,71 @@
 		</div>
 		<script type="text/javascript" charset="utf-8">
 			mui.init();
-			
+
 			var tab_call = document.getElementById("tab_call");
-			mui.plusReady(function() {		
+			mui.plusReady(function() {
+
+				
+
 				//检查更新	
-				plus.runtime.getProperty( plus.runtime.appid, function ( wgtinfo ) {			
-					mui.ajax(request_url + "get_update", {	
+				plus.runtime.getProperty(plus.runtime.appid, function(wgtinfo) {
+					mui.ajax(request_url + "get_update", {
 						data: {
-							"_type":1,
+							"_type": 1,
 							"version": wgtinfo.version
 						},
 						dataType: 'json', //服务器返回json格式数据
 						type: 'post', //HTTP请求类型
 						timeout: 5000, //超时时间设置为5秒； 
-						success: function(rsp) {								
-							if(parseInt(rsp.result)==100) 
-							{
-								 var btnArray = ['更新', '取消'];
-								mui.confirm('系统有更新，立即更新？', '系统提示', btnArray, function(e) {
-									if (e.index == 0) {
-										plus.runtime.openURL(request_img_url+"down.aspx");									
-									} 
-								});
-							}						
-						}
-					});				
-				}); 
-				mui.ajax(request_url + "get_ad", {	
-						data: {
-							"_type":"0000500002",							
-						},
-						dataType: 'json', //服务器返回json格式数据
-						type: 'post', //HTTP请求类型
-						timeout: 5000, //超时时间设置为5秒； 
 						success: function(rsp) {
-							console.log(rsp.Table[0].info_content);
-							var str_ad="<div class=\"mui-slider-item mui-slider-item-duplicate\"><a href=\"#\"><img src=\""+ request_img_url + rsp.Table[rsp.Table.length-1].info_content +"\"></a></div>";
-							for (var i = 0; i < rsp.Table.length; i++) { //0 立即叫车 1 预约 2半日租 3日租								
-								var ad_img = request_img_url + rsp.Table[i].info_content;
-								str_ad=str_ad+"<div class=\"mui-slider-item\"><a href=\"#\"><img src=\""+ ad_img +"\"></a></div>";
-								
-							} 
-							str_ad=str_ad+"<div class=\"mui-slider-item mui-slider-item-duplicate\"><a href=\"#\"><img src=\""+ request_img_url + rsp.Table[0].info_content +"\"></a></div>";
-							str_ad=str_ad+"<div></div>";
-							//str_ad=str_ad+"<div class=\"mui-slider-indicator\"><div class=\"mui-indicator mui-active\"></div><div class=\"mui-indicator\"></div></div>";
-							document.getElementById("banner").innerHTML=str_ad;
-							navigatorShowSlide(); 
-						}
-				});	
-				mui.ajax(request_url + "get_ad_one", {	
-						data: {
-							"_type":"0000500003",							
-						},
-						dataType: 'json', //服务器返回json格式数据
-						type: 'post', //HTTP请求类型
-						timeout: 5000, //超时时间设置为5秒； 
-						success: function(rsp) {	
-							if(rsp.result!="")
-							{
-								document.getElementById("ad_img").setAttribute("src",request_img_url+rsp.result);
-								document.getElementById("ad").style.display="block";
-								document.getElementById("zzc").style.display="block"; 
+							if(parseInt(rsp.result) == 100) {
+								var btnArray = ['更新', '取消'];
+								mui.confirm('系统有更新，立即更新？', '系统提示', btnArray, function(e) {
+									if(e.index == 0) {
+										plus.runtime.openURL(request_img_url + "down.aspx");
+									}
+								});
 							}
 						}
-				});	
+					});
+				});
+				mui.ajax(request_url + "get_ad", {
+					data: {
+						"_type": "0000500002",
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 5000, //超时时间设置为5秒； 
+					success: function(rsp) {
+						console.log(rsp.Table[0].info_content);
+						var str_ad = "<div class=\"mui-slider-item mui-slider-item-duplicate\"><a href=\"#\"><img src=\"" + request_img_url + rsp.Table[rsp.Table.length - 1].info_content + "\"></a></div>";
+						for(var i = 0; i < rsp.Table.length; i++) { //0 立即叫车 1 预约 2半日租 3日租								
+							var ad_img = request_img_url + rsp.Table[i].info_content;
+							str_ad = str_ad + "<div class=\"mui-slider-item\"><a href=\"#\"><img src=\"" + ad_img + "\"></a></div>";
+
+						}
+						str_ad = str_ad + "<div class=\"mui-slider-item mui-slider-item-duplicate\"><a href=\"#\"><img src=\"" + request_img_url + rsp.Table[0].info_content + "\"></a></div>";
+						str_ad = str_ad + "<div></div>";
+						//str_ad=str_ad+"<div class=\"mui-slider-indicator\"><div class=\"mui-indicator mui-active\"></div><div class=\"mui-indicator\"></div></div>";
+						document.getElementById("banner").innerHTML = str_ad;
+						navigatorShowSlide();
+					}
+				});
+				mui.ajax(request_url + "get_ad_one", {
+					data: {
+						"_type": "0000500003",
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 5000, //超时时间设置为5秒； 
+					success: function(rsp) {
+						if(rsp.result != "") {
+							document.getElementById("ad_img").setAttribute("src", request_img_url + rsp.result);
+							document.getElementById("ad").style.display = "block";
+							document.getElementById("zzc").style.display = "block";
+						}
+					}
+				});
 				get_pop_link();
 				tab_call.addEventListener("tap", function() {
 						plus.device.dial("400-029-3520", false);
@@ -227,14 +235,14 @@
 				var first = null;
 				mui.back = function() {
 					//首次按键，提示‘再按一次退出应用’
-					if (!first) {
+					if(!first) {
 						first = new Date().getTime();
 						mui.toast('再按一次退出应用');
 						setTimeout(function() {
 							first = null;
 						}, 1000);
 					} else {
-						if (new Date().getTime() - first < 1000) {
+						if(new Date().getTime() - first < 1000) {
 							plus.runtime.quit();
 						}
 					}
@@ -252,7 +260,7 @@
 						type: 'post', //HTTP请求类型
 						timeout: 5000, //超时时间设置为10秒；
 						success: function(response) {
-							sharehref = "http://www.qidiancar.com" + response.result;
+							sharehref = "http://xian.huo15.com" + response.result;
 							console.log(sharehref);
 						},
 						error: function(xhr, type, errorThrown) {
@@ -269,7 +277,7 @@
 				plus.storage.setItem("token", info.token);
 				plus.push.addEventListener("click", function(msg) {
 					// 判断是从本地创建还是离线推送的消息
-					switch (msg.payload) {
+					switch(msg.payload) {
 						case "LocalMSG":
 							outSet("点击本地创建消息启动：");
 							break;
@@ -282,7 +290,7 @@
 				}, false);
 				// 监听在线消息事件
 				plus.push.addEventListener("receive", function(msg) {
-					if (msg.aps) { // Apple APNS message
+					if(msg.aps) { // Apple APNS message
 						//					mui.toast("接收到在线APNS消息：");
 					} else {
 						//					mui.toast("接收到在线透传消息：");
@@ -293,37 +301,37 @@
 				 * 日志输入推送消息内容
 				 */
 				function logoutPushMsg(msg) {
-					if (msg.payload) {
+					if(msg.payload) {
 						islogin = plus.storage.getItem('islogin');
 						/*判空操作*/
-						if (islogin == null) {
+						if(islogin == null) {
 							plus.storage.setItem('islogin', 0);
 						}
-						if ((islogin != 1) || (islogin != "1")) {
-						} else {
-							 mui.openWindow({
+						if((islogin != 1) || (islogin != "1")) {} else {
+							mui.openWindow({
 								id: "qiangdan",
 								url: "qiangdan.html",
 								extras: {
 									param: msg.payload
 								}
 							});
-						}	
+						}
 					} else {
 						console.log("payload: undefined");
 					}
-					if (msg.aps) {
+					if(msg.aps) {
 						console.log("aps: " + JSON.stringify(msg.aps));
 					}
 				}
+
 			});
 			var navigate_share = document.getElementById("navigate_share");
 			navigate_share.addEventListener("tap", function() {
 				shareShow();
 			});
 			document.getElementById("mui-close").addEventListener("tap", function() {
-				document.getElementById("ad").style.display="none"; 
-				document.getElementById("zzc").style.display="none";
+				document.getElementById("ad").style.display = "none";
+				document.getElementById("zzc").style.display = "none";
 			});
 		</script>
 	</body>

@@ -13,11 +13,11 @@
 	"icons": {
 		"72": "icon.png"
 	},
-	"launch_path": "navigate.html",/*应用的入口页面，默认为根目录下的index.html；支持网络地址，必须以http://或https://开头*/
+	"launch_path": "guide.html",/*应用的入口页面，默认为根目录下的index.html；支持网络地址，必须以http://或https://开头*/
 	"developer": {
-		"name": "zhanglong",/*开发者名称*/
-		"email": "sxzlong@163.com",/*开发者邮箱地址*/
-		"url": "http://www.qidiancar.com"
+		"name": "zhaobo",/*开发者名称*/
+		"email": "zhaobod1@163.com",/*开发者邮箱地址*/
+		"url": "http://xian.huo15.ocm"
 	},
 	"permissions": {
 		"Accelerometer": {
@@ -308,7 +308,9 @@
 					"fonts/iconfont.ttf",
 					"img/markers.png",
 					"img/car.png",
-					"fonts/iconfont.woff"
+					"fonts/iconfont.woff",
+					"img/home/u0.png",
+					"css/styles.css"
 				],
 				"refer": [
 					"login/login.html",
@@ -349,7 +351,8 @@
 					"usercenter/visitfriend.html",
 					"login/login.html",
 					"navigate/freeride.html",
-					"qiangdan.html"
+					"qiangdan.html",
+					"huo15module/guide.html"
 				],
 				"priority": 0
 			},
@@ -718,7 +721,8 @@
 					"fonts/mui.ttf",
 					"css/mui.min.css",
 					"img/ad_1.jpg",
-					"img/icon_home_01.png"
+					"img/icon_home_01.png",
+					"huo15module/goToStorel.html"
 				],
 				"refer": [],
 				"priority": 0
@@ -741,6 +745,49 @@
 					"fonts/mui.ttf",
 					"css/mui.min.css",
 					"usercenter/recharge.html"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"guide.html": {
+				"resources": [
+					"js/mui.min.js",
+					"css/mui.min.css"
+				],
+				"refer": [
+					"huo15module/guide.html",
+					"navigate.html"
+				],
+				"priority": 0
+			},
+			"huo15module/guide.html": {
+				"resources": [
+					"js/mui.min.js",
+					"css/mui.min.css"
+				],
+				"refer": [
+					"navigate.html"
+				],
+				"priority": 0
+			},
+			"huo15module/goToStorel.html": {
+				"resources": [
+					"navigate/subarea_detail.html",
+					"js/mui.min.js",
+					"fonts/mui.ttf",
+					"css/mui.min.css",
+					"img/iconfont-wujiaoxing.png",
+					"img/markers.png",
+					"css/common.css",
+					"css/iconfont.css",
+					"fonts/iconfont.ttf",
+					"fonts/iconfont.woff",
+					"huo15module/js/util/bMap.js",
+					"css/mui.poppicker.css",
+					"css/mui.picker.css",
+					"js/mui.picker.js",
+					"js/mui.poppicker.js",
+					"huo15module/js/util/jquery-2.1.0.js"
 				],
 				"refer": [],
 				"priority": 0

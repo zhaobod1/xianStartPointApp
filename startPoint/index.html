@@ -8,7 +8,7 @@
 		<meta name="MobileOptimized" content="320" />
 		<title></title>
 		<link href="css/mui.min.css" rel="stylesheet" />
-		<link href="css/style.css" rel="stylesheet" />
+		<link href="css/styles.css" rel="stylesheet" />
 
 		<link rel="stylesheet" href="css/common.css">
 		<link rel="stylesheet" href="css/iconfont.css">
@@ -33,15 +33,15 @@
 				color: #555555;
 			}
 			
-			#map {				 
+			#map {
 				text-align: center;
 				position: absolute;
 				top: 0px;
 				bottom: 55px;
-				width: 100%;				
+				width: 100%;
 			}
 			
-			.mui-bar-tab .mui-tab-item .mui-icon ~ .mui-tab-label {
+			.mui-bar-tab .mui-tab-item .mui-icon~ .mui-tab-label {
 				font-size: 15px;
 			}
 			
@@ -84,12 +84,11 @@
 				color: #666;
 				font-size: 12px;
 			}
-			
 		</style>
 	</head>
 
 	<body>
-		
+
 		<header class="mui-bar mui-bar-nav">
 			<a id="person_center" class="mui-icon mui-pull-left">
 				<img src="img/index_left_fresh_manual.png" width="25px" />
@@ -131,7 +130,6 @@
 			<div id="slider" class="mui-slider mui-fullscreen">
 				<div class="mui-slider-group mui-slider-loop" id="banner">
 					<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
-					 
 
 				</div>
 			</div>
@@ -141,14 +139,17 @@
 	<script>
 		var islogin = 0;
 		mui.init();
+
+		
+
 		document.getElementById("person_center").addEventListener('tap', function(e) {
 			islogin = plus.storage.getItem('islogin');
 			/*判空操作*/
-			if (islogin == null) {
+			if(islogin == null) {
 				plus.storage.setItem('islogin', 0);
 			}
 			console.log("islogin0====" + islogin);
-			if ((islogin != 1) || (islogin != "1")) {
+			if((islogin != 1) || (islogin != "1")) {
 				mui.openWindow({
 					id: "login",
 					url: "login/login.html"
@@ -165,10 +166,10 @@
 		date_car.addEventListener("tap", function() {
 			islogin = plus.storage.getItem('islogin');
 			/*判空操作*/
-			if (islogin == null) {
+			if(islogin == null) {
 				plus.storage.setItem('islogin', 0);
 			}
-			if ((islogin != 1) || (islogin != "1")) {
+			if((islogin != 1) || (islogin != "1")) {
 				mui.openWindow({
 					id: "login",
 					url: "login/login.html"
@@ -183,18 +184,18 @@
 		});
 		/*预约用车按钮事件*/
 		var fastdate_car = document.getElementById("fastdate_car");
-		fastdate_car.addEventListener("tap", function() {			
+		fastdate_car.addEventListener("tap", function() {
 			islogin = plus.storage.getItem('islogin');
 			/*判空操作*/
-			if (islogin == null) {
+			if(islogin == null) {
 				plus.storage.setItem('islogin', 0);
 			}
-			if ((islogin != 1) || (islogin != "1")) {
+			if((islogin != 1) || (islogin != "1")) {
 				mui.openWindow({
 					id: "login",
 					url: "login/login.html"
 				});
-			} else {				
+			} else {
 				var url = request_url + "get_user_order_state";
 				mui.ajax(url, {
 					data: {
@@ -203,21 +204,18 @@
 					dataType: 'json', //服务器返回json格式数据
 					type: 'post', //HTTP请求类型
 					timeout: 5000, //超时时间设置为5秒；
-					success: function(rsp) {						
-						if(parseInt(rsp.result)==0) 
-						{
+					success: function(rsp) {
+						if(parseInt(rsp.result) == 0) {
 							plus.storage.setItem('date_type', "2");
 							mui.openWindow({
 								id: "fast_yuyue",
 								url: "fast_yuyue.html"
 							});
-						}
-						else
-						{
+						} else {
 							mui.toast("您有未完成订单，暂不能叫车!");
 						}
 					}
-				});							
+				});
 			}
 		});
 	</script>
@@ -228,42 +226,43 @@
 		var coach_latArr = "";
 		var preMarker = new Array();
 		// var g_getinfo    = "";		
-		mui.plusReady(function() {		
-				mui.ajax(request_url + "get_ad", {	
+		mui.plusReady(function() {
+				mui.ajax(request_url + "get_ad", {
 					data: {
-						"_type":"0000500001",							
+						"_type": "0000500001",
 					},
 					dataType: 'json', //服务器返回json格式数据
 					type: 'post', //HTTP请求类型
 					timeout: 5000, //超时时间设置为5秒； 
 					success: function(rsp) {
 						console.log(rsp.Table[0].info_content);
-						var str_ad="<div class=\"mui-slider-item mui-slider-item-duplicate\"><a href=\"#\"><img src=\""+ request_img_url + rsp.Table[rsp.Table.length-1].info_content +"\"></a></div>";
-						for (var i = 0; i < rsp.Table.length; i++) { //0 立即叫车 1 预约 2半日租 3日租								
+						var str_ad = "<div class=\"mui-slider-item mui-slider-item-duplicate\"><a href=\"#\"><img src=\"" + request_img_url + rsp.Table[rsp.Table.length - 1].info_content + "\"></a></div>";
+						for(var i = 0; i < rsp.Table.length; i++) { //0 立即叫车 1 预约 2半日租 3日租								
 							var ad_img = request_img_url + rsp.Table[i].info_content;
-							str_ad=str_ad+"<div class=\"mui-slider-item\"><a href=\"#\"><img src=\""+ ad_img +"\"></a></div>";
-							
-						} 
-						str_ad=str_ad+"<div class=\"mui-slider-item mui-slider-item-duplicate\"><a href=\"#\"><img src=\""+ request_img_url + rsp.Table[0].info_content +"\"></a></div>";
-						str_ad=str_ad+"<div></div>";
-						str_ad=str_ad+"<div class=\"mui-slider-indicator\"><div class=\"mui-indicator mui-active\"></div><div class=\"mui-indicator\"></div></div>";
-						document.getElementById("banner").innerHTML=str_ad;					
+							str_ad = str_ad + "<div class=\"mui-slider-item\"><a href=\"#\"><img src=\"" + ad_img + "\"></a></div>";
+
+						}
+						str_ad = str_ad + "<div class=\"mui-slider-item mui-slider-item-duplicate\"><a href=\"#\"><img src=\"" + request_img_url + rsp.Table[0].info_content + "\"></a></div>";
+						str_ad = str_ad + "<div></div>";
+						str_ad = str_ad + "<div class=\"mui-slider-indicator\"><div class=\"mui-indicator mui-active\"></div><div class=\"mui-indicator\"></div></div>";
+						document.getElementById("banner").innerHTML = str_ad;
 					}
-				});		
+				});
 				/*调用初始化定位信息*/
-				var point2 = new BMap.Point(116.571087,33.271726); // 创建点坐标
+				var point2 = new BMap.Point(116.571087, 33.271726); // 创建点坐标
 				map = new BMap.Map("map"); // 创建地图实例
 				map.centerAndZoom(point2, 15); // 初始化地图，设置中心点坐标和地图级别
 				map.addControl(new BMap.NavigationControl());
 				/*定时获取司机集合 com=get_coach_list*/
 				get_coachlist_info();
+				//正在获取地址
 				document.getElementById("map_result").addEventListener("click", function() {
 					islogin = plus.storage.getItem('islogin');
 					/*判空操作*/
-					if (islogin == null) {
+					if(islogin == null) {
 						plus.storage.setItem('islogin', 0);
 					}
-					if ((islogin != 1) || (islogin != "1")) {
+					if((islogin != 1) || (islogin != "1")) {
 						mui.openWindow({
 							id: "login",
 							url: "login/login.html"
@@ -279,42 +278,40 @@
 							timeout: 5000, //超时时间设置为5秒；
 							success: function(rsp) {
 								console.log(rsp.result);
-								if(parseInt(rsp.result)==0) 
-								{
+								if(parseInt(rsp.result) == 0) {
 									plus.storage.setItem('date_type', "2");
 									mui.openWindow({
 										id: "fast_yuyue",
 										url: "fast_yuyue.html"
 									});
-								}
-								else
-								{
+								} else {
 									mui.toast("您有未完成订单，暂不能叫车!");
 								}
 							}
-						});									
+						});
 					}
 				});
+
 				function getPosition() {
 					var mPoint = map.getCenter();
 					var lat = mPoint.lat; //获取到当前位置的纬度；			
 					var longt = mPoint.lng; //获取到当前位置的经度
 					var url = "http://api.map.baidu.com/geocoder/v2/?ak=FC9c13967bf240823ed03d702d883e83&location=" + lat + "," + longt + "&output=json&pois=1"
 					mui.getJSON(url, function(rsp) {
-						if (rsp != null) {
+						if(rsp != null) {
 							console.log(JSON.stringify(rsp));
 							var addComp = rsp.result.addressComponent;
 							var currentStreet = addComp.district + addComp.street;
 							var currentPosition = rsp.result.sematic_description;
 							console.log(currentPosition);
-							if (currentPosition != "") {
+							if(currentPosition != "") {
 								document.getElementById("map_result").innerHTML = "<lable style='color: darkgreen;font-weight: 900;'>我从</lable> " + currentStreet + "<br/>" + currentPosition + " <lable style='color: darkgreen;font-weight: 900;'>上车</lable>";
 								plus.storage.setItem("start_postion", currentStreet + currentPosition + "&" + mPoint.lat + "&" + mPoint.lng);
 							} else {
 								document.getElementById("map_result").innerHTML = "<lable style='color: darkgreen;font-weight: 900;'>我从</lable> " + currentStreet + " <lable style='color: darkgreen;font-weight: 900;'>上车</lable>";
 								plus.storage.setItem("start_postion", currentStreet + "&" + mPoint.lat + "&" + mPoint.lng);
 							}
-							
+
 						}
 					});
 				}
@@ -334,11 +331,11 @@
 				/*点击显示隐藏广告框信息*/
 				var pop_adv = document.getElementById("pop_adv");
 				var pop_div = document.getElementById("pop_div");
-				if (pop_div.style.display != "none") {
+				if(pop_div.style.display != "none") {
 					defaultShowSlide();
 				}
-				pop_adv.addEventListener("tap", function() {					
-					if (pop_div.style.display == "none") {
+				pop_adv.addEventListener("tap", function() {
+					if(pop_div.style.display == "none") {
 						pop_div.style.display = "";
 						defaultShowSlide();
 					} else {
@@ -354,7 +351,7 @@
 				console.log(info.appkey);
 				plus.push.addEventListener("click", function(msg) {
 					// 判断是从本地创建还是离线推送的消息
-					switch (msg.payload) {
+					switch(msg.payload) {
 						case "LocalMSG":
 							outSet("点击本地创建消息启动：");
 							break;
@@ -367,7 +364,7 @@
 				}, false);
 				// 监听在线消息事件
 				plus.push.addEventListener("receive", function(msg) {
-					if (msg.aps) { // Apple APNS message
+					if(msg.aps) { // Apple APNS message
 						//					mui.toast("接收到在线APNS消息：");
 					} else {
 						//					mui.toast("接收到在线透传消息：");
@@ -378,26 +375,25 @@
 				 * 日志输入推送消息内容
 				 */
 				function logoutPushMsg(msg) {
-					if (msg.payload) {
+					if(msg.payload) {
 						islogin = plus.storage.getItem('islogin');
 						/*判空操作*/
-						if (islogin == null) {
+						if(islogin == null) {
 							plus.storage.setItem('islogin', 0);
 						}
-						if ((islogin != 1) || (islogin != "1")) {
-						} else {
-							 mui.openWindow({
+						if((islogin != 1) || (islogin != "1")) {} else {
+							mui.openWindow({
 								id: "qiangdan",
 								url: "qiangdan.html",
 								extras: {
 									param: msg.payload
 								}
 							});
-						}	
+						}
 					} else {
 						console.log("payload: undefined");
 					}
-					if (msg.aps) {
+					if(msg.aps) {
 						console.log("aps: " + JSON.stringify(msg.aps));
 					}
 				}
@@ -422,13 +418,13 @@
 			var url = request_url + "get_coach_list";
 			mui.getJSON(url, function(rsp) {
 				//console.log(JSON.stringify(rsp));
-				if (preMarker.length > 0) {
-					for (var i = 0; i < preMarker.length; i++) {
+				if(preMarker.length > 0) {
+					for(var i = 0; i < preMarker.length; i++) {
 						map.removeOverlay(preMarker[i]);
 					}
 					preMarker.length = 0;
 				}
-				for (var i = 0; i < rsp.Table.length; i++) {
+				for(var i = 0; i < rsp.Table.length; i++) {
 					coach_lonArr[i] = rsp.Table[i].coach_lon;
 					coach_latArr[i] = rsp.Table[i].coach_lat;
 					addMarker(new BMap.Point(coach_lonArr[i], coach_latArr[i]));
@@ -443,14 +439,14 @@
 			var longt = codns.longitude; //获取到当前位置的经度
 			var url = "http://api.map.baidu.com/geocoder/v2/?ak=FC9c13967bf240823ed03d702d883e83&location=" + lat + "," + longt + "&output=json&pois=1"
 			mui.getJSON(url, function(rsp) {
-				if (rsp != null) {
+				if(rsp != null) {
 					console.log(JSON.stringify(rsp));
 					var addComp = rsp.result.addressComponent;
 					var currentStreet = addComp.district + addComp.street;
 					var currentPosition = rsp.result.sematic_description;
 					console.log(currentPosition);
 					var mPoint = new BMap.Point(longt, lat);
-					if (currentPosition != "") {
+					if(currentPosition != "") {
 						document.getElementById("map_result").innerHTML = "<lable style='color: darkgreen;font-weight: 900;'>我从</lable> " + currentStreet + "<br/>" + currentPosition + " <lable style='color: darkgreen;font-weight: 900;'>上车</lable>";
 						plus.storage.setItem("start_postion", currentStreet + currentPosition + "&" + mPoint.lat + "&" + mPoint.lng);
 					} else {
@@ -458,25 +454,25 @@
 						plus.storage.setItem("start_postion", currentStreet + "&" + mPoint.lat + "&" + mPoint.lng);
 					}
 					map.centerAndZoom(mPoint, 15); // 初始化地图，设置中心点坐标和地图级别
-//					document.getElementById("map_result").addEventListener("click", function() {
-//						islogin = plus.storage.getItem('islogin');
-//						/*判空操作*/
-//						if (islogin == null) {
-//							plus.storage.setItem('islogin', 0);
-//						}
-//						if ((islogin != 1) || (islogin != "1")) {
-//							mui.openWindow({
-//								id: "login",
-//								url: "login/login.html"
-//							});
-//						} else {
-//							plus.storage.setItem('date_type', "1");
-//							mui.openWindow({
-//								id: "yuyue",
-//								url: "yuyue.html"
-//							})
-//						}
-//					});
+					//					document.getElementById("map_result").addEventListener("click", function() {
+					//						islogin = plus.storage.getItem('islogin');
+					//						/*判空操作*/
+					//						if (islogin == null) {
+					//							plus.storage.setItem('islogin', 0);
+					//						}
+					//						if ((islogin != 1) || (islogin != "1")) {
+					//							mui.openWindow({
+					//								id: "login",
+					//								url: "login/login.html"
+					//							});
+					//						} else {
+					//							plus.storage.setItem('date_type', "1");
+					//							mui.openWindow({
+					//								id: "yuyue",
+					//								url: "yuyue.html"
+					//							})
+					//						}
+					//					});
 				}
 			});
 		}
@@ -490,7 +486,7 @@
 		}
 		/*增加首页默认滑动事件*/
 		function defaultShowSlide() {
-				
+
 			var gallery = mui("#slider");
 			gallery.slider({
 				interval: 3000
