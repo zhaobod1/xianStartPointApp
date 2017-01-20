@@ -3,10 +3,10 @@
 		"android",
 		"iPhone", 
 		"iPad"],
-	"id": "H5279A0B2",/*应用的标识，创建应用时自动生成，勿手动修改*/
+	"id": "H57D2D3D6",/*应用的标识，创建应用时自动生成，勿手动修改*/
 	"name": "亿达出行",/*应用名称，程序桌面图标名称*/
 	"version": {
-		"name": "1.0.3",/*应用版本名称*/
+		"name": "1.0.4",/*应用版本名称*/
 		"code": "84"
 	},
 	"description": "",/*应用描述信息*/
@@ -340,7 +340,13 @@
 					"manifest.json",
 					"fonts/iconfont.eot",
 					"js/request_url.js",
-					"img/ad_1.jpg"
+					"img/ad_1.jpg",
+					"huo15module/img/slider-btn-bg.png",
+					"huo15module/css/navigate.css",
+					"huo15module/font/fontawesome-webfont.woff",
+					"huo15module/css/font-awesome.css",
+					"huo15module/img/express-car-btn.png",
+					"huo15module/img/tailored-car-btn.png"
 				],
 				"refer": [
 					"index.html",

@@ -13,7 +13,13 @@
 			"img/icon_home_shunfeng.png",
 			"js/navigate.js",
 			"fonts/iconfont.woff",
-			"img/ad_1.jpg"
+			"img/ad_1.jpg",
+			"huo15module/img/slider-btn-bg.png",
+			"huo15module/css/navigate.css",
+			"huo15module/font/fontawesome-webfont.woff",
+			"huo15module/css/font-awesome.css",
+			"huo15module/img/express-car-btn.png",
+			"huo15module/img/tailored-car-btn.png"
 		],
 		"refer": [
 			"login/login.html",

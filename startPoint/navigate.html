@@ -12,6 +12,8 @@
 		<script type="text/javascript" src="js/request_url.js"></script>
 		<script src="js/mui.min.js"></script>
 		<script src="js/navigate.js"></script>
+		<link rel="stylesheet" type="text/css" href="huo15module/css/navigate.css" />
+		<link rel="stylesheet" type="text/css" href="huo15module/css/font-awesome.css" />
 
 		<style>
 			.tr_line {
@@ -104,7 +106,87 @@
 				<div class="mui-slider-group mui-slider-loop" id="banner">
 
 				</div>
+
+				<div class="slider-btn-wrapper">
+					<img src="huo15module/img/slider-btn-bg.png" width="100%" />
+					<button type="button" class="mui-btn mui-btn-danger">亿达专车，梦想起航</button>
+				</div>
 			</div>
+
+			<!--快车、专车按钮组-->
+			<div class="mui-row main-btn-row-wrapper">
+				<div class="mui-col-sm-6 mui-col-xs-6" id="tb_nearby">
+					<div class="main-btn-row-fl">
+						<h4>快车</h4>
+						<p>快车一路出行</p>
+					</div>
+					<div class="main-btn-row-fr">
+						<img src="huo15module/img/express-car-btn.png" width="80"/>
+					</div>
+
+				</div>
+				<div class="mui-col-sm-6 mui-col-xs-6" id="tb_selfdriver">
+					<div class="main-btn-row-fl">
+						<h4 class="orange">专车</h4>
+						<p>取还方便轻松</p>
+						<p>畅游</p>
+					</div>
+					<div class="main-btn-row-fr">
+						<img src="huo15module/img/tailored-car-btn.png" width="80"/>
+					</div>
+				</div>
+			</div>
+			<!--快车、专车按钮组 end-->
+			
+			<!--顺风车、预包车、门店、我在哪儿按钮组-->
+			<div class="mui-row" id="small-btn-div">
+				<div class="mui-col-sm-6 mui-col-xs-6 pr5" id="tb_freeride">
+					<div class="small-btn-wrapper">
+						<div class="small-btn fl">
+							<img src="huo15module/img/ride-sharing-btn.png" width="40"/>
+						</div>
+						<div class="dsc fr">
+							<h4>顺风车</h4>
+							<p>拼车顺路节能环保</p>
+						</div>
+					</div>
+				</div>
+				<div class="mui-col-sm-6 mui-col-xs-6  pl5" id="tb_longdriver">
+					<div class="small-btn-wrapper">
+						<div class="small-btn fl">
+							<img src="huo15module/img/appointment-btn.png" width="40"/>
+						</div>
+						<div class="dsc fr">
+							<h4>预包车</h4>
+							<p>旅游 商务 会议 婚庆</p>
+						</div>
+					</div>
+				</div>
+				<div class="mui-col-sm-6 mui-col-xs-6 pr5 pt0" id="tb_subarea">
+					<div class="small-btn-wrapper">
+						<div class="small-btn fl">
+							<img src="huo15module/img/store-btn.png" width="40"/>
+						</div>
+						<div class="dsc fr">
+							<h4>门店</h4>
+							<p>周边门店尽在掌控</p>
+						</div>
+					</div>
+				</div>
+				<div class="mui-col-sm-6 mui-col-xs-6  pl5 pt0" id="tb_navigate">
+					<div class="small-btn-wrapper">
+						<div class="small-btn fl">
+							<img src="huo15module/img/substitute-btn.png" width="40"/>
+						</div>
+						<div class="dsc fr">
+							<h4>代驾</h4>
+							<p>要去哪儿导航一下</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--顺风车、预包车、门店、我在哪儿按钮组 end -->
+
 			<table border="0" width="100%" height="100%" style="margin-top:15px;text-align: center;vertical-align: middle;">
 				<tr class="tr_line">
 					<td id="tb_nearby" class="td_line">
@@ -158,8 +240,6 @@
 			var tab_call = document.getElementById("tab_call");
 			mui.plusReady(function() {
 
-				
-
 				//检查更新	
 				plus.runtime.getProperty(plus.runtime.appid, function(wgtinfo) {
 					mui.ajax(request_url + "get_update", {
@@ -171,6 +251,7 @@
 						type: 'post', //HTTP请求类型
 						timeout: 5000, //超时时间设置为5秒； 
 						success: function(rsp) {
+							console.log("get_pdate, new version:", rsp);
 							if(parseInt(rsp.result) == 100) {
 								var btnArray = ['更新', '取消'];
 								mui.confirm('系统有更新，立即更新？', '系统提示', btnArray, function(e) {

@@ -1,0 +1,97 @@
+/*青岛火一五信息科技有限公司
+ 赵博
+ QQ：3186355915
+ 
+  */
+
+/*共用样式*/
+.pr5 {
+	padding-right: 5px !important;
+}
+.pl5 {
+	padding-left: 5px !important;
+}
+.pt0 {
+	padding-top: 0px !important;
+}
+.fl {
+	float: left;
+	
+}
+.fr {
+	float: right;
+}
+
+
+
+.slider-btn-wrapper {
+	position: absolute;
+	padidng: 0;
+	margin: 0;
+	width: 100%;
+	bottom: -10px;
+	lef: 0;
+	z-index: 1;
+}
+
+.slider-btn-wrapper img {}
+
+.slider-btn-wrapper .mui-btn-danger {
+	position: absolute;
+	bottom: 15px;
+	left:50%;
+	margin-left: -75px;
+	border-radius: 75px;
+	background: #fc591f;
+}
+
+/*快车和专车按钮组*/
+.main-btn-row-wrapper {
+	padding-top: 15px;
+	background: #ffffff;
+}
+.main-btn-row-wrapper .mui-col-xs-6{
+	border-right: 1px solid #EEEEEE;
+}
+.main-btn-row-wrapper .main-btn-row-fl {
+	float: left;
+	margin-left: 5px;
+}
+.main-btn-row-wrapper .main-btn-row-fl h4 {
+	margin-left: 10px;
+	color:#36a2ee;
+}
+.main-btn-row-wrapper .main-btn-row-fl p {
+	margin-left: 5px;
+	
+}
+.main-btn-row-wrapper .main-btn-row-fl h4.orange {
+	color: #fd8d45;
+}
+.main-btn-row-wrapper .main-btn-row-fr {
+	float: right;
+	margin-right: 5px;
+	
+}
+
+/*顺风车、预包车、门店、我在哪儿按钮组*/
+#small-btn-div .mui-col-sm-6 {
+	padding: 10px;
+}
+#small-btn-div .small-btn-wrapper {
+	width: 100%;
+	padding: 10px 0px;
+	height: 100px;
+	background: #FFFFFF;
+}
+#small-btn-div .small-btn-wrapper .small-btn {
+	margin-top: 10px;
+	margin-left: 5px;
+}
+#small-btn-div .small-btn-wrapper .dsc {
+	margin-top: 10px;
+}
+#small-btn-div .small-btn-wrapper .dsc p {
+	font-size: small;
+	padding-right: 5px;
+}
