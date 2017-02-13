@@ -5,25 +5,69 @@
   */
 
 /*共用样式*/
-.pr5 {
-	padding-right: 5px !important;
+.font-bule-36a2ee {
+	color:#36a2ee;
 }
-.pl5 {
-	padding-left: 5px !important;
+.font-orange-fd8d45 {
+	color: #fd8d45;
 }
-.pt0 {
-	padding-top: 0px !important;
+.border-right-1px {
+	border-right: 1px solid #EEEEEE;
 }
-.fl {
-	float: left;
+.flex-box-row {
+	display: flex;
+	display: -webkit-flex;
+	
+	justify-content: space-around;
+	-webkit-justify-content: space-around;
+	
+	align-items: center;
+	-webkit-align-items: center;
+	
+	align-content: flex-start;
+	-webkit-align-content: flex-start;
+}
+.flex-box-row .item {	
+	width: 150px;
+	height: 95px;
+	margin-bottom: 10px;
+	
+	
+	
+	/*order: 1;*/
+	flex-grow: 0;
+	-webkit-flex-grow: 0;
+	
+	flex-shrink: 0;
+	-webkit-flex-shrink: 0;
+	
+	flex-basis: auto;
+	-webkit-flex-basis: auto;
+	
+	flex: none;
+	-ms-flex: none;
+	-webkit-flex: none;
+	
+	align-self: auto;
 	
 }
-.fr {
+.flex-box-row .item h3 {
+	font-size: 15px;
+	text-indent: 20px;
+}
+.flex-box-row .item p {
+	font-size: 9px;
+	text-indent: 20px;
+}
+.flex-box-row .item img {
 	float: right;
+	width: 80px;
+	margin-top: -50px;
+	
 }
 
 
-
+/*轮播图下面的按钮样式*/
 .slider-btn-wrapper {
 	position: absolute;
 	padidng: 0;
@@ -46,6 +90,70 @@
 }
 
 /*快车和专车按钮组*/
+
+.expressAndTailored {
+	
+	padding-top: 15px;
+	background: #FFFFFF;
+	margin-bottom: 10px;
+	/*flex-direction: row;
+	-ms-flex-direction: row;
+	-webkit-flex-direction: row;
+	
+	flex-wrap: nowrap;
+	-ms-flex-wrap: nowrap;
+	-webkit-flex-wrap: nowrap;
+	
+	flex-flow: row nowrap;
+	-ms-flex-flow: row nowrap;
+	-webkit-flex-flow: row nowrap;
+	
+	justify-content: space-between;
+	-webkit-justify-content: space-between;
+	
+	align-items: stretch;
+	-webkit-align-items: stretch;
+	
+	align-content: stretch;
+	-webkit-align-content: stretch;*/
+	
+	
+}
+
+/*顺风车/预包车/门店/代驾*/
+
+.ride-sharing {
+	flex-wrap: wrap;
+	-ms-flex-wrap: wrap;
+	-webkit-flex-wrap: wrap;
+}
+.ride-sharing .item {
+	width: 150px;
+	height: 95px;
+	/*display: table-cell;
+	vertical-align: middle;*/
+	
+	background: #FFFFFF;
+}
+.ride-sharing .item h2 {
+	font-size: 16px;
+	text-indent: 50px;
+	margin-top: 25px;
+	
+}
+.ride-sharing .item p {
+	font-size: 10px;
+	text-indent: 50px;
+}
+.ride-sharing .item img {
+	width:40px;
+	float: left;
+	margin-left: 5px;
+}
+
+
+
+/*
 .main-btn-row-wrapper {
 	padding-top: 15px;
 	background: #ffffff;
@@ -74,7 +182,7 @@
 	
 }
 
-/*顺风车、预包车、门店、我在哪儿按钮组*/
+顺风车、预包车、门店、我在哪儿按钮组
 #small-btn-div .mui-col-sm-6 {
 	padding: 10px;
 }
@@ -94,4 +202,4 @@
 #small-btn-div .small-btn-wrapper .dsc p {
 	font-size: small;
 	padding-right: 5px;
-}
+}*/
