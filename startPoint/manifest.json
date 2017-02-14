@@ -310,14 +310,16 @@
 					"img/car.png",
 					"fonts/iconfont.woff",
 					"img/home/u0.png",
-					"css/styles.css"
+					"css/styles.css",
+					"img/index_left_home.png"
 				],
 				"refer": [
 					"login/login.html",
 					"yuyue.html",
 					"fast_yuyue.html",
 					"setting_menu.html",
-					"qiangdan.html"
+					"qiangdan.html",
+					"navigate.html"
 				],
 				"priority": 0
 			},
@@ -346,7 +348,11 @@
 					"huo15module/font/fontawesome-webfont.woff",
 					"huo15module/css/font-awesome.css",
 					"huo15module/img/express-car-btn.png",
-					"huo15module/img/tailored-car-btn.png"
+					"huo15module/img/tailored-car-btn.png",
+					"huo15module/img/ride-sharing-btn.png",
+					"huo15module/img/appointment-btn.png",
+					"huo15module/img/store-btn.png",
+					"huo15module/img/substitute-btn.png"
 				],
 				"refer": [
 					"index.html",
@@ -459,7 +465,8 @@
 					"js/navigate.js",
 					"usercenter/ordermanager.html",
 					"js/request_url.js",
-					"usercenter/recharge.html"
+					"usercenter/recharge.html",
+					"usercenter/messagesetting.html"
 				],
 				"refer": [],
 				"priority": 0
@@ -528,7 +535,8 @@
 				"href": "usercenter/messagesetting.html",
 				"resources": [
 					"js/request_url.js",
-					"js/common.js"
+					"js/common.js",
+					"setting_menu.html"
 				],
 				"priority": 5,
 				"refer": []

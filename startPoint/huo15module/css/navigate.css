@@ -11,8 +11,8 @@
 .font-orange-fd8d45 {
 	color: #fd8d45;
 }
-.border-right-1px {
-	border-right: 1px solid #EEEEEE;
+.border-left-1px {
+	border-left: 1px solid #EEEEEE;
 }
 .flex-box-row {
 	display: flex;
@@ -91,35 +91,27 @@
 
 /*快车和专车按钮组*/
 
-.expressAndTailored {
+div.expressAndTailored {
+	display: flex;
+	display: -webkit-flex;
 	
+	justify-content: center;
+	-webkit-justify-content: center;
+	
+	align-items: center;
+	-webkit-align-items: center;
+	
+	align-content: flex-start;
+	-webkit-align-content: flex-start;
 	padding-top: 15px;
 	background: #FFFFFF;
 	margin-bottom: 10px;
-	/*flex-direction: row;
-	-ms-flex-direction: row;
-	-webkit-flex-direction: row;
-	
-	flex-wrap: nowrap;
-	-ms-flex-wrap: nowrap;
-	-webkit-flex-wrap: nowrap;
-	
-	flex-flow: row nowrap;
-	-ms-flex-flow: row nowrap;
-	-webkit-flex-flow: row nowrap;
-	
-	justify-content: space-between;
-	-webkit-justify-content: space-between;
-	
-	align-items: stretch;
-	-webkit-align-items: stretch;
-	
-	align-content: stretch;
-	-webkit-align-content: stretch;*/
-	
+}
+.expressAndTailored .item {
+	width: 155px;
+	flex: 1 1 auto;
 	
 }
-
 /*顺风车/预包车/门店/代驾*/
 
 .ride-sharing {
@@ -128,7 +120,7 @@
 	-webkit-flex-wrap: wrap;
 }
 .ride-sharing .item {
-	width: 150px;
+	width: 155px;
 	height: 95px;
 	/*display: table-cell;
 	vertical-align: middle;*/
@@ -137,18 +129,19 @@
 }
 .ride-sharing .item h2 {
 	font-size: 16px;
-	text-indent: 50px;
+	text-indent: 55px;
 	margin-top: 25px;
 	
 }
 .ride-sharing .item p {
 	font-size: 10px;
-	text-indent: 50px;
+	text-indent: 55px;
 }
 .ride-sharing .item img {
 	width:40px;
 	float: left;
-	margin-left: 5px;
+	margin-left: 10px;
+	margin-top:-55px;
 }
 
 
