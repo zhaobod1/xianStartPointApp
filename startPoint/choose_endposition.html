@@ -9,14 +9,15 @@
 		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ylg8yBCSUPFnuu82sDnIbZ5H"></script>
 		<link href="css/mui.min.css" rel="stylesheet" />
 		<style>
-			#r-result{
-				width:100%;
+			#r-result {
+				width: 100%;
 				height: 20%;
 			}
+			
 			#map {
 				height: 75%;
 				text-align: center;
-				position:absolute;
+				position: absolute;
 				top: 20%;
 				bottom: 0px;
 				width: 100%;
@@ -29,6 +30,7 @@
 				top: 34%;
 				vertical-align: middle;
 			}
+			
 			#map_result {
 				width: auto;
 				display: inline-block;
@@ -47,6 +49,7 @@
 				color: #666;
 				font-size: 12px;
 			}
+			
 			#map_result_img {
 				width: 80%;
 				height: 8%;
@@ -82,7 +85,7 @@
 			</div>
 		</div>
 		<div id="map_result_img" style="position: absolute;bottom: 50px;">
-			<img src="img/markers.png" style="width: 20px;height: 30px;" />
+			<img src="img/markers.svg" style="width: 30px" />
 		</div>
 		<div id="back_current_position" style="position: absolute;bottom: 10px;">
 			<img src="img/iconfont-wujiaoxing.png" width="50px" />
@@ -96,178 +99,177 @@
 		var datatype;
 		// var g_getinfo    = "";
 		mui.plusReady(function() {
-				datatype = plus.storage.getItem('date_type');
-				console.log("datatype==" + datatype);
-				/*调用初始化定位信息*/
-				var geoc = new BMap.Geocoder();
-				var point2 = new BMap.Point(116.571087,33.271726); // 创建点坐标
-				map = new BMap.Map("map"); // 创建地图实例
-				map.centerAndZoom(point2, 15); // 初始化地图，设置中心点坐标和地图级别
-				map.addControl(new BMap.NavigationControl());
-				//获取司机列表
-				function get_coachlist_info() {
-					coach_lonArr = new Array();
-					coach_latArr = new Array();
-					//初始化，清空数组元素
-					coach_lonArr.splice(0, coach_lonArr.length);
-					coach_latArr.splice(0, coach_latArr.length);
-					var url = request_url + "get_coach_list";
-					mui.getJSON(url, function(rsp) {
+			//datatype==2
+			datatype = plus.storage.getItem('date_type');
+			console.log("datatype==" + datatype);
+			/*调用初始化定位信息*/
+			var geoc = new BMap.Geocoder();
+			var point2 = new BMap.Point(116.571087, 33.271726); // 创建点坐标
+			map = new BMap.Map("map"); // 创建地图实例
+			map.centerAndZoom(point2, 15); // 初始化地图，设置中心点坐标和地图级别
+			map.addControl(new BMap.NavigationControl());
+			//获取司机列表
+			function get_coachlist_info() {
+				coach_lonArr = new Array();
+				coach_latArr = new Array();
+				//初始化，清空数组元素
+				coach_lonArr.splice(0, coach_lonArr.length);
+				coach_latArr.splice(0, coach_latArr.length);
+				var url = request_url + "get_coach_list";
+				mui.getJSON(url, function(rsp) {
+					console.log(JSON.stringify(rsp));
+					console.log("rsp.length==" + rsp.Table.length);
+					for(var i = 0; i < rsp.Table.length; i++) {
+						coach_lonArr[i] = rsp.Table[i].coach_lon;
+						coach_latArr[i] = rsp.Table[i].coach_lat;
+					}
+				});
+				setTimeout("get_coachlist_info()", 10000);
+			}
+
+			function getPosition() {
+				var mPoint = map.getCenter();
+				var lat = mPoint.lat; //获取到当前位置的纬度；			
+				var longt = mPoint.lng; //获取到当前位置的经度
+				var url = "http://api.map.baidu.com/geocoder/v2/?ak=FC9c13967bf240823ed03d702d883e83&location=" + lat + "," + longt + "&output=json&pois=1"
+				mui.getJSON(url, function(rsp) {
+					if(rsp != null) {
 						console.log(JSON.stringify(rsp));
-						console.log("rsp.length==" + rsp.Table.length);
-						for (var i = 0; i < rsp.Table.length; i++) {
-							coach_lonArr[i] = rsp.Table[i].coach_lon;
-							coach_latArr[i] = rsp.Table[i].coach_lat;
+						var addComp = rsp.result.addressComponent;
+						var currentStreet = addComp.district + addComp.street;
+						var currentPosition = rsp.result.sematic_description;
+						console.log(currentPosition);
+						if(currentPosition != "") {
+							document.getElementById("map_result").innerHTML = "<lable style='color: darkgreen;font-weight: 900;'>我从</lable> " + currentStreet + "<br/>" + currentPosition + " <lable style='color: darkgreen;font-weight: 900;'>下车</lable>";
+							plus.storage.setItem("start_postion", currentStreet + currentPosition + "&" + mPoint.lat + "&" + mPoint.lng);
+						} else {
+							document.getElementById("map_result").innerHTML = "<lable style='color: darkgreen;font-weight: 900;'>我从</lable> " + currentStreet + " <lable style='color: darkgreen;font-weight: 900;'>下车</lable>";
+							plus.storage.setItem("start_postion", currentStreet + "&" + mPoint.lat + "&" + mPoint.lng);
 						}
-					});
-					setTimeout("get_coachlist_info()", 10000);
-				}
-							function getPosition() {
-					var mPoint = map.getCenter();
-					var lat = mPoint.lat; //获取到当前位置的纬度；			
-					var longt = mPoint.lng; //获取到当前位置的经度
-					var url = "http://api.map.baidu.com/geocoder/v2/?ak=FC9c13967bf240823ed03d702d883e83&location=" + lat + "," + longt + "&output=json&pois=1"
-					mui.getJSON(url, function(rsp) {
-						if (rsp != null) {
-							console.log(JSON.stringify(rsp));
-							var addComp = rsp.result.addressComponent;
-							var currentStreet = addComp.district + addComp.street;
-							var currentPosition = rsp.result.sematic_description;
-							console.log(currentPosition);
-							if (currentPosition != "") {
-								document.getElementById("map_result").innerHTML = "<lable style='color: darkgreen;font-weight: 900;'>我从</lable> " + currentStreet + "<br/>" + currentPosition + " <lable style='color: darkgreen;font-weight: 900;'>下车</lable>";
-								plus.storage.setItem("start_postion", currentStreet + currentPosition + "&" + mPoint.lat + "&" + mPoint.lng);
-							} else {
-								document.getElementById("map_result").innerHTML = "<lable style='color: darkgreen;font-weight: 900;'>我从</lable> " + currentStreet + " <lable style='color: darkgreen;font-weight: 900;'>下车</lable>";
-								plus.storage.setItem("start_postion", currentStreet + "&" + mPoint.lat + "&" + mPoint.lng);
-							}
-						}
-					});
-				}
-				getPosBaidu();
-				//开始移动地图
-				map.addEventListener("dragstart", function(e) {
-					document.getElementById("suggestId").readOnly=true;
-					document.getElementById("map_result_div").style.display = "none";
-				});
-				document.getElementById("suggestId").addEventListener("blur", function() {
-					document.getElementById("suggestId").readOnly=true;
-					 document.getElementById("map").style.display = "";
-					 document.getElementById("map_result_div").style.display = "";
-					 document.getElementById("map_result").style.display = "";
-					 document.getElementById("map_result_img").style.display = "";
-					 document.getElementById("back_current_position").style.display = "";
-				});
-				document.getElementById("suggestId").addEventListener("click",function(){
-					document.getElementById("suggestId").readOnly=false;
-					 document.getElementById("map").style.display = "none";
-					 document.getElementById("map_result_div").style.display = "none";
-					 document.getElementById("map_result").style.display = "none";
-					 document.getElementById("map_result_img").style.display = "none";
-					 document.getElementById("back_current_position").style.display = "none";
-				});
-				//移动地图结束
-				map.addEventListener("dragend", function(e) {
-					getPosition();
-					document.getElementById("map_result_div").style.display = "";
-				});
-				// 百度地图API功能
-				function G(id) {
-					return document.getElementById(id);
-				}
-				var mPoint = new BMap.Point(116.564148,33.273711);
-				var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
-					{
-						"input" : "suggestId",
-//						"location" : map,
-						"location" : mPoint//火一五信息科技有限公司 huo15.com
-				});
-				//火一五信息科技有限公司
-//				ac.setLocation("安徽蒙城");
-				console.log("choose_endpostion.html---->ac.getLocation():");
-				console.log(mPoint);
-				ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
-					var str = "";
-					var _value = e.fromitem.value;
-					var value = "";
-					if (e.fromitem.index > -1) {
-						value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
-					}    
-					str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
-					
-					value = "";
-					if (e.toitem.index > -1) {
-						_value = e.toitem.value;
-						value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
-					}    
-					str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
-					G("searchResultPanel").innerHTML = str;
-				});
-				var myValue;
-				ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
-					
-				var _value = e.item.value;				
-					myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
-					G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
-					setPlace();
-					//
-				});
-				var strlat = "";
-				var strlng = "";
-				function setPlace(){
-//					map.clearOverlays();    //清除地图上所有覆盖物
-					function myFun(){
-						var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
-						strlat = pp.lat;
-						strlng = pp.lng;
-						//console.log(strlat);
-						choose_addr(); 
-//						map.centerAndZoom(pp, 18);
-//						map.addOverlay(new BMap.Marker(pp));    //添加标注
 					}
-					var local = new BMap.LocalSearch(map, { //智能搜索
-					  onSearchComplete: myFun
-					});
-					local.search(myValue);
-				}
-				var back_href = document.getElementById("back_href");
-				back_href.addEventListener("tap",function(){					
-					mui.back();
 				});
-	
-				function choose_addr()
+			}
+			getPosBaidu();
+			//开始移动地图
+			map.addEventListener("dragstart", function(e) {
+				document.getElementById("suggestId").readOnly = true;
+				document.getElementById("map_result_div").style.display = "none";
+			});
+			document.getElementById("suggestId").addEventListener("blur", function() {
+				document.getElementById("suggestId").readOnly = true;
+				document.getElementById("map").style.display = "";
+				document.getElementById("map_result_div").style.display = "";
+				document.getElementById("map_result").style.display = "";
+				document.getElementById("map_result_img").style.display = "";
+				document.getElementById("back_current_position").style.display = "";
+			});
+			document.getElementById("suggestId").addEventListener("click", function() {
+				document.getElementById("suggestId").readOnly = false;
+				document.getElementById("map").style.display = "none";
+				document.getElementById("map_result_div").style.display = "none";//地图地址显示框容器
+				document.getElementById("map_result").style.display = "none";//地图地址显示框
+				document.getElementById("map_result_img").style.display = "none";//位置标注容器
+				document.getElementById("back_current_position").style.display = "none";//回到原点，五角星
+			});
+			//移动地图结束
+			map.addEventListener("dragend", function(e) {
+				getPosition();
+				document.getElementById("map_result_div").style.display = "";
+			});
+			// 百度地图API功能
+			function G(id) {
+				return document.getElementById(id);
+			}
+			var mPoint = new BMap.Point(116.564148, 33.273711);
+			var ac = new BMap.Autocomplete( //建立一个自动完成的对象
 				{
-					/*保存选择的地点*/
-					var suggestId = document.getElementById("suggestId");
-					var strsearch = suggestId.value+"&"+strlat+"&"+strlng;
-					console.log(strsearch);
-					if(datatype == "1")
-					{
-						 mui.fire(plus.webview.getWebviewById('yuyue'),'id_endarea',{id_endarea:strsearch});
-					}
-					else 
-					{
-						 mui.fire(plus.webview.getWebviewById('fast_yuyue'),'id_endarea',{id_endarea:strsearch});
-					}
-					
-					mui.back();
+					"input": "suggestId",
+					"location" : map,
+//					"location": mPoint //火一五信息科技有限公司 huo15.com
+				});
+			//火一五信息科技有限公司
+			//				ac.setLocation("安徽蒙城");
+			console.log("choose_endpostion.html---->ac.getLocation():");
+			console.log(mPoint);
+			ac.addEventListener("onhighlight", function(e) { //鼠标放在下拉列表上的事件
+				var str = "";
+				var _value = e.fromitem.value;
+				var value = "";
+				if(e.fromitem.index > -1) {
+					value = _value.province + _value.city + _value.district + _value.street + _value.business;
 				}
+				str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+
+				value = "";
+				if(e.toitem.index > -1) {
+					_value = e.toitem.value;
+					value = _value.province + _value.city + _value.district + _value.street + _value.business;
+				}
+				str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+				G("searchResultPanel").innerHTML = str;
+			});
+			var myValue;
+			ac.addEventListener("onconfirm", function(e) { //鼠标点击下拉列表后的事件
+
+				var _value = e.item.value;
+				myValue = _value.province + _value.city + _value.district + _value.street + _value.business;
+				G("searchResultPanel").innerHTML = "onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+				setPlace();
+				//
+			});
+			var strlat = "";
+			var strlng = "";
+
+			function setPlace() {
+				//					map.clearOverlays();    //清除地图上所有覆盖物
+				function myFun() {
+					var pp = local.getResults().getPoi(0).point; //获取第一个智能搜索的结果
+					strlat = pp.lat;
+					strlng = pp.lng;
+					//console.log(strlat);
+					choose_addr();
+					//						map.centerAndZoom(pp, 18);
+					//						map.addOverlay(new BMap.Marker(pp));    //添加标注
+				}
+				var local = new BMap.LocalSearch(map, { //智能搜索
+					onSearchComplete: myFun
+				});
+				local.search(myValue);
+			}
+			var back_href = document.getElementById("back_href");
+			back_href.addEventListener("tap", function() {
+				mui.back();
+			});
+
+			function choose_addr() {
+				/*保存选择的地点*/
+				var suggestId = document.getElementById("suggestId");
+				var strsearch = suggestId.value + "&" + strlat + "&" + strlng;
+				console.log(strsearch);
+				if(datatype == "1") {
+					mui.fire(plus.webview.getWebviewById('yuyue'), 'id_endarea', { id_endarea: strsearch });
+				} else {
+					mui.fire(plus.webview.getWebviewById('fast_yuyue'), 'id_endarea', { id_endarea: strsearch });
+				}
+
+				mui.back();
+			}
 		})
-				/*初始化地图时时定位信息*/
+		/*初始化地图时时定位信息*/
 		function geoInf(position) {
 			var codns = position.coords; //获取地理坐标信息；
 			var lat = codns.latitude; //获取到当前位置的纬度；			
 			var longt = codns.longitude; //获取到当前位置的经度
 			var url = "http://api.map.baidu.com/geocoder/v2/?ak=FC9c13967bf240823ed03d702d883e83&location=" + lat + "," + longt + "&output=json&pois=1"
 			mui.getJSON(url, function(rsp) {
-				if (rsp != null) {
+				if(rsp != null) {
 					//console.log(JSON.stringify(rsp));
 					var addComp = rsp.result.addressComponent;
 					var currentStreet = addComp.district + addComp.street;
 					var currentPosition = rsp.result.sematic_description;
-					
+
 					var mPoint = new BMap.Point(longt, lat);
-					if (currentPosition != "") {
+					if(currentPosition != "") {
 						document.getElementById("map_result").innerHTML = "<lable style='color: darkgreen;font-weight: 900;'>我从</lable> " + currentStreet + "<br/>" + currentPosition + " <lable style='color: darkgreen;font-weight: 900;'>下车</lable>";
 						plus.storage.setItem("start_postion", currentStreet + currentPosition + "&" + mPoint.lat + "&" + mPoint.lng);
 					} else {
@@ -276,8 +278,8 @@
 					}
 					map.centerAndZoom(mPoint, 15); // 初始化地图，设置中心点坐标和地图级别
 					document.getElementById("map_result").addEventListener("click", function() {
-						var start_postion = plus.storage.getItem("start_postion");						
-						if (datatype == "1") {
+						var start_postion = plus.storage.getItem("start_postion");
+						if(datatype == "1") {
 							mui.fire(plus.webview.getWebviewById('yuyue'), 'id_endarea', {
 								id_endarea: start_postion
 							});
@@ -293,6 +295,7 @@
 		}
 		// 通过百度定位模块获取位置信息
 		function getPosBaidu() {
+			console.log("getPosBaidu:");
 			plus.geolocation.getCurrentPosition(geoInf, function(e) {
 				console.log("info----" + e.message);
 			}, {
@@ -316,4 +319,5 @@
 			});
 		});
 	</script>
+
 </html>

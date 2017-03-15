@@ -380,7 +380,8 @@
 					"css/mui.min.css",
 					"js/mui.dtpicker.js",
 					"img/freeride.png",
-					"fonts/mui.ttf"
+					"fonts/mui.ttf",
+					"taxi_client.html"
 				],
 				"refer": [
 					"choose_position.html",
@@ -425,7 +426,8 @@
 				"resources": [
 					"js/mui.min.js",
 					"css/mui.min.css",
-					"fonts/mui.ttf"
+					"fonts/mui.ttf",
+					"yuyue.html"
 				],
 				"refer": [],
 				"priority": 0
@@ -436,7 +438,8 @@
 					"img/iconfont-wujiaoxing.png",
 					"fonts/mui.ttf",
 					"css/mui.min.css",
-					"img/markers.png"
+					"img/markers.png",
+					"img/markers.svg"
 				],
 				"refer": [],
 				"priority": 0
@@ -605,7 +608,10 @@
 				"href": "usercenter/ordermanager_detail.html",
 				"resources": [
 					"js/request_url.js",
-					"js/common.js"
+					"js/common.js",
+					"js/mui.min.js",
+					"fonts/mui.ttf",
+					"css/mui.min.css"
 				],
 				"priority": 9,
 				"refer": []
