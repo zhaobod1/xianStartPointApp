@@ -2,11 +2,12 @@
 	"@platforms": [
 		"android",
 		"iPhone",
-		"iPad"],
+		"iPad"
+	],
 	"id": "H552F0460",/*应用的标识，创建应用时自动生成，勿手动修改*/
 	"name": "起点出行司机端",/*应用名称，程序桌面图标名称*/
 	"version": {
-		"name": "1.0.3",/*应用版本名称*/
+		"name": "1.0.5",/*应用版本名称*/
 		"code": "84"
 	},
 	"description": "",/*应用描述信息*/
@@ -118,7 +119,8 @@
 		"runmode": "liberate",/*应用的首次启动运行模式，可取liberate或normal，liberate模式在第一次启动时将解压应用资源（Android平台File API才可正常访问_www目录）*/
 		"signature": "Sk9JTiBVUyBtYWlsdG86aHIyMDEzQGRjbG91ZC5pbw==",/*可选，保留给应用签名，暂不使用*/
 		"distribute": {
-			"plugins": {"payment":{},
+			"plugins": {
+				"payment": {},
 				"push": {
 					"igexin": {
 						"appid": "aFWQdTxvul8MwTzE1tWxw6",
@@ -202,11 +204,13 @@
 					"<uses-permission android:name=\"android.permission.ACCESS_MOCK_LOCATION\"/>",
 					"<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>",
 					"<uses-permission android:name=\"android.permission.WRITE_SMS\"/>",
-					"<uses-permission android:name=\"android.permission.READ_SMS\"/>"]
+					"<uses-permission android:name=\"android.permission.READ_SMS\"/>"
+				]
 			},
 			"orientation": [
 				"portrait-primary",
-				"portrait-secondary"],/*应用支持的方向，portrait-primary：竖屏正方向；portrait-secondary：竖屏反方向；landscape-primary：横屏正方向；landscape-secondary：横屏反方向*/
+				"portrait-secondary"
+			],/*应用支持的方向，portrait-primary：竖屏正方向；portrait-secondary：竖屏反方向；landscape-primary：横屏正方向；landscape-secondary：横屏反方向*/
 			"icons": {
 				"ios": {
 					"prerendered": true, /*应用图标是否已经高亮处理，在iOS6及以下设备上有效*/
@@ -241,7 +245,8 @@
 					"ldpi": "unpackage/res/icons/48x48.png", /*大屏程序图标，分辨率：48x48*/
 					"hdpi": "unpackage/res/icons/72x72.png", /*高分屏程序图标，分辨率：72x72*/
 					"xhdpi": "unpackage/res/icons/96x96.png",/*720P高分屏程序图标，分辨率：96x96*/
-					"xxhdpi": "unpackage/res/icons/144x144.png"
+					"xxhdpi": "unpackage/res/icons/144x144.png",
+					"xxxhdpi": "unpackage/res/icons/192x192.png"
 				}
 			},
 			"splashscreen": {
@@ -249,31 +254,21 @@
 					"iphone": {
 						/*iPhone3启动图片选，分辨率：320x480*/
 						"retina35": "H:/起点专车/res/startpage/640x960.png",/*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
-						"retina40": "H:/起点专车/res/startpage/640x1136.png",
-						"default": "H:/起点专车/res/startpage/320x480.png",
-						"retina55": "H:/起点专车/res/startpage/1242x2208.png",
-						"retina47": "H:/起点专车/res/startpage/750x1334.png",
-						"retina55l": "H:/起点专车/res/startpage/2208x1242.png"
+
+						"default": "H:/起点专车/res/startpage/320x480.png"
 					},
-					"ipad": {
-						"portrait": "H:/起点专车/res/startpage/768x1004.png", /*iPad竖屏启动图片，分辨率：768x1004*/
-						"portrait-retina": "H:/起点专车/res/startpage/1536x2008.png",/*iPad高分屏竖屏图片，分辨率：1536x2008*/
-						"landscape": "H:/起点专车/res/startpage/1024x748.png", /*iPad横屏启动图片，分辨率：1024x748*/
-						"landscape-retina": "H:/起点专车/res/startpage/2048x1496.png", /*iPad高分屏横屏启动图片，分辨率：2048x1496*/
-						"portrait7": "H:/起点专车/res/startpage/768x1024.png", /*iPad iOS7竖屏启动图片，分辨率：768x1024*/
-						"portrait-retina7": "H:/起点专车/res/startpage/1536x2048.png",/*iPad iOS7高分屏竖屏图片，分辨率：1536x2048*/
-						"landscape7": "H:/起点专车/res/startpage/1024x768.png", /*iPad iOS7横屏启动图片，分辨率：1024x768*/
-						"landscape-retina7": "H:/起点专车/res/startpage/2048x1536.png"
-					}
+					"ipad": {}
 				},
 				"android": {
-					"hdpi": "/Users/zhaobo/www/Client/起点出行/西安专车系统APP/引导页/480X762.png",
+
 					"ldpi": "/Users/zhaobo/www/Client/起点出行/西安专车系统APP/引导页/320X442.png",
 					"mdpi": "/Users/zhaobo/www/Client/起点出行/西安专车系统APP/引导页/240X282.png",
-					"xhdpi": "/Users/zhaobo/www/Client/起点出行/西安专车系统APP/引导页/720X1242.png",
-					"xxhdpi": "/Users/zhaobo/www/Client/起点出行/西安专车系统APP/引导页/1080X1882.png"
+					"hdpi": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/引导页/480X762.png",
+					"xhdpi": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/引导页/720X1242.png",
+					"xxhdpi": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/引导页/1080X1882.png"
 				}
-			},"debug":true
+			},
+			"debug": true
 		}
 	},
 	"dependencies": {
