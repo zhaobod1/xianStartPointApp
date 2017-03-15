@@ -74,9 +74,9 @@ function shareAction(id,ex) {
 	}
 }
 var sharehref="http://www.qidiancar.com/down.aspx";
-var sharecontent="我正在使用亿达专车司机端,使用租车服务特别方便，赶紧跟我一起来体验！";
-var sharehrefTitle="亿达专车司机端";
-var sharehrefDes="我正在使用亿达专车司机端,使用租车服务特别方便，赶紧跟我一起来体验！";
+var sharecontent="我正在使用起点出行专车司机端,使用租车服务特别方便，赶紧跟我一起来体验！";
+var sharehrefTitle="起点出行专车司机端";
+var sharehrefDes="我正在使用起点出行专车司机端,使用租车服务特别方便，赶紧跟我一起来体验！";
 /**
    * 发送分享消息
    * @param {plus.share.ShareService} s

@@ -4,7 +4,7 @@
 		"iPhone",
 		"iPad"],
 	"id": "H552F0460",/*应用的标识，创建应用时自动生成，勿手动修改*/
-	"name": "亿达专车司机端",/*应用名称，程序桌面图标名称*/
+	"name": "起点出行司机端",/*应用名称，程序桌面图标名称*/
 	"version": {
 		"name": "1.0.3",/*应用版本名称*/
 		"code": "84"
@@ -267,11 +267,11 @@
 					}
 				},
 				"android": {
-					"hdpi": "/www/work/2016年客户/专车系统APP/引导页/480X762.png",
-					"ldpi": "/www/work/2016年客户/专车系统APP/引导页/320X442.png",
-					"mdpi": "/www/work/2016年客户/专车系统APP/引导页/240X282.png",
-					"xhdpi": "/www/work/2016年客户/专车系统APP/引导页/720X1242.png",
-					"xxhdpi": "/www/work/2016年客户/专车系统APP/引导页/1080X1882.png"
+					"hdpi": "/Users/zhaobo/www/Client/起点出行/西安专车系统APP/引导页/480X762.png",
+					"ldpi": "/Users/zhaobo/www/Client/起点出行/西安专车系统APP/引导页/320X442.png",
+					"mdpi": "/Users/zhaobo/www/Client/起点出行/西安专车系统APP/引导页/240X282.png",
+					"xhdpi": "/Users/zhaobo/www/Client/起点出行/西安专车系统APP/引导页/720X1242.png",
+					"xxhdpi": "/Users/zhaobo/www/Client/起点出行/西安专车系统APP/引导页/1080X1882.png"
 				}
 			},"debug":true
 		}

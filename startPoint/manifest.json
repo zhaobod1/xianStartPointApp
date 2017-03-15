@@ -125,14 +125,8 @@
 		"distribute": {
 			"plugins": {
 				"payment": {
-					"weixin": {
-						"appid": "wx4179af8e0ea8a387",
-						"description": "微信支付"
-					},
-					"alipay": {
-						"scheme": "zhifubao",
-						"description": "阿里支付"
-					}
+					"weixin": {"description":"微信支付","appid":"wx4179af8e0ea8a387"},
+					"alipay": {"description":"阿里支付","scheme":""}
 				},
 				"push": {
 					"igexin": {
@@ -307,7 +301,8 @@
 					"fonts/iconfont.woff",
 					"img/home/u0.png",
 					"css/styles.css",
-					"img/index_left_home.png"
+					"img/index_left_home.png",
+					"img/markers.svg"
 				],
 				"refer": [
 					"login/login.html",

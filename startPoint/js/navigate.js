@@ -7,7 +7,7 @@ window.onload = function() {
 	// 附近点击事件 
 	nearby_fun();
 	tab_nearby_fun();
-	//长租车点击事件
+	//长租车点击事件---预包车
 	longdriver_fun();
 	// 自驾点击事件
 	selfdriver_fun();
