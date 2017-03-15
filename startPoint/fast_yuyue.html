@@ -78,8 +78,8 @@
 					<tr id="tr_carname">
 					</tr>
 					<tr id="tr_carimg">
-
 					</tr>
+
 					<tr>
 						<td>
 							<div class="mui-input-row mui-radio mui-left">
@@ -98,6 +98,12 @@
 							<div class="mui-input-row mui-radio mui-left">
 								<label>&nbsp;</label>
 								<input name="choose_taxi" type="radio" value="2" onchange="choose_carType();">
+							</div>
+						</td>
+						<td>
+							<div class="mui-input-row mui-radio mui-left">
+								<label>&nbsp;</label>
+								<input name="choose_taxi" type="radio" value="3" onchange="choose_carType();">
 							</div>
 						</td>
 					</tr>
@@ -190,6 +196,7 @@
 				car_pk = return_result.Table[2].car_pk;
 				/* 设置专车 名字、图片、车类型 套餐价 */
 				init_carinfo();
+				choose_carType();
 			});
 			//设置图像
 			var set_pic = plus.storage.getItem('set_pic');
@@ -235,18 +242,24 @@
 				if(radios[i].checked) {
 					//单选按钮的值   
 					if(("0" == radios[i].value)) {
+						carType = 3;
+						init_packageinfo(3);
+						far_costmoney(3);
+						//保存car类型
+						car_pk = return_result.Table[1].car_pk;
+					} else if("1" == radios[i].value) {
 						carType = 2;
 						init_packageinfo(2);
 						far_costmoney(2);
 						//保存car类型
 						car_pk = return_result.Table[2].car_pk;
-					} else if("1" == radios[i].value) {
+					} else if("2" == radios[i].value) {
 						carType = 1;
 						init_packageinfo(1);
 						far_costmoney(1);
 						//保存car类型
-						car_pk = return_result.Table[1].car_pk;
-					} else if("2" == radios[i].value) {
+						car_pk = return_result.Table[3].car_pk;
+					}else if("3" == radios[i].value) {
 						carType = 0;
 						init_packageinfo(0);
 						far_costmoney(0);

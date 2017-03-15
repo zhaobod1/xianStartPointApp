@@ -41,7 +41,7 @@
 				width: 100%;
 			}
 			
-			.mui-bar-tab .mui-tab-item .mui-icon~ .mui-tab-label {
+			.mui-bar-tab .mui-tab-item .mui-icon~.mui-tab-label {
 				font-size: 15px;
 			}
 			
@@ -85,6 +85,7 @@
 				font-size: 12px;
 			}
 			/*返回主页按钮*/
+			
 			#home_button {
 				margin-right: 10px;
 			}
@@ -100,7 +101,7 @@
 			<a id="person_center" class="mui-icon mui-pull-left">
 				<img src="img/index_left_fresh_manual.png" width="25px" />
 			</a>
-			
+
 			<a id="pop_adv" class="mui-icon mui-pull-right">
 				<img src="img/icon_lw_blue.png" width="25px" />
 			</a>
@@ -129,7 +130,7 @@
 		</div>
 		<div id="map_result_img" style="position: absolute;bottom: 50px;">
 			<!--<img src="img/markers.svg" style="width: 20px;height: 30px;" />-->
-			<img src="img/markers.svg" style="width: 40px" />
+			<img src="img/markers.png" style="width: 20px;height: 30px;" />
 		</div>
 		<div id="back_current_position" style="position: absolute;bottom: 50px;">
 			<img src="img/iconfont-wujiaoxing.png" width="50px" />
@@ -172,9 +173,9 @@
 		//		返回主页
 		document.getElementById("home_button").addEventListener('tap', function(e) {
 			mui.openWindow({
-					id: "home",
-					url: "navigate.html"
-				});
+				id: "home",
+				url: "navigate.html"
+			});
 		});
 		/*预约用车按钮事件*/
 		var date_car = document.getElementById("date_car");
@@ -241,182 +242,192 @@
 		var coach_latArr = "";
 		var preMarker = new Array();
 		// var g_getinfo    = "";		
-		mui.plusReady(function() {
-				mui.ajax(request_url + "get_ad", {
-					data: {
-						"_type": "0000500001",
-					},
-					dataType: 'json', //服务器返回json格式数据
-					type: 'post', //HTTP请求类型
-					timeout: 5000, //超时时间设置为5秒； 
-					success: function(rsp) {
-						console.log(rsp.Table[0].info_content);
-						var str_ad = "<div class=\"mui-slider-item mui-slider-item-duplicate\"><a href=\"#\"><img src=\"" + request_img_url + rsp.Table[rsp.Table.length - 1].info_content + "\"></a></div>";
-						for(var i = 0; i < rsp.Table.length; i++) { //0 立即叫车 1 预约 2半日租 3日租								
-							var ad_img = request_img_url + rsp.Table[i].info_content;
-							str_ad = str_ad + "<div class=\"mui-slider-item\"><a href=\"#\"><img src=\"" + ad_img + "\"></a></div>";
 
+		mui.plusReady(function() {
+			//添加newId自定义事件监听
+			window.addEventListener('chooseCarType', function(event) {
+				//获得事件参数
+				var carType = event.index.carType;
+				
+			});
+			if(self.carType === 0) {
+
+			}
+			mui.ajax(request_url + "get_ad", {
+				data: {
+					"_type": "0000500001",
+				},
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				timeout: 5000, //超时时间设置为5秒； 
+				success: function(rsp) {
+					console.log(rsp.Table[0].info_content);
+					var str_ad = "<div class=\"mui-slider-item mui-slider-item-duplicate\"><a href=\"#\"><img src=\"" + request_img_url + rsp.Table[rsp.Table.length - 1].info_content + "\"></a></div>";
+					for(var i = 0; i < rsp.Table.length; i++) { //0 立即叫车 1 预约 2半日租 3日租								
+						var ad_img = request_img_url + rsp.Table[i].info_content;
+						str_ad = str_ad + "<div class=\"mui-slider-item\"><a href=\"#\"><img src=\"" + ad_img + "\"></a></div>";
+
+					}
+					str_ad = str_ad + "<div class=\"mui-slider-item mui-slider-item-duplicate\"><a href=\"#\"><img src=\"" + request_img_url + rsp.Table[0].info_content + "\"></a></div>";
+					str_ad = str_ad + "<div></div>";
+					str_ad = str_ad + "<div class=\"mui-slider-indicator\"><div class=\"mui-indicator mui-active\"></div><div class=\"mui-indicator\"></div></div>";
+					document.getElementById("banner").innerHTML = str_ad;
+				}
+			});
+			/*调用初始化定位信息*/
+			var point2 = new BMap.Point(116.571087, 33.271726); // 创建点坐标
+			map = new BMap.Map("map"); // 创建地图实例
+			map.centerAndZoom(point2, 15); // 初始化地图，设置中心点坐标和地图级别
+			map.addControl(new BMap.NavigationControl());
+			/*定时获取司机集合 com=get_coach_list*/
+			get_coachlist_info();
+			//正在获取地址
+			document.getElementById("map_result").addEventListener("click", function() {
+				islogin = plus.storage.getItem('islogin');
+				/*判空操作*/
+				if(islogin == null) {
+					plus.storage.setItem('islogin', 0);
+				}
+				if((islogin != 1) || (islogin != "1")) {
+					mui.openWindow({
+						id: "login",
+						url: "login/login.html"
+					});
+				} else {
+					var url = request_url + "get_user_order_state";
+					mui.ajax(url, {
+						data: {
+							"user_pk": plus.storage.getItem('user_pk')
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 5000, //超时时间设置为5秒；
+						success: function(rsp) {
+							console.log(rsp.result);
+							if(parseInt(rsp.result) == 0) {
+								plus.storage.setItem('date_type', "2");
+								mui.openWindow({
+									id: "fast_yuyue",
+									url: "fast_yuyue.html"
+								});
+							} else {
+								mui.toast("您有未完成订单，暂不能叫车!");
+							}
 						}
-						str_ad = str_ad + "<div class=\"mui-slider-item mui-slider-item-duplicate\"><a href=\"#\"><img src=\"" + request_img_url + rsp.Table[0].info_content + "\"></a></div>";
-						str_ad = str_ad + "<div></div>";
-						str_ad = str_ad + "<div class=\"mui-slider-indicator\"><div class=\"mui-indicator mui-active\"></div><div class=\"mui-indicator\"></div></div>";
-						document.getElementById("banner").innerHTML = str_ad;
+					});
+				}
+			});
+
+			function getPosition() {
+				var mPoint = map.getCenter();
+				var lat = mPoint.lat; //获取到当前位置的纬度；			
+				var longt = mPoint.lng; //获取到当前位置的经度
+				var url = "http://api.map.baidu.com/geocoder/v2/?ak=FC9c13967bf240823ed03d702d883e83&location=" + lat + "," + longt + "&output=json&pois=1"
+				mui.getJSON(url, function(rsp) {
+					if(rsp != null) {
+						console.log("index.html---getPosition():");
+						// {"status":0,"result":{"location":{"lng":120.40776899999993,"lat":36.09848689179111},"formatted_address":"山东省青岛市市北区同兴路17号","business":"福州北路,南京路北段,浮山","addressComponent":{"country":"中国","country_code":0,"province":"山东省","city":"青岛市","district":"市北区","adcode":"370203","street":"同兴路","street_number":"17号","direction":"南","distance":"66"},"pois":[{"addr":"市北区同安路10号","cp":" ","direction":"西南","distance":"252","name":"青岛地震局","poiType":"政府机构","point":{"x":120.40912206316787,"y":36.099961899220354},"tag":"政府机构;行政单位","tel":"","uid":"38026af2c2f9eeec4354d764","zip":""},{"addr":"福州北路129南门","cp":" ","direction":"东南","distance":"241","name":"华恩名座","poiType":"房地产","point":{"x":120.40640019747264,"y":36.09985254144694},"tag":"房地产;住宅区","tel":"","uid":"d305db1fe03b3b3f932ca3f1","zip":""},{"addr":"青岛市市北区福州北路127号融兴名车城","cp":" ","direction":"东","distance":"193","name":"青岛钧锐新能源汽车销售有限公司","poiType":"汽车服务","point":{"x":120.40608579054414,"y":36.09882457087123},"tag":"汽车服务;汽车销售","tel":"","uid":"c18bf841dd54164788f15d67","zip":""},{"addr":"山东省青岛市市北区同安路","cp":" ","direction":"西南","distance":"227","name":"青实樱花郡","poiType":"房地产","point":{"x":120.40949935148207,"y":36.09937136541973},"tag":"房地产;住宅区","tel":"","uid":"c2d2ca30034ff7089d95de85","zip":""},{"addr":"福州北路127","cp":" ","direction":"东","distance":"195","name":"青岛富尧汽车销售有限公司","poiType":"汽车服务","point":{"x":120.40605884137885,"y":36.09882457087123},"tag":"汽车服务;汽车销售","tel":"","uid":"be4492f63e8e4b2efda778ca","zip":""},{"addr":"福州北路127号","cp":" ","direction":"东","distance":"197","name":"融兴汽车奥特莱斯","poiType":"汽车服务","point":{"x":120.40603189221355,"y":36.09876624589281},"tag":"汽车服务;汽车销售","tel":"","uid":"86fcfba1792c755c8f55ecb2","zip":""},{"addr":"福州北路129号","cp":" ","direction":"东南","distance":"281","name":"山东留学大厦","poiType":"房地产","point":{"x":120.40596901082785,"y":36.099925446646274},"tag":"房地产;写字楼","tel":"","uid":"2b7d08d730103abbe6073800","zip":""},{"addr":"市北区同福路6号(洪山坡对面)","cp":" ","direction":"南","distance":"607","name":"青岛市妇女儿童医院","poiType":"医疗","point":{"x":120.40883460540468,"y":36.10282701816904},"tag":"医疗;专科医院","tel":"","uid":"c70912ba5fdba33e07026f2a","zip":""},{"addr":"福州北路同安路67号","cp":" ","direction":"西南","distance":"499","name":"远洋船员学院福州路分院","poiType":"教育培训","point":{"x":120.41077494530623,"y":36.10119398618986},"tag":"教育培训;高等院校","tel":"","uid":"15e1e85eecc8baa3581093f1","zip":""},{"addr":"山东省青岛市市北区","cp":" ","direction":"南","distance":"655","name":"福辽立交桥","poiType":"交通设施","point":{"x":120.40596901082785,"y":36.1030384349841},"tag":"交通设施;桥","tel":"","uid":"41572e009320c8b5b45f1ee7","zip":""}],"poiRegions":[],"sematic_description":"青岛地震局西南252米","cityCode":236}} 
+						console.log(JSON.stringify(rsp));
+						var addComp = rsp.result.addressComponent;
+						var currentStreet = addComp.district + addComp.street;
+						var currentPosition = rsp.result.sematic_description;
+						console.log("index.html---currentPosition:");
+						console.log(currentPosition);
+						if(currentPosition != "") {
+							document.getElementById("map_result").innerHTML = "<lable style='color: darkgreen;font-weight: 900;'>我从</lable> " + currentStreet + "<br/>" + currentPosition + " <lable style='color: darkgreen;font-weight: 900;'>上车</lable>";
+							plus.storage.setItem("start_postion", currentStreet + currentPosition + "&" + mPoint.lat + "&" + mPoint.lng);
+						} else {
+							document.getElementById("map_result").innerHTML = "<lable style='color: darkgreen;font-weight: 900;'>我从</lable> " + currentStreet + " <lable style='color: darkgreen;font-weight: 900;'>上车</lable>";
+							plus.storage.setItem("start_postion", currentStreet + "&" + mPoint.lat + "&" + mPoint.lng);
+						}
+
 					}
 				});
-				/*调用初始化定位信息*/
-				var point2 = new BMap.Point(116.571087, 33.271726); // 创建点坐标
-				map = new BMap.Map("map"); // 创建地图实例
-				map.centerAndZoom(point2, 15); // 初始化地图，设置中心点坐标和地图级别
-				map.addControl(new BMap.NavigationControl());
-				/*定时获取司机集合 com=get_coach_list*/
-				get_coachlist_info();
-				//正在获取地址
-				document.getElementById("map_result").addEventListener("click", function() {
+			}
+			getPosBaidu();
+			//开始移动地图
+			map.addEventListener("dragstart", function(e) {
+				var center = map.getCenter();
+				//					addMarker(center);
+				//					preMarker.setPosition(map.getCenter());
+				document.getElementById("map_result_div").style.display = "none";
+			});
+			//移动地图结束
+			map.addEventListener("dragend", function(e) {
+				getPosition();
+				document.getElementById("map_result_div").style.display = "";
+			});
+			/*点击显示隐藏广告框信息*/
+			var pop_adv = document.getElementById("pop_adv");
+			var pop_div = document.getElementById("pop_div");
+			if(pop_div.style.display != "none") {
+				defaultShowSlide();
+			}
+			pop_adv.addEventListener("tap", function() {
+				if(pop_div.style.display == "none") {
+					pop_div.style.display = "";
+					defaultShowSlide();
+				} else {
+					pop_div.style.display = "none";
+				}
+			});
+			plus.push.setAutoNotification(false);
+			var info = plus.push.getClientInfo();
+			plus.storage.setItem("clientid", info.clientid);
+			plus.storage.setItem("appid", info.appid);
+			plus.storage.setItem("appkey", info.appkey);
+			plus.storage.setItem("token", info.token);
+			console.log(info.appkey);
+			plus.push.addEventListener("click", function(msg) {
+				// 判断是从本地创建还是离线推送的消息
+				switch(msg.payload) {
+					case "LocalMSG":
+						outSet("点击本地创建消息启动：");
+						break;
+					default:
+						outSet("点击离线推送消息启动：");
+						break;
+				}
+				// 处理其它数据
+				logoutPushMsg(msg);
+			}, false);
+			// 监听在线消息事件
+			plus.push.addEventListener("receive", function(msg) {
+				if(msg.aps) { // Apple APNS message
+					//					mui.toast("接收到在线APNS消息：");
+				} else {
+					//					mui.toast("接收到在线透传消息：");
+				}
+				logoutPushMsg(msg);
+			}, false);
+			/**
+			 * 日志输入推送消息内容
+			 */
+			function logoutPushMsg(msg) {
+				if(msg.payload) {
 					islogin = plus.storage.getItem('islogin');
 					/*判空操作*/
 					if(islogin == null) {
 						plus.storage.setItem('islogin', 0);
 					}
-					if((islogin != 1) || (islogin != "1")) {
+					if((islogin != 1) || (islogin != "1")) {} else {
 						mui.openWindow({
-							id: "login",
-							url: "login/login.html"
-						});
-					} else {
-						var url = request_url + "get_user_order_state";
-						mui.ajax(url, {
-							data: {
-								"user_pk": plus.storage.getItem('user_pk')
-							},
-							dataType: 'json', //服务器返回json格式数据
-							type: 'post', //HTTP请求类型
-							timeout: 5000, //超时时间设置为5秒；
-							success: function(rsp) {
-								console.log(rsp.result);
-								if(parseInt(rsp.result) == 0) {
-									plus.storage.setItem('date_type', "2");
-									mui.openWindow({
-										id: "fast_yuyue",
-										url: "fast_yuyue.html"
-									});
-								} else {
-									mui.toast("您有未完成订单，暂不能叫车!");
-								}
+							id: "qiangdan",
+							url: "qiangdan.html",
+							extras: {
+								param: msg.payload
 							}
 						});
 					}
-				});
-
-				function getPosition() {
-					var mPoint = map.getCenter();
-					var lat = mPoint.lat; //获取到当前位置的纬度；			
-					var longt = mPoint.lng; //获取到当前位置的经度
-					var url = "http://api.map.baidu.com/geocoder/v2/?ak=FC9c13967bf240823ed03d702d883e83&location=" + lat + "," + longt + "&output=json&pois=1"
-					mui.getJSON(url, function(rsp) {
-						if(rsp != null) {
-							console.log("index.html---getPosition():");
-							// {"status":0,"result":{"location":{"lng":120.40776899999993,"lat":36.09848689179111},"formatted_address":"山东省青岛市市北区同兴路17号","business":"福州北路,南京路北段,浮山","addressComponent":{"country":"中国","country_code":0,"province":"山东省","city":"青岛市","district":"市北区","adcode":"370203","street":"同兴路","street_number":"17号","direction":"南","distance":"66"},"pois":[{"addr":"市北区同安路10号","cp":" ","direction":"西南","distance":"252","name":"青岛地震局","poiType":"政府机构","point":{"x":120.40912206316787,"y":36.099961899220354},"tag":"政府机构;行政单位","tel":"","uid":"38026af2c2f9eeec4354d764","zip":""},{"addr":"福州北路129南门","cp":" ","direction":"东南","distance":"241","name":"华恩名座","poiType":"房地产","point":{"x":120.40640019747264,"y":36.09985254144694},"tag":"房地产;住宅区","tel":"","uid":"d305db1fe03b3b3f932ca3f1","zip":""},{"addr":"青岛市市北区福州北路127号融兴名车城","cp":" ","direction":"东","distance":"193","name":"青岛钧锐新能源汽车销售有限公司","poiType":"汽车服务","point":{"x":120.40608579054414,"y":36.09882457087123},"tag":"汽车服务;汽车销售","tel":"","uid":"c18bf841dd54164788f15d67","zip":""},{"addr":"山东省青岛市市北区同安路","cp":" ","direction":"西南","distance":"227","name":"青实樱花郡","poiType":"房地产","point":{"x":120.40949935148207,"y":36.09937136541973},"tag":"房地产;住宅区","tel":"","uid":"c2d2ca30034ff7089d95de85","zip":""},{"addr":"福州北路127","cp":" ","direction":"东","distance":"195","name":"青岛富尧汽车销售有限公司","poiType":"汽车服务","point":{"x":120.40605884137885,"y":36.09882457087123},"tag":"汽车服务;汽车销售","tel":"","uid":"be4492f63e8e4b2efda778ca","zip":""},{"addr":"福州北路127号","cp":" ","direction":"东","distance":"197","name":"融兴汽车奥特莱斯","poiType":"汽车服务","point":{"x":120.40603189221355,"y":36.09876624589281},"tag":"汽车服务;汽车销售","tel":"","uid":"86fcfba1792c755c8f55ecb2","zip":""},{"addr":"福州北路129号","cp":" ","direction":"东南","distance":"281","name":"山东留学大厦","poiType":"房地产","point":{"x":120.40596901082785,"y":36.099925446646274},"tag":"房地产;写字楼","tel":"","uid":"2b7d08d730103abbe6073800","zip":""},{"addr":"市北区同福路6号(洪山坡对面)","cp":" ","direction":"南","distance":"607","name":"青岛市妇女儿童医院","poiType":"医疗","point":{"x":120.40883460540468,"y":36.10282701816904},"tag":"医疗;专科医院","tel":"","uid":"c70912ba5fdba33e07026f2a","zip":""},{"addr":"福州北路同安路67号","cp":" ","direction":"西南","distance":"499","name":"远洋船员学院福州路分院","poiType":"教育培训","point":{"x":120.41077494530623,"y":36.10119398618986},"tag":"教育培训;高等院校","tel":"","uid":"15e1e85eecc8baa3581093f1","zip":""},{"addr":"山东省青岛市市北区","cp":" ","direction":"南","distance":"655","name":"福辽立交桥","poiType":"交通设施","point":{"x":120.40596901082785,"y":36.1030384349841},"tag":"交通设施;桥","tel":"","uid":"41572e009320c8b5b45f1ee7","zip":""}],"poiRegions":[],"sematic_description":"青岛地震局西南252米","cityCode":236}} 
-							console.log(JSON.stringify(rsp));
-							var addComp = rsp.result.addressComponent;
-							var currentStreet = addComp.district + addComp.street;
-							var currentPosition = rsp.result.sematic_description;
-							console.log("index.html---currentPosition:");
-							console.log(currentPosition);
-							if(currentPosition != "") {
-								document.getElementById("map_result").innerHTML = "<lable style='color: darkgreen;font-weight: 900;'>我从</lable> " + currentStreet + "<br/>" + currentPosition + " <lable style='color: darkgreen;font-weight: 900;'>上车</lable>";
-								plus.storage.setItem("start_postion", currentStreet + currentPosition + "&" + mPoint.lat + "&" + mPoint.lng);
-							} else {
-								document.getElementById("map_result").innerHTML = "<lable style='color: darkgreen;font-weight: 900;'>我从</lable> " + currentStreet + " <lable style='color: darkgreen;font-weight: 900;'>上车</lable>";
-								plus.storage.setItem("start_postion", currentStreet + "&" + mPoint.lat + "&" + mPoint.lng);
-							}
-
-						}
-					});
+				} else {
+					console.log("payload: undefined");
 				}
-				getPosBaidu();
-				//开始移动地图
-				map.addEventListener("dragstart", function(e) {
-					var center = map.getCenter();
-					//					addMarker(center);
-					//					preMarker.setPosition(map.getCenter());
-					document.getElementById("map_result_div").style.display = "none";
-				});
-				//移动地图结束
-				map.addEventListener("dragend", function(e) {
-					getPosition();
-					document.getElementById("map_result_div").style.display = "";
-				});
-				/*点击显示隐藏广告框信息*/
-				var pop_adv = document.getElementById("pop_adv");
-				var pop_div = document.getElementById("pop_div");
-				if(pop_div.style.display != "none") {
-					defaultShowSlide();
+				if(msg.aps) {
+					console.log("aps: " + JSON.stringify(msg.aps));
 				}
-				pop_adv.addEventListener("tap", function() {
-					if(pop_div.style.display == "none") {
-						pop_div.style.display = "";
-						defaultShowSlide();
-					} else {
-						pop_div.style.display = "none";
-					}
-				});
-				plus.push.setAutoNotification(false);
-				var info = plus.push.getClientInfo();
-				plus.storage.setItem("clientid", info.clientid);
-				plus.storage.setItem("appid", info.appid);
-				plus.storage.setItem("appkey", info.appkey);
-				plus.storage.setItem("token", info.token);
-				console.log(info.appkey);
-				plus.push.addEventListener("click", function(msg) {
-					// 判断是从本地创建还是离线推送的消息
-					switch(msg.payload) {
-						case "LocalMSG":
-							outSet("点击本地创建消息启动：");
-							break;
-						default:
-							outSet("点击离线推送消息启动：");
-							break;
-					}
-					// 处理其它数据
-					logoutPushMsg(msg);
-				}, false);
-				// 监听在线消息事件
-				plus.push.addEventListener("receive", function(msg) {
-					if(msg.aps) { // Apple APNS message
-						//					mui.toast("接收到在线APNS消息：");
-					} else {
-						//					mui.toast("接收到在线透传消息：");
-					}
-					logoutPushMsg(msg);
-				}, false);
-				/**
-				 * 日志输入推送消息内容
-				 */
-				function logoutPushMsg(msg) {
-					if(msg.payload) {
-						islogin = plus.storage.getItem('islogin');
-						/*判空操作*/
-						if(islogin == null) {
-							plus.storage.setItem('islogin', 0);
-						}
-						if((islogin != 1) || (islogin != "1")) {} else {
-							mui.openWindow({
-								id: "qiangdan",
-								url: "qiangdan.html",
-								extras: {
-									param: msg.payload
-								}
-							});
-						}
-					} else {
-						console.log("payload: undefined");
-					}
-					if(msg.aps) {
-						console.log("aps: " + JSON.stringify(msg.aps));
-					}
-				}
-			})
-			/*增加标记点*/
+			}
+		})
+		/*增加标记点*/
 		function addMarker(point) { // 创建图标对象   
 			var myIcon = new BMap.Icon("img/car.png", new BMap.Size(20, 20));
 			// 创建标注对象并添加到地图   
