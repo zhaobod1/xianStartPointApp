@@ -16,9 +16,9 @@
 	},
 	"launch_path": "index.html",/*应用的入口页面，默认为根目录下的index.html；支持网络地址，必须以http://或https://开头*/
 	"developer": {
-		"name": "",/*开发者名称*/
-		"email": "",/*开发者邮箱地址*/
-		"url": "http://www.dcloud.io"
+		"name": "zhaobo",/*开发者名称*/
+		"email": "zhaobod1@163.com",/*开发者邮箱地址*/
+		"url": "http://net.huo15.com"
 	},
 	"permissions": {
 		"Accelerometer": {
@@ -114,7 +114,7 @@
 	"plus": {
 		"splashscreen": {
 			"autoclose": true,/*是否自动关闭程序启动界面，true表示应用加载应用入口页面后自动关闭；false则需调plus.navigator.closeSplashscreen()关闭*/
-			"waiting": true
+			"waiting": true,"delay":"0"
 		},
 		"runmode": "liberate",/*应用的首次启动运行模式，可取liberate或normal，liberate模式在第一次启动时将解压应用资源（Android平台File API才可正常访问_www目录）*/
 		"signature": "Sk9JTiBVUyBtYWlsdG86aHIyMDEzQGRjbG91ZC5pbw==",/*可选，保留给应用签名，暂不使用*/
@@ -252,18 +252,28 @@
 			"splashscreen": {
 				"ios": {
 					"iphone": {
-						/*iPhone3启动图片选，分辨率：320x480*/
+						"default": "H:/起点专车/res/startpage/320x480.png", /*iPhone3启动图片选，分辨率：320x480*/
 						"retina35": "H:/起点专车/res/startpage/640x960.png",/*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
-
-						"default": "H:/起点专车/res/startpage/320x480.png"
+						"retina40": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/640x1136.png",
+						"retina55": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/1242x2208.png",
+						"retina47": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/750x1334.png",
+						"retina55l": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/2208x1242.png"
 					},
-					"ipad": {}
+					"ipad": {
+						"portrait": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/768x1004.png", /*iPad竖屏启动图片，分辨率：768x1004*/
+						"portrait-retina": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/1536x2008.png",/*iPad高分屏竖屏图片，分辨率：1536x2008*/
+						"landscape": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/1024x748.png", /*iPad横屏启动图片，分辨率：1024x748*/
+						"landscape-retina": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/2048x1496.png", /*iPad高分屏横屏启动图片，分辨率：2048x1496*/
+						"portrait7": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/768x1024.png", /*iPad iOS7竖屏启动图片，分辨率：768x1024*/
+						"portrait-retina7": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/1536x2048.png",/*iPad iOS7高分屏竖屏图片，分辨率：1536x2048*/
+						"landscape7": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/1024x768.png", /*iPad iOS7横屏启动图片，分辨率：1024x768*/
+						"landscape-retina7": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/2048x1536.png"
+					}
 				},
 				"android": {
-
-					"ldpi": "/Users/zhaobo/www/Client/起点出行/西安专车系统APP/引导页/320X442.png",
-					"mdpi": "/Users/zhaobo/www/Client/起点出行/西安专车系统APP/引导页/240X282.png",
 					"hdpi": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/引导页/480X762.png",
+					"ldpi": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/引导页/320X442.png",
+					"mdpi": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/引导页/240X282.png",
 					"xhdpi": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/引导页/720X1242.png",
 					"xxhdpi": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/引导页/1080X1882.png"
 				}
