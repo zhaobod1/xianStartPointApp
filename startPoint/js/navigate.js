@@ -25,7 +25,8 @@ window.onload = function() {
 	navigate_fun();
 	// 个人中心点击事件
 	personcenter_fun();
-
+	//订单列表点击事件
+	orderlist_fun();
 	// 左上角个人中心点击事件
 	navigate_personcenter_fun();
 
@@ -131,6 +132,31 @@ function personcenter_fun() {
 			mui.openWindow({
 				id: "setting_menu",
 				url: "setting_menu.html"
+			});
+		}
+	});
+}
+
+
+// 订单点击事件
+function orderlist_fun() {
+	var tab_order = document.getElementById("tab_order");
+	tab_order.addEventListener("tap", function() {
+		var islogin = plus.storage.getItem('islogin');
+		/*判空操作*/
+		if(islogin == null) {
+			plus.storage.setItem('islogin', 0);
+		}
+		console.log("islogin0====" + islogin);
+		if((islogin != 1) || (islogin != "1")) {
+			mui.openWindow({
+				id: "login",
+				url: "login/login.html"
+			});
+		} else {
+			mui.openWindow({
+				id: "ordermanager",
+				url: "usercenter/ordermanager.html"
 			});
 		}
 	});

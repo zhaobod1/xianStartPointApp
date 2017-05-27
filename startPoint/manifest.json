@@ -355,7 +355,8 @@
 					"login/login.html",
 					"navigate/freeride.html",
 					"qiangdan.html",
-					"huo15module/guide.html"
+					"huo15module/guide.html",
+					"usercenter/ordermanager.html"
 				],
 				"priority": 0
 			},
@@ -366,7 +367,9 @@
 					"css/mui.min.css",
 					"fonts/mui.ttf"
 				],
-				"refer": [],
+				"refer": [
+					"login/license.html"
+				],
 				"priority": 0
 			},
 			"yuyue.html": {
@@ -667,7 +670,9 @@
 				"href": "login/license.html",
 				"resources": [
 					"js/request_url.js",
-					"js/common.js"
+					"js/common.js",
+					"js/mui.min.js",
+					"css/mui.min.css"
 				],
 				"priority": 6,
 				"refer": []

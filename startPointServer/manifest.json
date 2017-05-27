@@ -329,7 +329,8 @@
 					"usercenter/ordermanager.html",
 					"img/iconfont-yue.png",
 					"img/iconfont-chongzhi(2).png",
-					"usercenter/recharge.html"
+					"usercenter/recharge.html",
+					"img/iconfont-chongzhi(1).png"
 				],
 				"refer": [
 					"usercenter/messagesetting.html"
@@ -515,7 +516,6 @@
 				"helpcenter/low.html",
 				"img/nearby.png",
 				"img/servers.png",
-				"img/iconfont-chongzhi(1).png",
 				"img/longdriver.png",
 				"usercenter/visitfriend.html",
 				"img/iconfont-adv.png",

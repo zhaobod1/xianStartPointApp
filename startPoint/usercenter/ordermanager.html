@@ -212,6 +212,29 @@
 				}
 			}
 		}
+		//发送取消订单短信
+		function get_smsMsg(msg) {
+			var url = request_url + "send_msg";
+			randomValue = GetRandomNum(1, 100);
+			mui.ajax(url, {
+				data: {
+					"msg": msg,
+					"template": "0000700001",
+					"key": randomValue
+				},
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				timeout: 5000, //超时时间设置为5秒；
+				success: function(response) {
+					console.log(JSON.stringify(response));
+					return_result = response;
+				},
+				error: function(xhr, type, errorThrown) {
+					//异常处理；
+					console.log("\n失败$$$$$" + xhr.status + "$$$" + type + "$$$" + errorThrown);
+				}
+			});
+		}
 		//评分订单
 		function pingfen_order() {
 			/////////todo
