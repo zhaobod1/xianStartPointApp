@@ -302,7 +302,8 @@
 					"img/home/u0.png",
 					"css/styles.css",
 					"img/index_left_home.png",
-					"img/markers.svg"
+					"img/markers.svg",
+					"img/iconfont-orientation.png"
 				],
 				"refer": [
 					"login/login.html",
@@ -399,7 +400,8 @@
 					"css/mui.min.css",
 					"img/iconfont-wujiaoxing.png",
 					"fonts/mui.ttf",
-					"img/markers.png"
+					"img/markers.png",
+					"img/markers.svg"
 				],
 				"refer": [],
 				"priority": 0
@@ -536,7 +538,9 @@
 				"resources": [
 					"js/request_url.js",
 					"js/common.js",
-					"setting_menu.html"
+					"setting_menu.html",
+					"js/mui.min.js",
+					"css/mui.min.css"
 				],
 				"priority": 5,
 				"refer": []
@@ -559,7 +563,9 @@
 				"href": "helpcenter/operation.html",
 				"resources": [
 					"js/request_url.js",
-					"js/common.js"
+					"js/common.js",
+					"css/mui.min.css",
+					"usercenter/helpcenter.html"
 				],
 				"priority": 8,
 				"refer": []
@@ -607,10 +613,10 @@
 					"js/mui.min.js",
 					"helpcenter/complaint.html",
 					"css/mui.min.css",
-					"setting_menu.html"
+					"setting_menu.html",
+					"helpcenter/operation.html"
 				],
 				"refer": [
-					"helpcenter/operation.html",
 					"helpcenter/about.html",
 					"helpcenter/feedback.html",
 					"helpcenter/low.html"

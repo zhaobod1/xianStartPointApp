@@ -43,10 +43,12 @@ window.onload = function() {
 function freeride_fun() {
 	var tb_freeride = document.getElementById("tb_freeride");
 	tb_freeride.addEventListener("tap", function() {
-
-		//触发详情页面的chooseCarType事件
-		mui.fire(indexPage, 'chooseCarType', {
-			carType: 0
+		if(!indexPage) {
+			indexPage = plus.webview.getWebviewById('index.html');
+		}
+		//触发预加载页面的 getCarType 事件
+		mui.fire(indexPage, 'getCarType', {
+			carType: 4//出租车
 		});
 		//打开详情页面          
 		mui.openWindow({
@@ -59,6 +61,13 @@ function freeride_fun() {
 function selfdriver_fun() {
 	var tb_selfdriver = document.getElementById("tb_selfdriver");
 	tb_selfdriver.addEventListener("tap", function() {
+		if(!indexPage) {
+			indexPage = plus.webview.getWebviewById('index.html');
+		}
+		//触发预加载页面的 getCarType 事件
+		mui.fire(indexPage, 'getCarType', {
+			carType: 2//豪华轿车
+		});
 		mui.openWindow({
 			url: "index.html"
 
@@ -74,7 +83,7 @@ function nearby_fun() {
 		}
 		//触发预加载页面的 getCarType 事件
 		mui.fire(indexPage, 'getCarType', {
-			carType: "nearby"
+			carType: 3//公务轿车
 		});
 		mui.openWindow({
 			url: "index.html"
@@ -92,7 +101,7 @@ function tab_nearby_fun() {
 		});
 	});
 }
-// 出租车点击事件
+// 长租车点击事件
 function longdriver_fun() {
 	var tb_longdriver = document.getElementById("tb_longdriver");
 	tb_longdriver.addEventListener("tap", function() {
@@ -118,10 +127,12 @@ function subarea_fun() {
 	});
 }
 
-// 导航点击事件
+// 导航点击事件(代驾)
 function navigate_fun() {
 	var tb_navigate = document.getElementById("tb_navigate");
 	tb_navigate.addEventListener("tap", function() {
+		mui.toast("程序猿努力开发中...");
+		return;
 		mui.openWindow({
 			url: "index.html"
 		});

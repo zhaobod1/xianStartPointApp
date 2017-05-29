@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 
@@ -133,8 +132,8 @@
 			<!--<img src="img/markers.svg" style="width: 20px;height: 30px;" />-->
 			<img src="img/markers.png" style="width: 20px;height: 30px;" />
 		</div>
-		<div id="back_current_position" style="position: absolute;bottom: 50px;">
-			<img src="img/iconfont-wujiaoxing.png" width="50px" />
+		<div id="back_current_position" style="position: absolute;bottom: 80px;">
+			<img src="img/iconfont-orientation.png" width="50px" />
 		</div>
 
 		<!-- 弹出框广告信息-->
@@ -151,7 +150,8 @@
 	<script>
 		var islogin = 0;
 		mui.init();
-
+		//车型变量
+		var carType = null;
 		//个人中心点击事件
 		document.getElementById("person_center").addEventListener('tap', function(e) {
 			islogin = plus.storage.getItem('islogin');
@@ -173,8 +173,7 @@
 			}
 		});
 		//个人中心点击事件 end
-		
-		
+
 		//返回主页
 		document.getElementById("home_button").addEventListener('tap', function(e) {
 			mui.openWindow({
@@ -183,9 +182,7 @@
 			});
 		});
 		//返回主页 end
-		
-		
-		
+
 		/*预约用车按钮事件*/
 		var date_car = document.getElementById("date_car");
 		date_car.addEventListener("tap", function() {
@@ -203,11 +200,14 @@
 				plus.storage.setItem('date_type', "1");
 				mui.openWindow({
 					id: "yuyue",
-					url: "yuyue.html"
+					url: "yuyue.html",
+					extras: {
+						carType: carType
+					}
 				})
 			}
 		});
-		/*预约用车按钮事件*/
+		/*立即用车按钮事件*/
 		var fastdate_car = document.getElementById("fastdate_car");
 		fastdate_car.addEventListener("tap", function() {
 			islogin = plus.storage.getItem('islogin');
@@ -234,7 +234,10 @@
 							plus.storage.setItem('date_type', "2");
 							mui.openWindow({
 								id: "fast_yuyue",
-								url: "fast_yuyue.html"
+								url: "fast_yuyue.html",
+								extras: {
+									carType: carType
+								}
 							});
 						} else {
 							mui.toast("您有未完成订单，暂不能叫车!");
@@ -253,23 +256,13 @@
 		// var g_getinfo    = "";		
 		//保存navigate.js传过来的值，carType.
 		mui.plusReady(function() {
-			//添加newId自定义事件监听
-			window.addEventListener('chooseCarType', function(event) {
-				//获得事件参数，车型
-				var carType = event.index.carType;
-				
-			});
-			if(self.carType === 0) {
 
-			}
-			
 			//添加自定义事件 getCarType 事件监听
-			window.addEventListener('getCarType',function(event){
-				var carType=event.detail.carType;
-				mui.toast(carType);
+			window.addEventListener('getCarType', function(event) {
+				carType = event.detail.carType;
 			});
-			
-			
+
+			//弹窗广告
 			mui.ajax(request_url + "get_ad", {
 				data: {
 					"_type": "0000500001",
@@ -291,6 +284,7 @@
 					document.getElementById("banner").innerHTML = str_ad;
 				}
 			});
+			//弹窗广告 end
 			/*调用初始化定位信息*/
 			var point2 = new BMap.Point(116.571087, 33.271726); // 创建点坐标
 			map = new BMap.Map("map"); // 创建地图实例
