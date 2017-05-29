@@ -321,7 +321,7 @@ function shareAction(id, ex) {
 		});
 	}
 }
-var sharehref = "http://xian.huo15.com/down.aspx";
+var sharehref = "http://net.huo15.com/down.aspx";
 var sharecontent = "我正在使用起点出行客户端,使用租车服务特别方便，赶紧跟我一起来体验！";
 var sharehrefTitle = "起点出行客户端";
 var sharehrefDes = "我正在使用起点出行客户端,使用租车服务特别方便，赶紧跟我一起来体验！";

@@ -448,7 +448,9 @@
 				"resources": [
 					"js/mui.min.js",
 					"setting_menu.html",
-					"css/mui.min.css"
+					"css/mui.min.css",
+					"js/request_url.js",
+					"fonts/mui.ttf"
 				],
 				"refer": [],
 				"priority": 0

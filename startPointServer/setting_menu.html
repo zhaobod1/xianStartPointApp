@@ -84,7 +84,7 @@
 						<span class="mui-media-object">推荐好友</span>
 					</a>
 				</li>
-				<li class="mui-table-view-cell">
+				<li class="mui-table-view-cell" style="display: none;">
 					<a class="mui-navigate-right" open-type="common" href="usercenter/orderdistance.html">
 						<img class="mui-media-object mui-pull-left" src="img/iconfont-pingjia.jpg">
 						<span class="mui-media-object">抢单范围</span>
@@ -156,7 +156,7 @@
 						type: 'post', //HTTP请求类型
 						timeout: 5000, //超时时间设置为10秒；
 						success: function(response) {
-							sharehref = "http://www.qidiancar.com" + response.result;
+							sharehref = "http://net.huo15.com" + response.result;
 							console.log(sharehref);
 						},
 						error: function(xhr, type, errorThrown) {
