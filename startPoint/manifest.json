@@ -463,9 +463,12 @@
 					"usercenter/ordermanager.html",
 					"js/request_url.js",
 					"usercenter/recharge.html",
-					"usercenter/messagesetting.html"
+					"usercenter/messagesetting.html",
+					"usercenter/helpcenter.html"
 				],
-				"refer": [],
+				"refer": [
+					"usercenter/modify_username.html"
+				],
 				"priority": 0
 			},
 			"navigate/longdriver.html": {
@@ -573,7 +576,10 @@
 			"helpcenter/complaint.html": {
 				"href": "helpcenter/complaint.html",
 				"resources": [
-					"js/request_url.js"
+					"js/request_url.js",
+					"js/mui.min.js",
+					"css/mui.min.css",
+					"usercenter/helpcenter.html"
 				],
 				"priority": 10,
 				"refer": []
@@ -597,11 +603,15 @@
 			},
 			"usercenter/helpcenter.html": {
 				"href": "usercenter/helpcenter.html",
-				"resources": [],
+				"resources": [
+					"js/mui.min.js",
+					"helpcenter/complaint.html",
+					"css/mui.min.css",
+					"setting_menu.html"
+				],
 				"refer": [
 					"helpcenter/operation.html",
 					"helpcenter/about.html",
-					"helpcenter/complaint.html",
 					"helpcenter/feedback.html",
 					"helpcenter/low.html"
 				],
@@ -636,7 +646,9 @@
 			"usercenter/modify_username.html": {
 				"href": "usercenter/modify_username.html",
 				"resources": [
-					"js/request_url.js"
+					"js/request_url.js",
+					"js/mui.min.js",
+					"css/mui.min.css"
 				],
 				"priority": 10,
 				"refer": []

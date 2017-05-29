@@ -253,7 +253,7 @@
 				"ios": {
 					"iphone": {
 						"default": "H:/起点专车/res/startpage/320x480.png", /*iPhone3启动图片选，分辨率：320x480*/
-						"retina35": "H:/起点专车/res/startpage/640x960.png",/*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
+						/*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
 						"retina40": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/640x1136.png",
 						"retina55": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/1242x2208.png",
 						"retina47": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/750x1334.png",
@@ -330,11 +330,10 @@
 					"img/iconfont-yue.png",
 					"img/iconfont-chongzhi(2).png",
 					"usercenter/recharge.html",
-					"img/iconfont-chongzhi(1).png"
-				],
-				"refer": [
+					"img/iconfont-chongzhi(1).png",
 					"usercenter/messagesetting.html"
 				],
+				"refer": [],
 				"priority": 0
 			},
 			"login/login.html": {
@@ -353,7 +352,8 @@
 					"js/request_url.js",
 					"js/mui.min.js",
 					"css/mui.min.css",
-					"fonts/mui.ttf"
+					"fonts/mui.ttf",
+					"setting_menu.html"
 				],
 				"refer": [],
 				"priority": 0
@@ -446,7 +446,9 @@
 			},
 			"usercenter/orderdistance.html": {
 				"resources": [
-					"js/mui.min.js"
+					"js/mui.min.js",
+					"setting_menu.html",
+					"css/mui.min.css"
 				],
 				"refer": [],
 				"priority": 0

@@ -84,25 +84,35 @@
 
 	<body>
 		<div id="zzc" class="zzc"></div>
+		<!--弹窗广告-->
 		<div id="ad" class="ad">
 			<img id="ad_img" src="img/ad_1.jpg"><br>
 			<span class="mui-icon mui-icon-close" id="mui-close"></span>
 		</div>
-
+		<!--弹窗广告 end-->
+		
+		<!--头部菜单-->
 		<header class="mui-bar mui-bar-nav" style="background: transparent;">
 			<a class="mui-icon mui-icon-bars mui-pull-left" id="navigate_personcenter"></a>
 			<a id="navigate_share" class="mui-icon iconfont icon-fenxiang mui-pull-right" style="color: #999;"></a>
 			<h1 class="mui-title">起点出行</h1>
 		</header>
+		<!--头部菜单 end-->
+		
+		<!--底部菜单-->
 		<nav class="mui-bar mui-bar-tab" id="nav">
 			<a class="mui-tab-item mui-active" id="tab_nearby"> <span class="mui-icon mui-icon-map"></span> <span class="mui-tab-label">附近</span> </a>
 			<a class="mui-tab-item " id="tab_call"> <span class="mui-icon mui-icon-phone"></span> <span class="mui-tab-label">客服</span> </a>
 			<a class="mui-tab-item " id="tab_order"> <span class="mui-icon mui-icon-bars"></span> <span class="mui-tab-label">订单</span> </a>
 			<a class="mui-tab-item " id="tab_person"> <span class="mui-icon mui-icon-person"></span> <span class="mui-tab-label">我的</span> </a>
 		</nav>
-
-		<!--增加底部导航按钮 -->
+		<!--底部菜单 end -->
+		
+		
+		
+		<!--内容区域 -->
 		<div class="mui-content">
+			<!--轮播图片-->
 			<div id="slider" class="mui-slider">
 				<div class="mui-slider-group mui-slider-loop" id="banner">
 
@@ -113,7 +123,11 @@
 					<button type="button" class="mui-btn mui-btn-danger">起点出行，梦想起航</button>
 				</div>
 			</div>
-
+			<!--轮播图片 end-->
+			
+			
+			
+			
 			<!--快车、专车按钮组-->
 			<div class="expressAndTailored flex-box-row">
 				<div class="item" id="tb_nearby">
@@ -129,6 +143,9 @@
 				</div>
 			</div>
 			<!--快车、专车按钮组 end-->
+			
+
+
 
 			<!--顺风车、预包车、门店、我在哪儿按钮组-->
 			<div class="flex-box-row ride-sharing">
@@ -157,13 +174,38 @@
 
 				</div>
 			</div>
-
 			<!--顺风车、预包车、门店、我在哪儿按钮组 end -->
+			
+			
+			
 		</div>
+		<!--内容区域 -->
+		
+		
 		<script type="text/javascript" charset="utf-8">
 			mui.init();
-
+			//request_url:  http://net.huo15.com/web/getdata.aspx?com=
+			
+			//全局变量
+			//推广链接
+			sharehref='';
+			//底部菜单，打电话按钮
 			var tab_call = document.getElementById("tab_call");
+			
+			var navigate_share = document.getElementById("navigate_share");
+			navigate_share.addEventListener("tap", function() {
+				//打开分享 （在 /js/navigate.js定义了函数）
+				shareShow();
+			});
+			//关闭首页广告
+			document.getElementById("mui-close").addEventListener("tap", function() {
+				document.getElementById("ad").style.display = "none";
+				document.getElementById("zzc").style.display = "none";
+			});
+			//关闭首页广告 end
+			
+			
+			//plusReady h5+app准备好回调函数
 			mui.plusReady(function() {
 
 				//检查更新	
@@ -189,6 +231,12 @@
 						}
 					});
 				});
+				//检查更新 end 
+				
+				
+				
+				//0 立即叫车 1 预约 2半日租 3日租		
+				//获取首页banner info_title=0000500002, info_type=4
 				mui.ajax(request_url + "get_ad", {
 					data: {
 						"_type": "0000500002",
@@ -199,7 +247,7 @@
 					success: function(rsp) {
 						console.log(rsp.Table[0].info_content);
 						var str_ad = "<div class=\"mui-slider-item mui-slider-item-duplicate\"><a href=\"#\"><img src=\"" + request_img_url + rsp.Table[rsp.Table.length - 1].info_content + "\"></a></div>";
-						for(var i = 0; i < rsp.Table.length; i++) { //0 立即叫车 1 预约 2半日租 3日租								
+						for(var i = 0; i < rsp.Table.length; i++) { 						
 							var ad_img = request_img_url + rsp.Table[i].info_content;
 							str_ad = str_ad + "<div class=\"mui-slider-item\"><a href=\"#\"><img src=\"" + ad_img + "\"></a></div>";
 
@@ -211,6 +259,10 @@
 						navigatorShowSlide();
 					}
 				});
+				//获取首页banner info_title=0000500002, info_type=4 end
+				 
+				 
+				//获取首页广告 info_type=4, info_title=0000500003
 				mui.ajax(request_url + "get_ad_one", {
 					data: {
 						"_type": "0000500003",
@@ -226,17 +278,17 @@
 						}
 					}
 				});
+				//获取首页广告 end
+				
+				//获取推广链接
 				get_pop_link();
+				
+				//底部菜单，打电话按钮点击事件
 				tab_call.addEventListener("tap", function() {
-					plus.device.dial("400-029-3520", false);
-				})
-				/*增加首页默认滑动事件*/
-				function navigatorShowSlide() {
-					var gallery = mui(".mui-slider");
-					gallery.slider({
-						interval: 3000
-					});
-				};
+					plus.device.dial("15275599311", false);
+				});
+				//底部菜单，打电话按钮点击事件 end
+				
 				//首页返回键处理
 				//处理逻辑：1秒内，连续两次按返回键，则退出应用；
 				var first = null;
@@ -254,30 +306,14 @@
 						}
 					}
 				};
-				//获取推广链接
-				function get_pop_link() {
-					var url = request_url + "get_pop_link";
-					var user_pk = plus.storage.getItem('user_pk');
-					console.log("user_pk===" + user_pk);
-					mui.ajax(url, {
-						data: {
-							"user_pk": user_pk
-						},
-						dataType: 'json', //服务器返回json格式数据
-						type: 'post', //HTTP请求类型
-						timeout: 5000, //超时时间设置为10秒；
-						success: function(response) {
-							sharehref = "http://xian.huo15.com" + response.result;
-							console.log(sharehref);
-						},
-						error: function(xhr, type, errorThrown) {
-							//异常处理；
-							console.log("\n失败$$$$$" + xhr.status + "$$$" + type + "$$$" + errorThrown);
-						}
-					});
-				}
+				//处理逻辑：1秒内，连续两次按返回键，则退出应用； end
+				
+				
+				//消息推送
 				plus.push.setAutoNotification(false);
 				var info = plus.push.getClientInfo();
+				console.log("获取客户端推送标识信息：");
+				console.log(info	);
 				plus.storage.setItem("clientid", info.clientid);
 				plus.storage.setItem("appid", info.appid);
 				plus.storage.setItem("appkey", info.appkey);
@@ -304,6 +340,55 @@
 					}
 					logoutPushMsg(msg);
 				}, false);
+				//消息推送 end
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				//增加首页默认滑动事件
+				function navigatorShowSlide() {
+					var gallery = mui(".mui-slider");
+					gallery.slider({
+						interval: 3000
+					});
+				};
+				//增加首页默认滑动事件 end 
+				
+				
+				
+				//获取推广链接
+				function get_pop_link() {
+					var url = request_url + "get_pop_link";
+					var user_pk = plus.storage.getItem('user_pk');
+					console.log("user_pk===" + user_pk);
+					mui.ajax(url, {
+						data: {
+							"user_pk": user_pk
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 5000, //超时时间设置为10秒；
+						success: function(response) {
+							sharehref = "http://xian.huo15.com" + response.result;
+							console.log("sharehref: ");
+							console.log(sharehref);
+							console.log(response.pic_path);
+						},
+						error: function(xhr, type, errorThrown) {
+							//异常处理；
+							console.log("\n失败$$$$$" + xhr.status + "$$$" + type + "$$$" + errorThrown);
+						}
+					});
+				}
+				//获取推广链接 end
+				
 				/**
 				 * 日志输入推送消息内容
 				 */
@@ -330,16 +415,26 @@
 						console.log("aps: " + JSON.stringify(msg.aps));
 					}
 				}
+				//日志输入推送消息内容 end 
+				
+				
+				
+				
+				
+				
+				
+				
 
 			});
-			var navigate_share = document.getElementById("navigate_share");
-			navigate_share.addEventListener("tap", function() {
-				shareShow();
-			});
-			document.getElementById("mui-close").addEventListener("tap", function() {
-				document.getElementById("ad").style.display = "none";
-				document.getElementById("zzc").style.display = "none";
-			});
+			//plusReady h5+app准备好回调函数 end
+			
+			
+			
+			
+			
+			
+			
+			
 		</script>
 	</body>
 

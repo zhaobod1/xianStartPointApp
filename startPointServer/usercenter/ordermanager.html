@@ -8,13 +8,11 @@
 		<link href="../css/mui.min.css" rel="stylesheet" />
 		<link href="../css/style.css" rel="stylesheet" />
 		<script src="../js/mui.min.js"></script>
-		<script type="text/javascript" src="../js/request_url.js" ></script>
-		<script type="text/javascript" src="../js/jquery-1.7.2.js" ></script>
+		<script type="text/javascript" src="../js/request_url.js"></script>
+		<script type="text/javascript" src="../js/jquery-1.7.2.js"></script>
 		<style>
-
-			.order_list_view{
-				margin: 8px ;
-				
+			.order_list_view {
+				margin: 8px;
 			}
 		</style>
 	</head>
@@ -26,220 +24,216 @@
 		</header>
 		<div class="mui-content" id="order_content_div">
 
-
 		</div>
-		
+
 	</body>
-    <script type="text/javascript" charset="utf-8"> 
-    
-        var order_pk = "";
-        var coach_pk = "";
-    	mui.init();
- 	
-    mui.plusReady(function() {
-    	
-    	coach_pk = plus.storage.getItem('logincoach_pk');
-    	init();
-    })
-    
-    //初始化界面参数
-    function init()
-    {
-    	
-    	var url     = request_url+"get_coach_orderlist";
-    	  mui.ajax(url,{
-				data:{     
-					    "coach_pk"   :coach_pk
-				     },
-				dataType:'json',//服务器返回json格式数据
-				type:'post',//HTTP请求类型
-				timeout:5000,//超时时间设置为10秒；
-				success:function(response){
-						console.log(JSON.stringify(response));
-                        console.log("response.length==="+response.Table.length);
-                        if(response.Table.length !=0)
-                        {
-                        	dyn_create_ui(response);
-                        	view_orderdetail();
-                        }
-                        
+	<script type="text/javascript" charset="utf-8">
+		var order_pk = "";
+		var coach_pk = "";
+		mui.init();
+
+		mui.plusReady(function() {
+
+			coach_pk = plus.storage.getItem('logincoach_pk');
+			init();
+		})
+
+		//初始化界面参数
+		function init() {
+
+			var url = request_url + "get_coach_orderlist";
+			mui.ajax(url, {
+				data: {
+					"coach_pk": coach_pk
 				},
-				error:function(xhr,type,errorThrown){
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				timeout: 5000, //超时时间设置为10秒；
+				success: function(response) {
+					console.log(JSON.stringify(response));
+					console.log("response.length===" + response.Table.length);
+					if(response.Table.length != 0) {
+						dyn_create_ui(response);
+						view_orderdetail();
+					}
+
+				},
+				error: function(xhr, type, errorThrown) {
 					//异常处理；
-					console.log("\n失败$$$$$"+xhr.status+"$$$"+type+"$$$"+errorThrown);
+					console.log("\n失败$$$$$" + xhr.status + "$$$" + type + "$$$" + errorThrown);
 				}
 			});
-    }
-    //动态绘制页面数据
-    var order_content_div = document.getElementById("order_content_div");
-    var strTemp     = "";
-    var strBtn      = "";
-    var strDate     = "";
-    var strUser    = "";
-    var strPayState = "";
-    var str_userTel = "";
-    var str_startAddr = "";
-    var str_endAddr  = "";
-    
-    var user_name_flag = 0;
+		}
+		//动态绘制页面数据
+		var order_content_div = document.getElementById("order_content_div");
+		var strTemp = "";
+		var strBtn = "";
+		var strDate = "";
+		var strUser = "";
+		var strPayState = "";
+		var str_userTel = "";
+		var str_startAddr = "";
+		var str_endAddr = "";
 
-    function dyn_create_ui(result)
-    {  
+		var user_name_flag = 0;
 
-        for(var i=0;i<result.Table.length;i++)
-        {     //0 立即叫车 1 预约 2半日租 3日租
-        	 var order_type = result.Table[i].order_type;
-        	 order_pk = result.Table[i].order_pk;
- 
-        	 if(0 == order_type)
-        	 {
-        	 	strBtn="立即叫车";
-        	 }
-        	 else if(1 == order_type)
-        	 {
-        	 	strBtn="预约";
-        	 }
-        	 else if(2 == order_type)
-        	 {
-        	 	strBtn="半日租";
-        	 }
-        	 else
-        	 {
-        	 	strBtn="日租";
-        	 }
-        	 
-        	 if(result.Table[i].user_name == "")
-        	 {
+		function dyn_create_ui(result) {
 
-        	 	user_name_flag = 0;
-        	 }
-        	 else
-        	 {
-        	 	strUser = "客户姓名： "+result.Table[i].user_name;
-        	 	user_name_flag = 1;
-        	 }
-        	 
-        	 strDate  = result.Table[i].order_datetime;
-        	  //订单状态：0抢单中  2进行中 3待评价 4已结束 5已取消
-        	 var order_state = result.Table[i].order_state;
-        	  var strshow = "";
-        	 if("0" == order_state)
-        	 {
-        	 	strPayState = "抢单中";
-        	 }
-        	 else if("1" == order_state ||"2" == order_state) 
-        	 {
-        	 	strPayState = "进行中";
-        	 	strshow = '<button  class="mui-btn mui-btn-danger" onclick="cancel_order(this)" id='+order_pk+'>取消</button>';
-        	 }
-        	 else if("3" == order_state)
-        	 {
-        	 	strPayState = "已完成";
-        	 }
-        	 else if("4" == order_state)
-        	 {
-        	 	strPayState = "已结束";
-        	 }
-        	 else if("5" == order_state)
-        	 {
-        	 	strPayState = "已取消"; 
-        	 }
-        	 
+			for(var i = 0; i < result.Table.length; i++) { //0 立即叫车 1 预约 2半日租 3日租
+				var order_type = result.Table[i].order_type;
+				order_pk = result.Table[i].order_pk;
 
-        	 
-        	 var str_username = "";
-        	 if(user_name_flag == 0)
-        	 {
-        	 	str_username = "";
-        	 }
-        	 else
-        	 {
-        	 	str_username = '<p style="padding: 10px 0;"><a style="color: #000000;"><span>'+strUser+'</span></a></p>';
-        	 }
-        	 
-        	  str_userTel = result.Table[i].user_tel;
-			  str_startAddr = result.Table[i].start_address;
-			  str_endAddr  = result.Table[i].end_address;
-        	  strTemp =  '<div  name="order_detail_div"  class="mui-table-view-cell mui-card order_list_view">'
-        	               +'<div name="child_div">'
-        	               +'<span style="display:none">'+order_pk+'</span>'
-						   +'<p><span class="mui-badge mui-badge-success">'+strBtn +'</span>' +strDate+'</p>'
-						   +str_username
-						   +'<p style="padding: 10px 0;"><a style="color: #000000;"><span>'+"联系方式:"+str_userTel+'</span></a></p>'
-						   +'<p style="padding: 10px 0;"><a style="color: #000000;"><span>'+str_startAddr+"->"+str_endAddr+'</span></a></p>'
-						   +'</div>'
-						   +'<div style="text-align: right; border-top: 1px solid #CCCCCC; padding: 10px 0 0 0;">'
-						   +'<span class="mui-badge mui-badge-warning mui-pull-left" style="margin:8px 0; line-height:15px;" id="zt">'+strPayState+'</span>'	
-						   +strshow		
-						   +'</div>'
-				           +'</div>'
-			 order_content_div.innerHTML +=strTemp; 
-        }
-	}
-    
-    //查看订单详情页面
-    function view_orderdetail()
-    {  
-      // var order_detail_divName = document.getElementsByName("order_detail_div");
-        var order_detail_divName = document.getElementsByName("child_div");
-       for(var i=0;i< order_detail_divName.length;i++)
-       {
+				if(0 == order_type) {
+					strBtn = "立即叫车";
+				} else if(1 == order_type) {
+					strBtn = "预约";
+				} else if(2 == order_type) {
+					strBtn = "半日租";
+				} else {
+					strBtn = "日租";
+				}
 
-       	    order_detail_divName[i].addEventListener("tap",function(i){
-       	  	order_pk = this.firstChild.textContent;
-       	  	mui.openWindow({
-    			  url:"ordermanager_detail.html",
-    			  extras:{
-       	    		param:order_pk
-       	    	}
-  		    });
-       	  })
-       }
-    }
-	//取消订单
-    function cancel_order(obj)
-    {   
-      	var url     = request_url+"cancel_order";
-      	var cancel_btn = document.getElementsByTagName("button");
-      	for(var i=0;i<cancel_btn.length;i++)
-      	{
-      		if(cancel_btn[i]==obj)
-      		{
-      			var order_pk = obj.id;    
-    	      	mui.ajax(url,{
-					data:{     
-						    "coach_pk"   :coach_pk,
-						    "order_pk"  :order_pk
-					     },
-					dataType:'json',//服务器返回json格式数据
-					type:'post',//HTTP请求类型
-					timeout:5000,//超时时间设置为10秒；
-					success:function(response){
-						console.log(JSON.stringify(response));
-                        if(response.result == 0)
-                        {
-                        	mui.toast("取消订单失败");
-                        }
-                        else
-                        {
-                        	mui.toast("订单已取消");
-                        	obj.remove();                          	
-                        	$("#zt").html("已取消");
-                        }	                       
-					},
-					error:function(xhr,type,errorThrown){
-						//异常处理；
-						console.log("\n失败$$$$$"+xhr.status+"$$$"+type+"$$$"+errorThrown);
-					}
-				});
-      		}
-      		else
-      		{
-      			return;
-      		}
-      		
-      	}
-      	
-   }
-    </script>
+				if(result.Table[i].user_name == "") {
+
+					user_name_flag = 0;
+				} else {
+					strUser = "客户姓名： " + result.Table[i].user_name;
+					user_name_flag = 1;
+				}
+
+				strDate = result.Table[i].order_datetime;
+				//订单状态：0抢单中  2进行中 3待评价 4已结束 5已取消
+				var order_state = result.Table[i].order_state;
+				var strshow = "";
+				if("0" == order_state) {
+					strPayState = "抢单中";
+				} else if("1" == order_state || "2" == order_state) {
+					strPayState = "进行中";
+					strshow = '<button  class="mui-btn mui-btn-danger" onclick="cancel_order(this)" id=' + order_pk + '>取消</button>';
+				} else if("3" == order_state) {
+					strPayState = "已完成";
+				} else if("4" == order_state) {
+					strPayState = "已结束";
+				} else if("5" == order_state) {
+					strPayState = "已取消";
+				}
+
+				var str_username = "";
+				if(user_name_flag == 0) {
+					str_username = "";
+				} else {
+					str_username = '<p style="padding: 10px 0;"><a style="color: #000000;"><span>' + strUser + '</span></a></p>';
+				}
+
+				str_userTel = result.Table[i].user_tel;
+				str_startAddr = result.Table[i].start_address;
+				str_endAddr = result.Table[i].end_address;
+				strTemp = '<div  name="order_detail_div"  class="mui-table-view-cell mui-card order_list_view">' +
+					'<div name="child_div">' +
+					'<span style="display:none">' + order_pk + '</span>' +
+					'<p><span class="mui-badge mui-badge-success">' + strBtn + '</span>' + strDate + '</p>' +
+					str_username +
+					'<p style="padding: 10px 0;"><a style="color: #000000;"><span class="coachTel">' + "联系方式:" + str_userTel + '</span></a></p>' +
+					'<p style="padding: 10px 0;"><a style="color: #000000;"><span>' + str_startAddr + "->" + str_endAddr + '</span></a></p>' +
+					'</div>' +
+					'<div style="text-align: right; border-top: 1px solid #CCCCCC; padding: 10px 0 0 0;">' +
+					'<span class="mui-badge mui-badge-warning mui-pull-left" style="margin:8px 0; line-height:15px;" id="zt">' + strPayState + '</span>' +
+					strshow +
+					'</div>' +
+					'</div>'
+				order_content_div.innerHTML += strTemp;
+			}
+		}
+
+		//查看订单详情页面
+		function view_orderdetail() {
+			// var order_detail_divName = document.getElementsByName("order_detail_div");
+			var order_detail_divName = document.getElementsByName("child_div");
+			for(var i = 0; i < order_detail_divName.length; i++) {
+
+				order_detail_divName[i].addEventListener("tap", function(i) {
+					order_pk = this.firstChild.textContent;
+					mui.openWindow({
+						url: "ordermanager_detail.html",
+						extras: {
+							param: order_pk
+						}
+					});
+				})
+			}
+		}
+		//取消订单
+		function cancel_order(obj) {
+			var order_detail_div = obj.parentNode.parentNode;
+			console.log(order_detail_div);
+
+			var coachTel = order_detail_div.getElementsByClassName('coachTel')[0].innerHTML;
+			var coachTelNums = coachTel.substring(5);
+			console.log(order_detail_div);
+
+			
+			
+	
+			var url = request_url + "cancel_order";
+			var cancel_btn = document.getElementsByTagName("button");
+			for(var i = 0; i < cancel_btn.length; i++) {
+				if(cancel_btn[i] == obj) {
+					var order_pk = obj.id;
+					mui.ajax(url, {
+						data: {
+							"coach_pk": coach_pk,
+							"order_pk": order_pk
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 5000, //超时时间设置为10秒；
+						success: function(response) {
+							console.log(JSON.stringify(response));
+							if(response.result == 0) {
+								mui.toast("取消订单失败");
+							} else {
+								mui.toast("订单已取消");
+								obj.remove();
+								$("#zt").html("已取消");
+
+								//发送取消信息短信
+								get_smsMsg(coachTelNums);
+
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+							//异常处理；
+							console.log("\n失败$$$$$" + xhr.status + "$$$" + type + "$$$" + errorThrown);
+						}
+					});
+				} else {
+					return;
+				}
+
+			}
+
+		}
+		//发送取消订单短信
+		function get_smsMsg(phone) {
+			var url = request_url + "send_msg";
+			mui.ajax(url, {
+				data: {
+					"phone": phone,
+					//					"template": "0000700001",
+				},
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				timeout: 5000, //超时时间设置为5秒；
+				success: function(response) {
+					console.log(JSON.stringify(response));
+					return_result = response;
+				},
+				error: function(xhr, type, errorThrown) {
+					//异常处理；
+					console.log("\n失败$$$$$" + xhr.status + "$$$" + type + "$$$" + errorThrown);
+				}
+			});
+		}
+	</script>
+
 </html>

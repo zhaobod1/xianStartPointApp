@@ -1,6 +1,10 @@
 /********************************************************************
     navigate.js 处理导航页面跳转
    *********************************************************************/
+
+//预加载页面实例
+var indexPage = null;
+
 window.onload = function() {
 	//初始化预加载详情页面
 	mui.init({
@@ -9,14 +13,15 @@ window.onload = function() {
 			url: 'index.html'
 		}]
 	});
+
 	// 顺风车点击事件
 	freeride_fun();
-	// 附近点击事件 
+	// 快车（附近的车）点击事件 
 	nearby_fun();
 	tab_nearby_fun();
 	//长租车点击事件---预包车
 	longdriver_fun();
-	// 自驾点击事件
+	// (专车)代驾点击事件
 	selfdriver_fun();
 	// 门店点击事件
 	subarea_fun();
@@ -38,10 +43,7 @@ window.onload = function() {
 function freeride_fun() {
 	var tb_freeride = document.getElementById("tb_freeride");
 	tb_freeride.addEventListener("tap", function() {
-		var indexPage = null;
-		if(!indexPage) {
-			indexPage = plus.webview.getWebviewById('index.html');
-		}
+
 		//触发详情页面的chooseCarType事件
 		mui.fire(indexPage, 'chooseCarType', {
 			carType: 0
@@ -50,10 +52,10 @@ function freeride_fun() {
 		mui.openWindow({
 			id: 'index.html'
 		});
-		
+
 	});
 }
-// 代驾点击事件
+// (专车)代驾点击事件
 function selfdriver_fun() {
 	var tb_selfdriver = document.getElementById("tb_selfdriver");
 	tb_selfdriver.addEventListener("tap", function() {
@@ -63,10 +65,17 @@ function selfdriver_fun() {
 		});
 	});
 }
-// 专车点击事件 
+// 快车（附近的车）点击事件 
 function nearby_fun() {
 	var tb_nearby = document.getElementById("tb_nearby");
 	tb_nearby.addEventListener("tap", function() {
+		if(!indexPage) {
+			indexPage = plus.webview.getWebviewById('index.html');
+		}
+		//触发预加载页面的 getCarType 事件
+		mui.fire(indexPage, 'getCarType', {
+			carType: "nearby"
+		});
 		mui.openWindow({
 			url: "index.html"
 		});
@@ -77,6 +86,7 @@ function nearby_fun() {
 function tab_nearby_fun() {
 	var tab_nearby = document.getElementById("tab_nearby");
 	tab_nearby.addEventListener("tap", function() {
+
 		mui.openWindow({
 			url: "index.html"
 		});
@@ -86,6 +96,8 @@ function tab_nearby_fun() {
 function longdriver_fun() {
 	var tb_longdriver = document.getElementById("tb_longdriver");
 	tb_longdriver.addEventListener("tap", function() {
+		mui.toast("程序猿努力开发中...");
+		return;
 		mui.openWindow({
 			//			url: "navigate/longdriver.html"
 			url: "index.html"
@@ -95,8 +107,11 @@ function longdriver_fun() {
 
 // 门店点击事件
 function subarea_fun() {
+
 	var tb_subarea = document.getElementById("tb_subarea");
 	tb_subarea.addEventListener("tap", function() {
+		mui.toast("程序猿努力开发中...");
+		return false;
 		mui.openWindow({
 			url: "navigate/subarea.html"
 		});
@@ -136,7 +151,6 @@ function personcenter_fun() {
 		}
 	});
 }
-
 
 // 订单点击事件
 function orderlist_fun() {
@@ -236,13 +250,34 @@ function updateSerivces() {
 // 打开分享
 function shareShow() {
 	bhref = true;
-	var ids = [{ id: "weixin", ex: "WXSceneSession" }, { id: "weixin", ex: "WXSceneTimeline" }, { id: "sinaweibo" }, { id: "tencentweibo" }],
-		bts = [{ title: "发送给微信好友" }, { title: "分享到微信朋友圈" }, { title: "分享到新浪微博" }, { title: "分享到腾讯微博" }];
+	var ids = [{
+			id: "weixin",
+			ex: "WXSceneSession"
+		}, {
+			id: "weixin",
+			ex: "WXSceneTimeline"
+		}, {
+			id: "sinaweibo"
+		}, {
+			id: "tencentweibo"
+		}],
+		bts = [{
+			title: "发送给微信好友"
+		}, {
+			title: "分享到微信朋友圈"
+		}, {
+			title: "分享到新浪微博"
+		}, {
+			title: "分享到腾讯微博"
+		}];
 	//	if(plus.os.name=="iOS"){
 	//		ids.push({id:"qq"});
 	//		bts.push({title:"分享到QQ"});
 	//	}
-	plus.nativeUI.actionSheet({ cancel: "取消", buttons: bts },
+	plus.nativeUI.actionSheet({
+			cancel: "取消",
+			buttons: bts
+		},
 		function(e) {
 			var i = e.index;
 			if(i > 0) {
@@ -276,15 +311,20 @@ function shareAction(id, ex) {
 	}
 }
 var sharehref = "http://xian.huo15.com/down.aspx";
-var sharecontent = "我正在使用起点专车客户端,使用租车服务特别方便，赶紧跟我一起来体验！";
-var sharehrefTitle = "起点起点出行客户端";
+var sharecontent = "我正在使用起点出行客户端,使用租车服务特别方便，赶紧跟我一起来体验！";
+var sharehrefTitle = "起点出行客户端";
 var sharehrefDes = "我正在使用起点出行客户端,使用租车服务特别方便，赶紧跟我一起来体验！";
 /**
  * 发送分享消息
  * @param {plus.share.ShareService} s
  */
 function shareMessage(s, ex) {
-	var msg = { content: sharecontent, extra: { scene: ex } };
+	var msg = {
+		content: sharecontent,
+		extra: {
+			scene: ex
+		}
+	};
 	if(bhref) {
 		msg.href = sharehref;
 		if(sharehrefTitle != "") {
