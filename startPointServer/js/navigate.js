@@ -31,6 +31,7 @@ function updateSerivces(){
 		console.log("获取分享服务列表失败："+e.message );
 	} );
 }
+
 // 打开分享
 function shareShow(){
 	bhref=true;
