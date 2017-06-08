@@ -53,7 +53,7 @@
 				width: 80%;
 				height: 8%;
 				text-align: center;
-				top: 45%;
+				top: 56%;
 				left: 10%;
 				padding: 8px;
 				vertical-align: middle;
@@ -85,18 +85,21 @@
 			</div>
 		</div>
 		<div id="map_result_img" style="position: absolute;bottom: 50px;">
-			<img src="img/markers.svg" style="width: 20px;height: 30px;" />
+			<img src="img/markers.png" style="width: 20px;height: 30px;" />
 		</div>
 		<div id="back_current_position" style="position: absolute;bottom: 10px;">
 			<img src="img/iconfont-wujiaoxing.png" width="50px" />
 		</div>
 	</body>
+	<script src="huo15module/js/util/functions.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		//定义保存在用户端显示司机位置信息的数组
 		var coach_lonArr = "";
 		var coach_latArr = "";
 		var preMarker;
 		var datatype;
+		var orientationPoint='';//定位点
+		map={};//地图对象
 		// var g_getinfo    = "";
 		mui.plusReady(function() {
 				datatype = plus.storage.getItem('date_type');
@@ -247,7 +250,9 @@
 					mui.back();
 				}
 			})
-		/*初始化地图时时定位信息*/ 
+		
+		
+		/*初始化地图时时定位信息*/
 		function geoInf(position) {
 			var codns = position.coords; //获取地理坐标信息；
 			var lat = codns.latitude; //获取到当前位置的纬度；			
@@ -269,6 +274,7 @@
 						plus.storage.setItem("start_postion", currentStreet + "&" + mPoint.lat + "&" + mPoint.lng);
 					}
 					map.centerAndZoom(mPoint, 15); // 初始化地图，设置中心点坐标和地图级别
+					locationOrientationPoint(longt,lat);
 					document.getElementById("map_result").addEventListener("click", function() {
 						var start_postion = plus.storage.getItem("start_postion");
 						if (datatype == "1") {

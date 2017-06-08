@@ -14,7 +14,6 @@
 		<link rel="stylesheet" href="css/iconfont.css">
 		<script src="js/mui.min.js"></script>
 		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ylg8yBCSUPFnuu82sDnIbZ5H"></script>
-		<!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=726ZqpsoTe2765d1KaY5kqkd"></script>-->
 		<script type="text/javascript" src="js/request_url.js"></script>
 		<style>
 			html,
@@ -49,7 +48,7 @@
 				position: absolute;
 				width: 100%;
 				text-align: center;
-				top: 35%;
+				top: 30%;
 				vertical-align: middle;
 			}
 			
@@ -76,7 +75,7 @@
 				width: 80%;
 				height: 8%;
 				text-align: center;
-				top: 45%;
+				top: 40%;
 				left: 10%;
 				padding: 8px;
 				vertical-align: middle;
@@ -123,15 +122,16 @@
 				</a>
 			</nav>
 			<div id="map">地图加载中...</div>
+
 			<div align="center" id="map_result_div">
 				<div id="map_result">正在获取地址...</div>
 			</div>
 
 		</div>
 		<div id="map_result_img" style="position: absolute;bottom: 50px;">
-			<!--<img src="img/markers.svg" style="width: 20px;height: 30px;" />-->
 			<img src="img/markers.png" style="width: 20px;height: 30px;" />
 		</div>
+
 		<div id="back_current_position" style="position: absolute;bottom: 80px;">
 			<img src="img/iconfont-orientation.png" width="50px" />
 		</div>
@@ -247,12 +247,13 @@
 			}
 		});
 	</script>
-
+	<script src="huo15module/js/util/functions.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		//定义保存在用户端显示司机位置信息的数组
 		var coach_lonArr = "";
 		var coach_latArr = "";
 		var preMarker = new Array();
+		var orientationPoint='';//定位点，测试用的
 		// var g_getinfo    = "";		
 		//保存navigate.js传过来的值，carType.
 		mui.plusReady(function() {
@@ -286,7 +287,7 @@
 			});
 			//弹窗广告 end
 			/*调用初始化定位信息*/
-			var point2 = new BMap.Point(116.571087, 33.271726); // 创建点坐标
+			var point2 = new BMap.Point(108.93, 34.27); // 创建点坐标
 			map = new BMap.Map("map"); // 创建地图实例
 			map.centerAndZoom(point2, 15); // 初始化地图，设置中心点坐标和地图级别
 			map.addControl(new BMap.NavigationControl());
@@ -494,6 +495,8 @@
 						plus.storage.setItem("start_postion", currentStreet + "&" + mPoint.lat + "&" + mPoint.lng);
 					}
 					map.centerAndZoom(mPoint, 15); // 初始化地图，设置中心点坐标和地图级别
+					locationOrientationPoint(longt,lat);
+					
 					//					document.getElementById("map_result").addEventListener("click", function() {
 					//						islogin = plus.storage.getItem('islogin');
 					//						/*判空操作*/

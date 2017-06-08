@@ -127,7 +127,7 @@
 				"payment": {
 					"weixin": {
 						"description": "微信支付",
-						"appid": "wx4179af8e0ea8a387"
+						"appid": "wx97cca1ccb939d4fe"
 					},
 					"alipay": {
 						"description": "阿里支付",
@@ -141,11 +141,16 @@
 						"appsecret": "1BBc1cOGxu8ZfGdGSdxBQ2"
 					}
 				},
-				"maps": {},
+				"maps": {
+					"baidu":{
+						"appkey_android":"AjDRil9DRpFZnlh1oi0i9F4AeQkg3xcH",
+						"discription":"百度地图"
+					}
+				},
 				"share": {
 					"weixin": {
-						"appid": "wx4179af8e0ea8a387",
-						"appsecret": "171ed53921919b0ed4da341ca61adeb8",
+						"appid": "wx97cca1ccb939d4fe",
+						"appsecret": "d66a4e3eb51c5cd94de2e83171ef13f9",
 						"description": "微信分享"
 					},
 					"qq": {
@@ -251,29 +256,30 @@
 					"ldpi": "unpackage/res/icons/48x48.png", /*大屏程序图标，分辨率：48x48*/
 					"hdpi": "unpackage/res/icons/72x72.png", /*高分屏程序图标，分辨率：72x72*/
 					"xhdpi": "unpackage/res/icons/96x96.png",/*720P高分屏程序图标，分辨率：96x96*/
-					"xxhdpi": "unpackage/res/icons/144x144.png"
+					"xxhdpi": "unpackage/res/icons/144x144.png",
+					"xxxhdpi": "unpackage/res/icons/192x192.png"
 				}
 			},
 			"splashscreen": {
 				"ios": {
 					"iphone": {
-						"default": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/320x480.png", /*iPhone3启动图片选，分辨率：320x480*/
-						"retina35": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/640x960.png",
-						"retina55": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/1242x2208.png",
-						"retina47": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/750x1334.png",
-						"retina40": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/640x1136.png",
-						"retina55l": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/2208x1242.png"
+						"default": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/startpage/320x480.png", /*iPhone3启动图片选，分辨率：320x480*/
+						"retina35": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/startpage/640x960.png",
+						"retina55": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/startpage/1242x2208.png",
+						"retina47": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/startpage/750x1334.png",
+						"retina40": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/startpage/640x1136.png",
+						"retina55l": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/startpage/2208x1242.png"
 					},
 					"ipad": {
-						"portrait": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/768x1004.png"
+						"portrait": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/startpage/768x1004.png"
 					}
 				},
 				"android": {
-					"hdpi": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/引导页/480X762.png",
-					"ldpi": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/引导页/320X442.png",
-					"mdpi": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/引导页/240X282.png",
-					"xhdpi": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/引导页/720X1242.png",
-					"xxhdpi": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/引导页/1080X1882.png"
+					"hdpi": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/引导页/480X762.png",
+					"ldpi": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/引导页/320X442.png",
+					"mdpi": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/引导页/240X282.png",
+					"xhdpi": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/引导页/720X1242.png",
+					"xxhdpi": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/引导页/1080X1882.png"
 				}
 			},
 			"debug": true
@@ -303,7 +309,8 @@
 					"css/styles.css",
 					"img/index_left_home.png",
 					"img/markers.svg",
-					"img/iconfont-orientation.png"
+					"img/iconfont-orientation.png",
+					"huo15module/js/util/functions.js"
 				],
 				"refer": [
 					"login/login.html",
@@ -385,7 +392,8 @@
 					"js/mui.dtpicker.js",
 					"img/freeride.png",
 					"fonts/mui.ttf",
-					"taxi_client.html"
+					"taxi_client.html",
+					"huo15module/js/util/functions.js"
 				],
 				"refer": [
 					"choose_position.html",
@@ -401,7 +409,8 @@
 					"img/iconfont-wujiaoxing.png",
 					"fonts/mui.ttf",
 					"img/markers.png",
-					"img/markers.svg"
+					"img/markers.svg",
+					"huo15module/js/util/functions.js"
 				],
 				"refer": [],
 				"priority": 0
@@ -417,10 +426,11 @@
 					"css/mui.min.css",
 					"js/mui.dtpicker.js",
 					"img/freeride.png",
-					"fonts/mui.ttf"
+					"fonts/mui.ttf",
+					"taxi_client.html",
+					"huo15module/js/util/functions.js"
 				],
 				"refer": [
-					"taxi_client.html",
 					"choose_position.html",
 					"choose_endposition.html",
 					"pricedetail.html"
@@ -432,7 +442,8 @@
 					"js/mui.min.js",
 					"css/mui.min.css",
 					"fonts/mui.ttf",
-					"yuyue.html"
+					"yuyue.html",
+					"fast_yuyue.html"
 				],
 				"refer": [],
 				"priority": 0
@@ -444,7 +455,8 @@
 					"fonts/mui.ttf",
 					"css/mui.min.css",
 					"img/markers.png",
-					"img/markers.svg"
+					"img/markers.svg",
+					"huo15module/js/util/functions.js"
 				],
 				"refer": [],
 				"priority": 0
@@ -565,7 +577,8 @@
 					"js/request_url.js",
 					"js/common.js",
 					"css/mui.min.css",
-					"usercenter/helpcenter.html"
+					"usercenter/helpcenter.html",
+					"js/mui.min.js"
 				],
 				"priority": 8,
 				"refer": []
@@ -574,7 +587,10 @@
 				"href": "helpcenter/about.html",
 				"resources": [
 					"js/request_url.js",
-					"js/common.js"
+					"js/common.js",
+					"js/mui.min.js",
+					"css/mui.min.css",
+					"usercenter/helpcenter.html"
 				],
 				"priority": 9,
 				"refer": []
@@ -593,7 +609,9 @@
 			"helpcenter/feedback.html": {
 				"href": "helpcenter/feedback.html",
 				"resources": [
-					"js/request_url.js"
+					"js/request_url.js",
+					"css/mui.min.css",
+					"usercenter/helpcenter.html"
 				],
 				"priority": 11,
 				"refer": []
@@ -602,7 +620,9 @@
 				"href": "helpcenter/low.html",
 				"resources": [
 					"js/request_url.js",
-					"js/common.js"
+					"js/common.js",
+					"css/mui.min.css",
+					"usercenter/helpcenter.html"
 				],
 				"priority": 12,
 				"refer": []
@@ -614,13 +634,12 @@
 					"helpcenter/complaint.html",
 					"css/mui.min.css",
 					"setting_menu.html",
-					"helpcenter/operation.html"
-				],
-				"refer": [
-					"helpcenter/about.html",
+					"helpcenter/operation.html",
 					"helpcenter/feedback.html",
+					"helpcenter/about.html",
 					"helpcenter/low.html"
 				],
+				"refer": [],
 				"priority": 8
 			},
 			"usercenter/ordermanager_detail.html": {

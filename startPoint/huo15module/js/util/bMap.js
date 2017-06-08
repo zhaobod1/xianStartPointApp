@@ -13,7 +13,7 @@ function getPosition() {
 		return false;
 	}
 	var mPoint = map.getCenter();
-	
+
 	var lat = mPoint.lat; //获取到当前位置的纬度；			
 	var longt = mPoint.lng; //获取到当前位置的经度
 	var url = "http://api.map.baidu.com/geocoder/v2/?ak=FC9c13967bf240823ed03d702d883e83&location=" + lat + "," + longt + "&output=json&pois=1"
@@ -31,9 +31,9 @@ function getPosition() {
 			} else {
 				document.getElementById("map_result").innerHTML = "<lable style='color: darkgreen;font-weight: 900;'>我从</lable> " + currentStreet + " <lable style='color: darkgreen;font-weight: 900;'>上车</lable>";
 				plus.storage.setItem("start_postion", currentStreet + "&" + mPoint.lat + "&" + mPoint.lng);
-				
+
 			}
-			
+
 		}
 	});
 }
@@ -59,7 +59,7 @@ function geoInf(position) {
 			var currentStreet = addComp.district + addComp.street;
 			var currentPosition = rsp.result.sematic_description;
 			var mPoint = new BMap.Point(longt, lat);
-			currPoint = mPoint;//huo15 当前位置
+			currPoint = mPoint; //huo15 当前位置
 			if(currentPosition != "") {
 				document.getElementById("map_result").innerHTML = "<lable style='color: darkgreen;font-weight: 900;'>我从</lable> " + currentStreet + "<br/>" + currentPosition + " <lable style='color: darkgreen;font-weight: 900;'>上车</lable>";
 				plus.storage.setItem("start_postion", currentStreet + currentPosition + "&" + mPoint.lat + "&" + mPoint.lng);
@@ -87,3 +87,4 @@ function getPosBaidu() {
 		provider: 'baidu'
 	});
 }
+

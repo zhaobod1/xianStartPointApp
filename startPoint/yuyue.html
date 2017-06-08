@@ -134,6 +134,7 @@
 			<div id="allmap" style="display:none"></div>
 		</div>
 	</body>
+	<script src="huo15module/js/util/functions.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
 		mui.init();
 
@@ -170,10 +171,10 @@
 			});
 		})(mui);
 		//日期组件 end
-
+		var car_pk = 0;
 		var dateType = 1; //选择租期，用于判断计算费用公里数 (预约)
 		var carType = 3; //选择车型，用于判断计算费用公里数
-		var return_result = "";
+		var return_result = "";//车型数组信息
 		/*获取经纬度信息*/
 		var start_lon = "";
 		var start_lat = "";
@@ -194,9 +195,10 @@
 				console.log(rsp);
 				console.log(JSON.stringify(rsp));
 				return_result = rsp;
-				car_pk = return_result.Table[2].car_pk;
+				var carTable = carTypeToTable(carType);
+				car_pk = carTable.car_pk;
 				/* 设置专车 名字、图片、车类型 套餐价 */
-				init_carinfo(2);
+				init_carinfo(carTable);
 
 				//如果有主页的数据传递，就再次确定下车型
 				var currWebView = plus.webview.currentWebview();
@@ -267,7 +269,6 @@
 			});
 			confirm_data();
 		});
-		var car_pk = 0;
 		/* 判断选择车型 */
 		function choose_carType() {
 			//获得 单选选按钮name集合   
@@ -278,8 +279,9 @@
 				if(radios[i].checked) {
 					//单选按钮的值 
 					var carId = radios[i].value;
-
 					mui.each(return_result.Table, function(index, item) {
+						
+
 						if(item.id == carId) {
 							carType = carId;
 							init_packageinfo(item);
@@ -295,15 +297,7 @@
 		}
 		/* 判断选择车型 end */
 
-		// 初始化套餐信息
-		function init_packageinfo(table) {
-
-			distance_span.textContent = "￥" + table.car_start_price + "(含" + table.car_meal_away.replace(".00", "") + "公里)+" + table.car_away_price + "/公里" + "+" + table.car_time_price + "/分钟";
-			//distance_span.textContent = "套餐包含" + return_result.Table[indx].car_meal_time + "分钟" + return_result.Table[indx].car_meal_away + "公里";
-			//cost_span.textContent = "超出按￥" + return_result.Table[indx].car_go_time_price + "/分钟+￥" + return_result.Table[indx].car_go_away_price + "/公里计费";
-			cartype_span.textContent = textdecode1(table.car_rem);
-		}
-		// 初始化套餐信息 end
+		
 
 		/*
 		function init_packageinfo(indx) {
@@ -314,60 +308,9 @@
 			cartype_span.textContent = textdecode1(return_result.Table[indx].car_rem);
 		}
 		*/
-		//计算超出费用的价格
-		function far_costmoney(table) {
-			var strdistance = parseFloat((parseFloat(str_distance) / 1000).toFixed(3));
-			var strcosttime = parseInt(parseInt(str_costtime) / 60);
-			var car_start_price = parseFloat(table.car_start_price); //起租价
-			var car_meal_away = parseFloat(table.car_meal_away); //起租价包含公里
-			var order_away_fee = 0; //里程费
-			var order_time_fee = 0; //时长费
-			var order_far_away_fee = 0; //远途费 
-			var car_far_away = parseFloat(table.car_far_away); //远途标准
-			if(strdistance > 0) {
-				if(strdistance > car_meal_away) {
-					var strdistance1 = strdistance - car_meal_away;
-					order_away_fee = strdistance1 * parseFloat(table.car_away_price); //里程*里程价
-				} else {
-					order_away_fee = car_start_price;
-				}
-			}
-
-			if(strcosttime > 0) order_time_fee = strcosttime * parseFloat(table.car_time_price); //时长*时长价
-			if(strdistance > 0 && strdistance > car_far_away) order_far_away_fee = (strdistance - car_far_away) * parseFloat(table.car_far_price); //（里程-远途标准）*远途价
-
-			var order_fee = car_start_price + order_away_fee + order_time_fee + order_far_away_fee;
-			package_price.textContent = "￥" + order_fee.toFixed(2);
-		}
-		//计算超出费用的价格 end
-
-		/*
-		function far_costmoney(indx) {
-			var strdistance = parseFloat((parseFloat(str_distance) / 1000).toFixed(3));
-			var strcosttime = parseInt(parseInt(str_costtime) / 60);
-			var car_start_price = parseFloat(return_result.Table[indx].car_start_price); //起租价
-			var car_meal_away = parseFloat(return_result.Table[indx].car_meal_away); //起租价包含公里
-			var order_away_fee = 0; //里程费
-			var order_time_fee = 0; //时长费
-			var order_far_away_fee = 0; //远途费 
-			var car_far_away = parseFloat(return_result.Table[indx].car_far_away); //远途标准
-			if(strdistance > 0) {
-				if(strdistance > car_meal_away) {
-					var strdistance1 = strdistance - car_meal_away;
-					order_away_fee = strdistance1 * parseFloat(return_result.Table[indx].car_away_price); //里程*里程价
-				} else {
-					order_away_fee = car_start_price;
-				}
-			}
-
-			if(strcosttime > 0) order_time_fee = strcosttime * parseFloat(return_result.Table[indx].car_time_price); //时长*时长价
-			if(strdistance > 0 && strdistance > car_far_away) order_far_away_fee = (strdistance - car_far_away) * parseFloat(return_result.Table[indx].car_far_price); //（里程-远途标准）*远途价
-
-			var order_fee = car_start_price + order_away_fee + order_time_fee + order_far_away_fee;
-			package_price.textContent = "￥" + order_fee.toFixed(2);
-		}
 		
-		*/
+
+	
 
 		var strClientInfo = "";
 		//获取用户填写信息
@@ -382,44 +325,7 @@
 				document.getElementById("person_info").textContent = student_real_name + " " + student_phone;
 			}
 		}
-		/*init_carinfo() 初始化专车信息*/
-		function init_carinfo(carId) {
-			var tr_carname = document.getElementById("tr_carname"); //车名称表格的行
-			var tr_carimg = document.getElementById("tr_carimg"); //车型图片的表格行
-			var tr_carRadio = document.getElementById("tr_carRadio"); //车型选择单选按钮表格行
-			//车型数量
-			var result_len = return_result.Table.length;
-			var str_carname = "";
-			var str_carimg = "";
-			var str_carRadio = "";
-			var table={};
-			//循环读取返回结果
-			for(var i = result_len - 1; i >= 0; i--) {
-				str_carname += "<td><label>" + return_result.Table[i].car_name + "</label></td>"
-				str_carimg += "<td><img  width='70px' src='" + request_img_url + return_result.Table[i].car_img + "'/></td>"
-				if(carId == return_result.Table[i].id) {
-					table=return_result.Table[i];
-					str_carRadio += '<td><div class="mui-input-row mui-radio mui-left"><label>&nbsp;</label><input name="choose_taxi" type="radio" checked="checked" value="' + return_result.Table[i].id + '" onchange="choose_carType();"></div></td>';
-
-				} else {
-					str_carRadio += '<td><div class="mui-input-row mui-radio mui-left"><label>&nbsp;</label><input name="choose_taxi" type="radio" value="' + return_result.Table[i].id + '" onchange="choose_carType();"></div></td>';
-
-				}
-			}
-			tr_carname.innerHTML = str_carname;
-			tr_carimg.innerHTML = str_carimg;
-			tr_carRadio.innerHTML = str_carRadio;
-
-			//车型描述
-			document.getElementById("cartype_span").textContent = textdecode1(table.car_rem);
-			//预估价
-			package_price.textContent = "￥" + table.car_start_price;
-			//document.getElementById("distance_span").textContent = "套餐包含" + return_result.Table[2].car_meal_time + "分钟" + return_result.Table[2].car_meal_away + "公里";
-			//里程预估
-			document.getElementById("distance_span").textContent = "￥" + table.car_start_price + "(含" + table.car_meal_away.replace(".00", "") + "公里)+" + table.car_away_price + "/公里" + "+" + return_result.Table[2].car_time_price + "/分钟";
-			//document.getElementById("cost_span").textContent = "超出按￥" + return_result.Table[2].car_go_time_price + "/分钟+￥" + return_result.Table[2].car_go_away_price + "/公里计费";
-		}
-		/*init_carinfo() 初始化专车信息 end*/
+		
 
 		/* 接收来自子页面传递的值 */
 		window.addEventListener('id', function(event) {
@@ -453,9 +359,12 @@
 				str_costtime = plan.getDuration(false);
 				console.log("str_distance==" + str_distance);
 				console.log("str_costtime==" + str_costtime);
-				init_packageinfo(carType);
-				far_costmoney(carType);
-				console.log(carType);
+				console.log('cartype: '+carType);
+				var carTypeOfTable = carTypeToTable(carType);
+				console.log("carTypeOfTable: ");
+				console.log(carTypeOfTable);
+				init_packageinfo(carTypeOfTable);
+				far_costmoney(carTypeOfTable);
 			};
 			var transit = new BMap.DrivingRoute(map, {
 				renderOptions: {
@@ -488,6 +397,7 @@
 	         ********************************************************************/
 		/*预约 向服务器提交数据*/
 		function confirm_data() {
+			console.log("car_pk: "+car_pk);
 			var confirm_oper = document.getElementById("confirm_oper");
 			confirm_oper.addEventListener("tap", function() {
 				if(startPosition.value == "") {
@@ -538,8 +448,9 @@
 		var strParam = "";
 		var price_detail = document.getElementById("price_detail");
 		price_detail.addEventListener("tap", function() {
+			var carTable=carTypeToTable(carType);
 			//strParam = carType + "&" + cartype_span.textContent + "&" + distance_span.textContent + "&" + cost_span.textContent + "&" + package_price.textContent;
-			strParam = carType + "&" + cartype_span.textContent + "&" + str_distance + "&" + str_costtime + "&" + return_result.Table[carType].car_start_price + "&" + return_result.Table[carType].car_away_price + "&" + return_result.Table[carType].car_time_price + "&" + return_result.Table[carType].car_far_away + "&" + return_result.Table[carType].car_far_price + "&" + return_result.Table[carType].car_meal_away;
+			strParam = carType + "&" + cartype_span.textContent + "&" + str_distance + "&" + str_costtime + "&" + carTable.car_start_price + "&" + carTable.car_away_price + "&" + carTable.car_time_price + "&" + carTable.car_far_away + "&" + carTable.car_far_price + "&" + carTable.car_meal_away;
 			mui.openWindow({
 				id: "price_detail",
 				url: "pricedetail.html",
