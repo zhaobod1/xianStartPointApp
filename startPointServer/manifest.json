@@ -254,28 +254,28 @@
 					"iphone": {
 						"default": "H:/起点专车/res/startpage/320x480.png", /*iPhone3启动图片选，分辨率：320x480*/
 						/*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
-						"retina40": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/640x1136.png",
-						"retina55": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/1242x2208.png",
-						"retina47": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/750x1334.png",
-						"retina55l": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/2208x1242.png"
+						"retina40": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/startpage/640x1136.png",
+						"retina55": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/startpage/1242x2208.png",
+						"retina47": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/startpage/750x1334.png",
+						"retina55l": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/startpage/2208x1242.png"
 					},
 					"ipad": {
-						"portrait": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/768x1004.png", /*iPad竖屏启动图片，分辨率：768x1004*/
-						"portrait-retina": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/1536x2008.png",/*iPad高分屏竖屏图片，分辨率：1536x2008*/
-						"landscape": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/1024x748.png", /*iPad横屏启动图片，分辨率：1024x748*/
-						"landscape-retina": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/2048x1496.png", /*iPad高分屏横屏启动图片，分辨率：2048x1496*/
-						"portrait7": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/768x1024.png", /*iPad iOS7竖屏启动图片，分辨率：768x1024*/
-						"portrait-retina7": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/1536x2048.png",/*iPad iOS7高分屏竖屏图片，分辨率：1536x2048*/
-						"landscape7": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/1024x768.png", /*iPad iOS7横屏启动图片，分辨率：1024x768*/
-						"landscape-retina7": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/startpage/2048x1536.png"
+						"portrait": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/startpage/768x1004.png", /*iPad竖屏启动图片，分辨率：768x1004*/
+						"portrait-retina": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/startpage/1536x2008.png",/*iPad高分屏竖屏图片，分辨率：1536x2008*/
+						"landscape": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/startpage/1024x748.png", /*iPad横屏启动图片，分辨率：1024x748*/
+						"landscape-retina": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/startpage/2048x1496.png", /*iPad高分屏横屏启动图片，分辨率：2048x1496*/
+						"portrait7": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/startpage/768x1024.png", /*iPad iOS7竖屏启动图片，分辨率：768x1024*/
+						"portrait-retina7": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/startpage/1536x2048.png",/*iPad iOS7高分屏竖屏图片，分辨率：1536x2048*/
+						"landscape7": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/startpage/1024x768.png", /*iPad iOS7横屏启动图片，分辨率：1024x768*/
+						"landscape-retina7": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/startpage/2048x1536.png"
 					}
 				},
 				"android": {
-					"hdpi": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/引导页/480X762.png",
-					"ldpi": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/引导页/320X442.png",
-					"mdpi": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/引导页/240X282.png",
-					"xhdpi": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/引导页/720X1242.png",
-					"xxhdpi": "/Volumes/18554898815/WORK/www/Dcloud/xianStartPointApp/启动画面/引导页/1080X1882.png"
+					"hdpi": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/引导页/480X762.png",
+					"ldpi": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/引导页/320X442.png",
+					"mdpi": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/引导页/240X282.png",
+					"xhdpi": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/引导页/720X1242.png",
+					"xxhdpi": "/Volumes/18554898815/WORK/www/Dcloud/JLStartPointApp/启动画面/引导页/1080X1882.png"
 				}
 			},
 			"debug": true
@@ -299,7 +299,9 @@
 					"css/mui.min.css",
 					"fonts/iconfont.ttf",
 					"img/markers.png",
-					"img/peple.png"
+					"img/peple.png",
+					"js/huo15/functions.js",
+					"img/iconfont-orientation.png"
 				],
 				"refer": [
 					"setting_menu.html",

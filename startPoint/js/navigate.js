@@ -48,7 +48,7 @@ function freeride_fun() {
 		}
 		//触发预加载页面的 getCarType 事件
 		mui.fire(indexPage, 'getCarType', {
-			carType: 4//出租车
+			carType: 4 //出租车
 		});
 		//打开详情页面          
 		mui.openWindow({
@@ -66,7 +66,7 @@ function selfdriver_fun() {
 		}
 		//触发预加载页面的 getCarType 事件
 		mui.fire(indexPage, 'getCarType', {
-			carType: 2//豪华轿车
+			carType: 2 //豪华轿车
 		});
 		mui.openWindow({
 			url: "index.html"
@@ -83,7 +83,7 @@ function nearby_fun() {
 		}
 		//触发预加载页面的 getCarType 事件
 		mui.fire(indexPage, 'getCarType', {
-			carType: 3//公务轿车
+			carType: 3 //公务轿车
 		});
 		mui.openWindow({
 			url: "index.html"
@@ -267,19 +267,11 @@ function shareShow() {
 		}, {
 			id: "weixin",
 			ex: "WXSceneTimeline"
-		}, {
-			id: "sinaweibo"
-		}, {
-			id: "tencentweibo"
 		}],
 		bts = [{
 			title: "发送给微信好友"
 		}, {
 			title: "分享到微信朋友圈"
-		}, {
-			title: "分享到新浪微博"
-		}, {
-			title: "分享到腾讯微博"
 		}];
 	//	if(plus.os.name=="iOS"){
 	//		ids.push({id:"qq"});
@@ -321,7 +313,7 @@ function shareAction(id, ex) {
 		});
 	}
 }
-var sharehref = "http://net.huo15.com/down.aspx";
+var sharehref = "http://jl.huo15.com/dlPage/wap/default.htm";
 var sharecontent = "我正在使用起点出行客户端,使用租车服务特别方便，赶紧跟我一起来体验！";
 var sharehrefTitle = "起点出行客户端";
 var sharehrefDes = "我正在使用起点出行客户端,使用租车服务特别方便，赶紧跟我一起来体验！";

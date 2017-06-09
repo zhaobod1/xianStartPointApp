@@ -35,7 +35,6 @@
 			}
 			
 			#map {
-				
 				text-align: center;
 				position: absolute;
 				top: 0px;
@@ -43,7 +42,7 @@
 				width: 100%;
 			}
 			
-			.mui-bar-tab .mui-tab-item .mui-icon ~ .mui-tab-label {
+			.mui-bar-tab .mui-tab-item .mui-icon~.mui-tab-label {
 				font-size: 14px;
 			}
 			
@@ -85,6 +84,7 @@
 				border-radius: 5px;
 				color: #666;
 				font-size: 12px;
+				
 			}
 		</style>
 	</head>
@@ -118,8 +118,8 @@
 		<!--<div id="map_result_img" style="position: absolute;bottom: 50px;">
 			<img src="img/markers.png" style="width: 20px;height: 30px;" />
 		</div>-->
-		<div id="back_current_position" style="position: absolute;bottom: 50px;">
-			<img src="img/iconfont-wujiaoxing.png" width="40px" />
+		<div id="back_current_position" style="position: absolute;bottom: 70px;">
+			<img src="img/iconfont-orientation.png" width="40px" />
 		</div>
 		</div>
 
@@ -170,7 +170,7 @@
 			</div>
 
 	</body>
-
+	<script src="js/huo15/functions.js" type="text/javascript" charset="utf-8"></script>
 	<script>
 		var menu = null,
 			main = null;
@@ -182,11 +182,11 @@
 		document.getElementById("person_center").addEventListener('tap', function(e) {
 			islogin = plus.storage.getItem('isServerlogin');
 			/*判空操作*/
-			if (islogin == null) {
+			if(islogin == null) {
 				plus.storage.setItem('isServerlogin', 0);
 			}
 			console.log("islogin0====" + islogin);
-			if ((islogin != 1) || (islogin != "1")) {
+			if((islogin != 1) || (islogin != "1")) {
 				mui.openWindow({
 					id: "login",
 					url: "login/login.html"
@@ -202,18 +202,18 @@
 		//处理逻辑：1秒内，连续两次按返回键，则退出应用；
 		var first = null;
 		mui.back = function() {
-			if (showMenu) {
+			if(showMenu) {
 				closeMenu();
 			} else {
 				//首次按键，提示‘再按一次退出应用’
-				if (!first) {
+				if(!first) {
 					first = new Date().getTime();
 					mui.toast('再按一次退出应用');
 					setTimeout(function() {
 						first = null;
 					}, 1000);
 				} else {
-					if (new Date().getTime() - first < 1000) {
+					if(new Date().getTime() - first < 1000) {
 						plus.runtime.quit();
 					}
 				}
@@ -233,32 +233,34 @@
 		var logincoach_pk = "";
 		var isserverlog = 0;
 		var strParam = "";
+		if(typeof orientationPoint == 'undefined') {
+			orientationPoint = {};
+		}
 		var preMarker = new Array();
 		mui.plusReady(function() {
 			//检查更新	
-			plus.runtime.getProperty( plus.runtime.appid, function ( wgtinfo ) {			
-				mui.ajax(request_url + "get_update", {	
+			plus.runtime.getProperty(plus.runtime.appid, function(wgtinfo) {
+				mui.ajax(request_url + "get_update", {
 					data: {
-						"_type":2,
+						"_type": 2,
 						"version": wgtinfo.version
 					},
 					dataType: 'json', //服务器返回json格式数据
 					type: 'post', //HTTP请求类型
 					timeout: 5000, //超时时间设置为5秒； 
-					success: function(rsp) {						
-						if(parseInt(rsp.result)==100) 
-						{
-							 var btnArray = ['更新', '取消'];
+					success: function(rsp) {
+						if(parseInt(rsp.result) == 100) {
+							var btnArray = ['更新', '取消'];
 							mui.confirm('系统有更新，立即更新？', '系统提示', btnArray, function(e) {
-								if (e.index == 0) {
-									plus.runtime.openURL(request_img_url+"down_ser.aspx");									
-								} 
+								if(e.index == 0) {
+									plus.runtime.openURL(request_img_url + "down_ser.aspx");
+								}
 							});
-						}						
+						}
 					}
-				});				
+				});
 			});
-					
+
 			/*调用初始化定位信息*/
 			getPosBaidu();
 			post_coach_info();
@@ -277,13 +279,13 @@
 				var longt = mPoint.lng; //获取到当前位置的经度
 				var url = "http://api.map.baidu.com/geocoder/v2/?ak=FC9c13967bf240823ed03d702d883e83&location=" + lat + "," + longt + "&output=json&pois=1"
 				mui.getJSON(url, function(rsp) {
-					if (rsp != null) {
+					if(rsp != null) {
 						console.log(JSON.stringify(rsp));
 						var addComp = rsp.result.addressComponent;
 						var currentStreet = addComp.district + addComp.street;
 						var currentPosition = rsp.result.sematic_description;
 						console.log(currentPosition);
-						if (currentPosition != "") {
+						if(currentPosition != "") {
 							document.getElementById("map_result").innerHTML = currentStreet + "<br/>" + currentPosition;
 							plus.storage.setItem("start_postion", currentStreet + currentPosition);
 						} else {
@@ -305,16 +307,16 @@
 			/*点击显示隐藏广告框信息*/
 			var pop_adv = document.getElementById("pop_adv");
 			var pop_div = document.getElementById("pop_div");
-			if (pop_div.style.display != "none") {
+			if(pop_div.style.display != "none") {
 				defaultShowSlide();
 			}
-			pop_adv.addEventListener("tap", function() {				
-				if (pop_div.style.display == "none") {
+			pop_adv.addEventListener("tap", function() {
+				if(pop_div.style.display == "none") {
 					pop_div.style.display = "";
 					defaultShowSlide();
 				} else {
 					pop_div.style.display = "none";
-				} 
+				}
 			})
 			plus.push.setAutoNotification(false);
 			var info = plus.push.getClientInfo();
@@ -329,7 +331,7 @@
 			plus.storage.setItem("token", info.token);
 			plus.push.addEventListener("click", function(msg) {
 				// 判断是从本地创建还是离线推送的消息
-				switch (msg.payload) {
+				switch(msg.payload) {
 					case "LocalMSG":
 						outSet("点击本地创建消息启动：");
 						break;
@@ -342,7 +344,7 @@
 			}, false);
 			// 监听在线消息事件
 			plus.push.addEventListener("receive", function(msg) {
-				if (msg.aps) { // Apple APNS message
+				if(msg.aps) { // Apple APNS message
 					//					mui.toast("接收到在线APNS消息：");
 				} else {
 					//					mui.toast("接收到在线透传消息：");
@@ -353,17 +355,16 @@
 			 * 日志输入推送消息内容
 			 */
 			function logoutPushMsg(msg) {
-				if (msg.payload) {
+				if(msg.payload) {
 					plus.storage.setItem("payload", msg.payload);
 					var shouche = plus.storage.getItem("shouche");
 					isserverlog = plus.storage.getItem('isServerlogin');
 					/*判空操作*/
-					if (isserverlog == null) {
+					if(isserverlog == null) {
 						plus.storage.setItem('isServerlogin', 0);
 					}
-					if ((isserverlog != 1) || (isserverlog != "1")) {
-					} else {
-						if (shouche == "false") {
+					if((isserverlog != 1) || (isserverlog != "1")) {} else {
+						if(shouche == "false") {
 							mui.openWindow({
 								id: "qiangdan",
 								url: "qiangdan.html",
@@ -377,7 +378,7 @@
 				} else {
 					console.log("payload: undefined");
 				}
-				if (msg.aps) {
+				if(msg.aps) {
 					console.log("aps: " + JSON.stringify(msg.aps));
 				}
 			}
@@ -395,15 +396,15 @@
 			marker.addEventListener("click", function() {
 				var p = marker.getPosition(); //获取marker的位置
 				console.log("coachLatPosArr.length==" + coachLatPosArr.length);
-				for (var i = 0; i < coachLatPosArr.length; i++) {
-					if ((coachLatPosArr[i] == p.lng && (p.lng != "")) && (coachLongtPosArr[i] == p.lat && (p.lat != ""))) {
+				for(var i = 0; i < coachLatPosArr.length; i++) {
+					if((coachLatPosArr[i] == p.lng && (p.lng != "")) && (coachLongtPosArr[i] == p.lat && (p.lat != ""))) {
 						isserverlog = plus.storage.getItem('isServerlogin');
 						/*判空操作*/
-						if (isserverlog == null) {
+						if(isserverlog == null) {
 							plus.storage.setItem('isServerlogin', 0);
 						}
 						console.log("isserverlog====" + isserverlog);
-						if ((isserverlog != 1) || (isserverlog != "1")) {
+						if((isserverlog != 1) || (isserverlog != "1")) {
 							mui.openWindow({
 								id: "login",
 								url: "login/login.html"
@@ -451,13 +452,13 @@
 				type: 'post', //HTTP请求类型
 				timeout: 5000, //超时时间设置为5秒；
 				success: function(rsp) {
-					if (preMarker.length > 0) {
-						for (var i = 0; i < preMarker.length; i++) {
+					if(preMarker.length > 0) {
+						for(var i = 0; i < preMarker.length; i++) {
 							map.removeOverlay(preMarker[i]);
 						}
 						preMarker.length = 0;
 					}
-					for (var i = 0; i < rsp.Table.length; i++) {
+					for(var i = 0; i < rsp.Table.length; i++) {
 						coachLatPosArr[i] = rsp.Table[i].start_lat;
 						coachLongtPosArr[i] = rsp.Table[i].start_lon;
 						coachOrderPkArr[i] = rsp.Table[i].order_pk;
@@ -466,7 +467,7 @@
 						order_datetimeArr[i] = rsp.Table[i].order_datetime;
 						start_addressArr[i] = rsp.Table[i].start_address;
 						end_addressArr[i] = rsp.Table[i].end_address;
-						if (coachLongtPosArr[i] != "") {
+						if(coachLongtPosArr[i] != "") {
 							addMarker(new BMap.Point(coachLongtPosArr[i], coachLatPosArr[i]));
 						}
 					}
@@ -490,7 +491,7 @@
 			var codns = position.coords; //获取地理坐标信息；
 			var lat = codns.latitude; //获取到当前位置的纬度；			
 			var longt = codns.longitude; //获取到当前位置的经度
-			if (First == false) {
+			if(First == false) {
 				mPoint = new BMap.Point(longt, lat);
 				marker.setPosition(mPoint);
 				map.centerAndZoom(mPoint, map.getZoom());
@@ -510,7 +511,9 @@
 			map.addOverlay(marker); //增加点
 			plus.storage.setItem("coach_lon", longt + "");
 			plus.storage.setItem("coach_lat", lat + "");
+			locationOrientationPoint(longt,lat);
 			setTimeout("getPosBaidu()", 2000);
+			
 		}
 
 		function GetLabel(x, y, curr_address) {
@@ -535,14 +538,14 @@
 		function GetAddress() {
 			var url = "http://api.map.baidu.com/geocoder/v2/?ak=FC9c13967bf240823ed03d702d883e83&location=" + mPoint.lat + "," + mPoint.lng + "&output=json&pois=1"
 			mui.getJSON(url, function(rsp) {
-				if (rsp != null) {
+				if(rsp != null) {
 					//console.log(JSON.stringify(rsp));
 					var addComp = rsp.result.addressComponent;
 					var currentStreet = addComp.street;
 					var currentPosition = rsp.result.sematic_description;
 					var curr_address = "";
 					var x, y;
-					if (currentPosition != "") {
+					if(currentPosition != "") {
 						//document.getElementById("map_result").innerHTML = currentStreet + "<br/>" + currentPosition;
 						curr_address = currentStreet + "<br/>" + currentPosition;
 						x = -currentPosition.length * 5 - 8;
@@ -555,7 +558,7 @@
 						y = -36;
 						plus.storage.setItem("start_postion", currentStreet);
 					}
-					if (First == false) {
+					if(First == false) {
 						//marker.setPosition(mPoint);
 						map.removeOverlay(marker.getLabel());
 						marker.setLabel(GetLabel(x, y, curr_address));
@@ -567,8 +570,8 @@
 		}
 
 		function run() {
-			if (linesPoints.length == 0) setTimeout("getPosBaidu()", 2000);
-			for (var m = 0; m < linesPoints.length; m++) {
+			if(linesPoints.length == 0) setTimeout("getPosBaidu()", 2000);
+			for(var m = 0; m < linesPoints.length; m++) {
 				var pts = linesPoints[m];
 				var len = pts.length;
 				resetMkPoint(1, len, pts, marker)
@@ -579,7 +582,7 @@
 			map.removeOverlay(marker.getLabel());
 			carMk.setPosition(pts[i]);
 			map.centerAndZoom(pts[i], map.getZoom());
-			if (i < len) {
+			if(i < len) {
 				setTimeout(function() {
 					i++;
 					resetMkPoint(i, len, pts, carMk);
@@ -597,15 +600,15 @@
 			var planObj = results.getPlan(0);
 			var b = new Array();
 			var addPoints = function(points) {
-					for (var i = 0; i < points.length; i++) {
-						bounds.push(points[i]);
-						b.push(points[i]);
-					}
+				for(var i = 0; i < points.length; i++) {
+					bounds.push(points[i]);
+					b.push(points[i]);
 				}
-				// 绘制驾车步行线路
-			for (var i = 0; i < planObj.getNumRoutes(); i++) {
+			}
+			// 绘制驾车步行线路
+			for(var i = 0; i < planObj.getNumRoutes(); i++) {
 				var route = planObj.getRoute(i);
-				if (route.getDistance(false) <= 0) {
+				if(route.getDistance(false) <= 0) {
 					continue;
 				}
 				addPoints(route.getPath());
@@ -647,7 +650,7 @@
 			var coach_lat = plus.storage.getItem("coach_lat");
 			var url = request_url + "set_coach_place";
 			//不为空的情况下，保存经纬度，并提交后台处理
-			if (coach_lon != null && coach_lat != null) {
+			if(coach_lon != null && coach_lat != null) {
 				mui.ajax(url, {
 					data: {
 						"coach_pk": coach_pk,
@@ -677,10 +680,10 @@
 		date_car.addEventListener("tap", function() {
 			isserverlog = plus.storage.getItem('isServerlogin');
 			/*判空操作*/
-			if (isserverlog == null) {
+			if(isserverlog == null) {
 				plus.storage.setItem('isServerlogin', 0);
 			}
-			if ((isserverlog != 1) || (isserverlog != "1")) {
+			if((isserverlog != 1) || (isserverlog != "1")) {
 				mui.openWindow({
 					id: "login",
 					url: "login/login.html"
@@ -696,27 +699,24 @@
 					timeout: 5000, //超时时间设置为5秒；
 					success: function(rsp) {
 						console.log(rsp.result);
-						if(parseInt(rsp.result)==0) 
-						{
+						if(parseInt(rsp.result) == 0) {
 							mui.openWindow({
 								id: "graborder_list",
 								url: "usercenter/graborder_list.html"
 							});
-						}
-						else
-						{
+						} else {
 							mui.toast("您有未完成订单，暂不能抢单!");
 						}
 					}
-				});						
+				});
 			}
-//							mui.openWindow({
-//								id: "qiangdan",
-//								url: "qiangdan.html",
-//								extras: {
-//									param: "{'Table':[{'RowIndex':'1','order_pk':'b6781b93-9f6a-499c-aa8e-9113a489d651','user_pk':'a31309c3-931d-4a9a-8f05-0280634aecb4','user_name':'小雪','user_tel':'17792513817','user_sms':'0','order_type':'1','order_datetime':'2015-12-18&nbsp;1:24','start_address':'雁塔区太白南路中国移动3G手机销售中心北52米','start_lon':'34.209048','start_lat':'108.907845','end_address':'雁塔区南三环江林公园里东南181米','end_lon':'34.197255','end_lat':'108.914436','order_away':'2.3','order_time':'7','coach_pk':'','car_meal_fee':'0.00','order_away_fee':'0.00','order_time_fee':'0.00','order_far_away_fee':'0.00','order_cut_fee':'0.00','order_fee':'0.00','order_rem':'undefined','order_state':'0','create_time':'2015/12/18&nbsp;1:24:33'}]}"
-//								}
-//							});
+			//							mui.openWindow({
+			//								id: "qiangdan",
+			//								url: "qiangdan.html",
+			//								extras: {
+			//									param: "{'Table':[{'RowIndex':'1','order_pk':'b6781b93-9f6a-499c-aa8e-9113a489d651','user_pk':'a31309c3-931d-4a9a-8f05-0280634aecb4','user_name':'小雪','user_tel':'17792513817','user_sms':'0','order_type':'1','order_datetime':'2015-12-18&nbsp;1:24','start_address':'雁塔区太白南路中国移动3G手机销售中心北52米','start_lon':'34.209048','start_lat':'108.907845','end_address':'雁塔区南三环江林公园里东南181米','end_lon':'34.197255','end_lat':'108.914436','order_away':'2.3','order_time':'7','coach_pk':'','car_meal_fee':'0.00','order_away_fee':'0.00','order_time_fee':'0.00','order_far_away_fee':'0.00','order_cut_fee':'0.00','order_fee':'0.00','order_rem':'undefined','order_state':'0','create_time':'2015/12/18&nbsp;1:24:33'}]}"
+			//								}
+			//							});
 		});
 	</script>
 
