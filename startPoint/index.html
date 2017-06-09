@@ -253,7 +253,10 @@
 		var coach_lonArr = "";
 		var coach_latArr = "";
 		var preMarker = new Array();
-		var orientationPoint='';//定位点，测试用的
+		if (typeof orientationPoint == "undefined") {
+			orientationPoint='';//定位点，测试用的
+		}
+//		var orientationPoint='';//定位点，测试用的
 		// var g_getinfo    = "";		
 		//保存navigate.js传过来的值，carType.
 		mui.plusReady(function() {
